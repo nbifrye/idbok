@@ -11,7 +11,7 @@
 | カテゴリ | 配置 | 対象 | 使うスキル |
 | --- | --- | --- | --- |
 | **Spec** | `docs/specs/<slug>.md` | RFC, OpenID 仕様, W3C 勧告, FIDO 仕様 など。**1 仕様 = 1 記事** | `/spec` |
-| **Article** | `docs/articles/<slug>.md` | 個別トピック解説、時事ニュース、比較、考察 | `/article` |
+| **Article** | `docs/articles/<YYYY-MM-DD>-<slug>.md` | 個別トピック解説、時事ニュース、比較、考察 | `/article` |
 
 1 つの RFC や仕様ドキュメントを解説するときは必ず Spec。横断的なトピックやニュースは Article。迷ったら「これは特定の 1 つの Spec ドキュメントそのものか?」を自問してください。
 
@@ -20,76 +20,66 @@
 ```
 docs/
 ├── .vitepress/
-│   ├── config.mts       # VitePress 設定。nav と sidebar の定義
-│   └── sidebar.mts      # ディレクトリ走査 + frontmatter 解析で sidebar を自動生成
+│   ├── config.mts       # VitePress 設定。nav, sidebar, 検索, i18n ラベルなど
+│   └── sidebar.mts      # ディレクトリ走査 + H1 抽出で sidebar を自動生成
 ├── index.md             # ホームページ (hero layout)
 ├── specs/
 │   ├── index.md         # Specs セクションのランディングページ
 │   └── <slug>.md        # 各 Spec 記事 (AI 生成)
 ├── articles/
 │   ├── index.md         # Articles セクションのランディングページ
-│   └── <slug>.md        # 各 Article (AI 生成)
+│   └── <YYYY-MM-DD>-<slug>.md   # 各 Article (AI 生成)
 └── public/
-    └── CNAME            # カスタムドメイン設定 (触らない)
+    ├── CNAME            # カスタムドメイン設定 (触らない)
+    └── images/          # (任意) 記事に使う画像の置き場
 ```
 
-## サイドバーは自動生成される
+## Frontmatter は使わない
 
-`docs/.vitepress/sidebar.mts` の `buildSidebar()` が、`docs/specs/` と `docs/articles/` の md ファイルを走査し、frontmatter から `title` を読み出してサイドバーを構築します。
+Spec 記事・Article 記事の **frontmatter は一切使いません**。必要な情報は以下のルールで導出されます。
 
-**記事を追加するときに `config.mts` を編集する必要はありません。**
+| 情報 | 取得方法 |
+| --- | --- |
+| 記事タイトル | ファイル冒頭の 1 つ目の `# H1` |
+| Spec ID | ファイル名 (slug) そのもの (例: `rfc6749`) |
+| 公開日 (Article) | ファイル名の `YYYY-MM-DD-` プレフィックス |
+| 最終更新 | git の最終コミット日 (VitePress の `lastUpdated` 機能) |
 
-- **Specs**: `specId` の昇順 (例: RFC6749 → RFC6750 → RFC7636)
-- **Articles**: `published` の降順 (新しい記事が上)
+ファイルは必ず 1 行目が `# <タイトル>` で始まります。frontmatter を書いても動作はしますが、不要なので書かないでください (`docs/index.md` のような `layout: home` を使うトップページは例外)。
 
-`index.md` はサイドバーから除外されます。
+## ファイル名と slug 規約
 
-## Frontmatter 規約
-
-手書きパーサで読むため、以下の制約があります:
-
-- 値は **1 行に収める**
-- 配列は **インライン** (`[a, b, c]`) のみ。複数行配列は使わない
-- ネストしたオブジェクトは使わない
-- 値に `:` / `[` / `]` を含めるときはダブルクォートで囲む
+小文字ケバブケース (`a-z`, `0-9`, `-`, `_`) を使います。
 
 ### Spec
 
-```yaml
----
-kind: spec
-specId: RFC6749
-title: The OAuth 2.0 Authorization Framework
-org: IETF            # IETF / OIDF / W3C / FIDO / ISO ...
-status: Standard     # Standard / Proposed Standard / Draft / Informational / Recommendation ...
-published: 2012-10-01
-authors: [D. Hardt]
-tags: [oauth, authorization]
-summary: OAuth 2.0 認可フレームワークの中核仕様。
----
-```
+ファイル名 = slug。サイドバーは slug の数値順昇順で並びます (`rfc6749` → `rfc6750`)。
+
+- RFC は番号: `rfc6749.md`、補助識別子を付ける場合は `rfc7636-pkce.md`
+- バージョン付き仕様は `_` で: `oidc-core-1_0.md`, `fapi-2_0-security-profile.md`
+- 例: `webauthn-l3.md`, `ctap2_1.md`
 
 ### Article
 
-```yaml
----
-kind: article
-title: 2026年のパスキー普及状況まとめ
-published: 2026-04-10
-tags: [passkeys, fido, webauthn]
-summary: 2026年時点のパスキー対応状況と主要プラットフォーム動向。
----
-```
+ファイル名 = `<YYYY-MM-DD>-<slug>.md`。サイドバーはファイル名降順で並ぶので、新しい日付ほど上に来ます。
 
-## Slug 規約
+- 日付は公開日 (通常は執筆した日)
+- slug はトピック中心
+- 例:
+  - `2026-04-10-what-is-passkey.md`
+  - `2026-04-10-eidas-2-wallet-update.md`
+  - `2026-04-10-fedcm-vs-webauthn.md`
 
-- 小文字ケバブケース (`a-z`, `0-9`, `-`, `_`)
-- Spec:
-  - RFC は番号 (`rfc6749`)、補助識別子を付ける場合は `rfc7636-pkce`
-  - バージョン付き仕様は `_` で (`oidc-core-1_0`, `fapi-2_0-security-profile`)
-- Article:
-  - トピック中心 (`what-is-passkey`)
-  - ニュースは日付サフィックスを付けても良い (`eidas-2-wallet-2025-update`)
+## サイドバーは自動生成される
+
+`docs/.vitepress/sidebar.mts` の `buildSidebar()` が、`docs/specs/` と `docs/articles/` の md ファイルを走査し、各ファイルの 1 つ目の H1 を読んでサイドバーを構築します。
+
+**記事を追加するときに `config.mts` を編集する必要はありません。**
+
+- **Specs**: ファイル名 (slug) 昇順、数値順 (例: RFC6749 → RFC6750 → RFC7636)
+- **Articles**: ファイル名降順 (日付プレフィックスにより新しい記事が上)
+
+`index.md` はサイドバーから除外されます。
 
 ## 言語ポリシー
 
@@ -101,12 +91,19 @@ summary: 2026年時点のパスキー対応状況と主要プラットフォー�
 
 ## 記事作成は必ずスキル経由で
 
-新しい記事を書くときは、必ず以下のスキルを使ってください。スキルには調査・構成・frontmatter・配置・検証までのワークフローが含まれています。
+新しい記事を書くときは、必ず以下のスキルを使ってください。スキルには調査・構成・配置・検証までのワークフローが含まれています。
 
 - `/spec` → `.claude/skills/spec/SKILL.md`
 - `/article` → `.claude/skills/article/SKILL.md`
 
-スキルを経由せずに直接記事を書くと、frontmatter 規約違反やサイドバー生成失敗の原因になります。
+## 内部リンクの書き方
+
+`cleanUrls: true` なので、内部リンクには `.md` も `.html` も付けません。
+
+```markdown
+[OAuth 2.0](/specs/rfc6749)
+[パスキー解説](/articles/2026-04-10-what-is-passkey)
+```
 
 ## ビルド & プレビュー
 
@@ -124,12 +121,3 @@ npm run docs:preview # ビルド結果のプレビュー
 - `.github/workflows/deploy.yml` が `main` ブランチへの push をトリガーに自動ビルド & GitHub Pages デプロイを行います
 - 独自ドメインは `docs/public/CNAME` で `idbok.nbifrye.com` に固定
 - `base: '/'` 設定はカスタムドメイン直下運用のため。変更しないでください
-
-## 内部リンクの書き方
-
-`cleanUrls: true` なので、内部リンクには `.md` も `.html` も付けません。
-
-```markdown
-[OAuth 2.0](/specs/rfc6749)
-[パスキー解説](/articles/what-is-passkey)
-```

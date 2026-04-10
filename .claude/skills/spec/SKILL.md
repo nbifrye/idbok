@@ -7,11 +7,20 @@ description: Use this skill to write a new Spec article for the idbok Digital Id
 
 idbok の Specs セクション (`docs/specs/<slug>.md`) に、**1 仕様 = 1 記事** の形式で技術仕様解説を追加するためのワークフロー。
 
-対象は RFC / OpenID 仕様 / W3C 勧告 / FIDO 仕様 などの、公式の Spec ドキュメントです。時事ニュースや横断トピックは `/article` スキルを使ってください。
+対象は RFC / OpenID 仕様 / W3C 勧告 / FIDO 仕様 などの、公式の Spec ドキュメントそのものです。横断的なトピックや時事ニュースは `/article` スキルを使ってください。
+
+## 重要な規約
+
+- **frontmatter は書かない**。ファイルの 1 行目は `# <仕様の正式タイトル>` (H1)。タイトルはこの H1 から自動抽出される
+- **ファイル名 = slug**。slug がそのまま URL になり、サイドバーの並び順 (昇順、数値順) にも使われる
+- **本文は日本語**。ただし以下は英語のまま:
+  - 仕様名 / プロダクト名 (OAuth 2.0, OpenID Connect, WebAuthn …)
+  - パラメータ・フィールド・ヘッダ名 (`client_id`, `redirect_uri`, `Authorization` …)
+  - HTTP メソッド・HTTP ステータス (`POST`, `Bearer`, `401 Unauthorized` …)
 
 ## ワークフロー
 
-以下のステップを TodoWrite で管理しながら順に進めてください。
+TodoWrite でタスクを管理しながら順に進めてください。
 
 ### 1. 対象仕様を確定する
 
@@ -28,72 +37,35 @@ idbok の Specs セクション (`docs/specs/<slug>.md`) に、**1 仕様 = 1 �
 - **W3C**: `https://www.w3.org/TR/...`
 - **FIDO Alliance**: `https://fidoalliance.org/specifications/`
 
-必要に応じて複数の解説記事・関連 RFC もクロスチェックして正確性を担保する。不明点があれば記事に書かず、保留するか一次情報を再確認する。
+必要に応じて複数の解説記事・関連 RFC もクロスチェックして正確性を担保する。一次情報に書かれていないことは憶測で書かない。
 
-### 3. slug とファイル名を決める
+### 3. Slug (= ファイル名) を決める
 
-- 小文字ケバブケース
+- 小文字ケバブケース (`a-z`, `0-9`, `-`, `_`)
+- RFC は番号 (`rfc6749`)、補助識別子を付ける場合は `rfc7636-pkce`
+- バージョン付き仕様は `_` を使う (`oidc-core-1_0`, `fapi-2_0-security-profile`)
 - 例:
-  - `rfc6749` (RFC は番号で)
-  - `rfc7636-pkce` (補助的な識別子が欲しい場合)
-  - `oidc-core-1_0`
-  - `fapi-2_0-security-profile`
-  - `webauthn-l3`
+  - `rfc6749.md`
+  - `rfc7636-pkce.md`
+  - `oidc-core-1_0.md`
+  - `webauthn-l3.md`
 - 配置先: `docs/specs/<slug>.md`
 
-### 4. Frontmatter を作成する
+サイドバーは slug を数値順に昇順ソートする (`rfc6749` → `rfc6750` → ...)。明示的なソートキーは不要。
 
-以下のテンプレートをコピーし、一次情報に基づいて埋める。
+### 4. 記事を書く
 
-```yaml
----
-kind: spec
-specId: RFC6749
-title: The OAuth 2.0 Authorization Framework
-org: IETF
-status: Standard
-published: 2012-10-01
-authors: [D. Hardt]
-tags: [oauth, authorization]
-summary: OAuth 2.0 認可フレームワークの中核仕様。4 つの認可フローと、アクセストークンによる保護リソースへのアクセス方法を定義する。
----
-```
-
-**必須フィールド**:
-- `kind`: 常に `spec`
-- `specId`: 正式な識別子 (例: `RFC6749`, `OIDC-Core-1.0`, `WebAuthn-L3`)。サイドバーの昇順ソートキーになる
-- `title`: 仕様の正式タイトル (英語原題のままで OK)
-- `org`: 発行組織 (`IETF` / `OIDF` / `W3C` / `FIDO` / `ISO` など)
-- `status`: 仕様のステータス (`Standard` / `Proposed Standard` / `Informational` / `Draft` / `Recommendation` など)
-- `published`: 最終公開日 (`YYYY-MM-DD` 形式)
-- `tags`: 関連技術タグ (小文字、インライン配列)
-- `summary`: 1 〜 2 文の日本語サマリ
-
-**Frontmatter の制約** (サイドバー自動生成パーサの都合):
-- 値は 1 行に収める
-- 配列は **インライン** (`[a, b, c]`) のみ。複数行配列は禁止
-- ネストしたオブジェクトは使わない
-- 値に `:` や `[`, `]` を含めたい場合はダブルクォートで囲む
-
-### 5. 本文を日本語で書く
-
-**言語ポリシー**: 本文は日本語。ただし以下は英語のままにする。
-- 固有名詞 / 仕様名 (OAuth 2.0, Authorization Code Grant など)
-- パラメータ名・フィールド名 (`client_id`, `redirect_uri`, `iss`, `aud` など)
-- ヘッダ名・メソッド名 (`Authorization`, `POST`, `Bearer` など)
-
-### 6. 記事構造テンプレート
-
-以下のセクション構成を基本とする (仕様の性質に応じて取捨選択可):
+ファイルの 1 行目は必ず H1 で仕様の正式タイトル (英語原題) を書く。frontmatter は一切不要。
 
 ```markdown
-# {title}
+# The OAuth 2.0 Authorization Framework
 
-> {summary と同じ内容または発展させたリード文}
+> OAuth 2.0 認可フレームワークの中核仕様。クライアントが Resource Owner に代わって保護リソースへアクセスするための認可フローを定義する。
 
 ## 概要
 
-仕様が何を定義しているか、どんな問題を解決するかを 1 パラグラフで。
+仕様が何を定義しているか、解決する問題、スコープを 1 パラグラフで。
+発行組織 (IETF / OIDF / W3C / FIDO 等) とステータス (Standard / Proposed Standard / Draft / Recommendation 等)、公開日もここで自然な文章として触れる。
 
 ## 背景
 
@@ -101,17 +73,15 @@ summary: OAuth 2.0 認可フレームワークの中核仕様。4 つの認可�
 
 ## 主要な概念と用語
 
-- **Role / Entity**: ...
-- **Artifact (Token, Assertion, Credential, etc.)**: ...
-- **Endpoint**: ...
-
-仕様内で定義されている重要な用語を箇条書きで整理する。
+- **Role / Entity**: Client, Resource Owner, Authorization Server, Resource Server など
+- **Artifact**: Access Token, Refresh Token, Authorization Code など
+- **Endpoint**: Authorization Endpoint, Token Endpoint など
 
 ## プロトコルフロー
 
-典型的なフローを順を追って説明する。必要に応じて Mermaid 図やシーケンスを使う。
+典型フローをシーケンスで説明する。Mermaid が使える。
 
-```mermaid
+​```mermaid
 sequenceDiagram
   participant C as Client
   participant AS as Authorization Server
@@ -122,16 +92,14 @@ sequenceDiagram
   AS-->>C: Authorization Code
   C->>AS: Token Request (code)
   AS-->>C: Access Token
-```
+​```
 
 ## 主なパラメータ / フィールド
 
-表形式でまとめると読みやすい。
-
 | パラメータ | 必須 | 説明 |
 | --- | --- | --- |
-| `client_id` | ✅ | ... |
-| `redirect_uri` | 条件付き | ... |
+| `client_id` | ✅ | 認可サーバーに登録されたクライアント識別子 |
+| `redirect_uri` | 条件付き | 認可レスポンスのリダイレクト先 |
 
 ## セキュリティ考慮事項
 
@@ -140,8 +108,7 @@ sequenceDiagram
 ## 関連仕様
 
 - [RFC6750 Bearer Token Usage](/specs/rfc6750)
-- OAuth 2.1 ドラフト
-- ...
+- OAuth 2.1 ドラフト など
 
 ## 参考文献
 
@@ -150,45 +117,46 @@ sequenceDiagram
 ```
 
 **執筆上の注意**:
-- 一次ソースに書かれていないことは憶測で書かない
-- 推測や個人的意見は明示する (`著者注:` など)
-- コードスニペットや HTTP メッセージ例は、一次情報の例を可能な限り使う
-- セクションを無理に埋めない。仕様上存在しない要素は省略して良い
 
-### 7. ビルド検証
+- セクションを無理に埋めない。仕様上存在しない要素 (例: Security Considerations 節が無い仕様) は省略して良い
+- コードスニペットや HTTP メッセージ例は、可能な限り一次情報の例をそのまま使う
+- 内部リンクは `cleanUrls: true` 前提なので `.md` / `.html` を付けない (`/specs/rfc6750` の形)
+- 関連する Spec 記事が既に idbok にある場合は必ず内部リンクする
+- 推測や個人的意見は明示する (`著者注:` や blockquote を使う)
 
-記事を保存したら、リポジトリルートで以下を実行:
+### 5. ビルド検証
+
+リポジトリルートで:
 
 ```bash
 npm run docs:build
 ```
 
 確認事項:
-- 警告 (dead link, missing reference) なくビルドが成功する
+
+- 警告 (dead link, missing reference など) なくビルドが成功する
 - `docs/.vitepress/dist/specs/<slug>.html` が生成されている
-- サイドバーの自動生成に拾われている (開発サーバーで `/specs/` を開いて確認するのが確実)
+- サイドバーに自動で拾われる (H1 がタイトルとして表示される)
 
-エラーが出た場合:
-- Frontmatter のインデント / クォート / 配列形式を疑う
-- Mermaid 等の拡張構文はコードブロックの言語指定を確認
-- 内部リンクは `cleanUrls: true` 前提なので `.md` を付けない
+エラーが出た場合は、多くのケースで内部リンクのパスミス / コードブロックの言語指定 / Mermaid 構文を疑う。
 
-### 8. コミット
+### 6. コミット
 
 完成したら git でコミットする (push はユーザーの明示的な指示があるまで行わない)。
 
 ```bash
 git add docs/specs/<slug>.md
-git commit -m "Add Spec article: <specId> <title>"
+git commit -m "Add Spec article: <slug>"
 ```
 
-コミットメッセージのフォーマットは `Add Spec article: RFC6749 The OAuth 2.0 Authorization Framework` のように specId と title を含める。
+画像等のアセットを追加した場合 (`docs/public/` 配下) はそれらも一緒にコミットする。
 
 ## 最終報告
 
 ユーザーへの最終メッセージに以下を含める:
+
 - 作成したファイルパス
-- 対象仕様 (specId / title / org)
+- 対象仕様 (slug とタイトル)
 - 参照した一次ソース URL
 - ビルド検証結果 (✅ / ‼️)
-- 次のアクションの提案 (関連する RFC を続けて書くか等)
+- 関連する他の Spec 記事を続けて書く提案など
