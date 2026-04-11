@@ -1,11 +1,11 @@
-import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-export type SortKey = 'slug' | 'filenameDesc'
+export type SortKey = "slug" | "filenameDesc";
 
 export interface SidebarItem {
-  text: string
-  link: string
+  text: string;
+  link: string;
 }
 
 /**
@@ -14,13 +14,13 @@ export interface SidebarItem {
  * use frontmatter (e.g. home layout) still work.
  */
 function extractTitle(content: string): string | null {
-  let body = content
-  const fm = content.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/)
+  let body = content;
+  const fm = content.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/);
   if (fm) {
-    body = content.slice(fm[0].length)
+    body = content.slice(fm[0].length);
   }
-  const m = body.match(/^# (.+?)\s*#*\s*$/m)
-  return m ? m[1].trim() : null
+  const m = body.match(/^# (.+?)\s*#*\s*$/m);
+  return m ? m[1].trim() : null;
 }
 
 /**
@@ -35,38 +35,29 @@ function extractTitle(content: string): string | null {
  * @param relDir  Path relative to this file, e.g. '../specs'
  * @param urlBase URL prefix for links, e.g. '/specs/'
  */
-export function buildSidebar(
-  relDir: string,
-  urlBase: string,
-  sortBy: SortKey,
-): SidebarItem[] {
-  const dirUrl = new URL(`${relDir}/`, import.meta.url)
-  const dirPath = fileURLToPath(dirUrl)
+export function buildSidebar(relDir: string, urlBase: string, sortBy: SortKey): SidebarItem[] {
+  const dirUrl = new URL(`${relDir}/`, import.meta.url);
+  const dirPath = fileURLToPath(dirUrl);
 
   if (!existsSync(dirPath) || !statSync(dirPath).isDirectory()) {
-    return []
+    return [];
   }
 
-  const files = readdirSync(dirPath).filter(
-    (f) => f.endsWith('.md') && f !== 'index.md',
-  )
+  const files = readdirSync(dirPath).filter((f) => f.endsWith(".md") && f !== "index.md");
 
   const entries = files.map((file) => {
-    const slug = file.replace(/\.md$/, '')
-    const raw = readFileSync(fileURLToPath(new URL(file, dirUrl)), 'utf-8')
-    const title = extractTitle(raw) ?? slug
-    return { slug, title, file }
-  })
+    const slug = file.replace(/\.md$/, "");
+    const raw = readFileSync(fileURLToPath(new URL(file, dirUrl)), "utf-8");
+    const title = extractTitle(raw) ?? slug;
+    return { slug, title, file };
+  });
 
-  const cmp = (a: string, b: string) =>
-    a.localeCompare(b, 'en', { numeric: true })
+  const cmp = (a: string, b: string) => a.localeCompare(b, "en", { numeric: true });
 
-  entries.sort((a, b) =>
-    sortBy === 'filenameDesc' ? cmp(b.file, a.file) : cmp(a.file, b.file),
-  )
+  entries.sort((a, b) => (sortBy === "filenameDesc" ? cmp(b.file, a.file) : cmp(a.file, b.file)));
 
   return entries.map((e) => ({
     text: e.title,
     link: `${urlBase}${e.slug}`,
-  }))
+  }));
 }
