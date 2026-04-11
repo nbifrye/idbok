@@ -14,6 +14,7 @@ idbok の Articles セクション (`docs/articles/<YYYY-MM-DD>-<slug>.md`) に�
 - **frontmatter は書かない**。ファイルの 1 行目は `# <日本語タイトル>` (H1)。タイトルはこの H1 から自動抽出される
 - **ファイル名には日付プレフィックスを付ける**: `YYYY-MM-DD-<slug>.md`。サイドバーはファイル名降順なので、新しい日付ほど上に並ぶ。日付は公開日 (通常は今日)
 - **本文は日本語**。仕様名・プロダクト名・技術用語 (OAuth 2.0, OpenID Connect, WebAuthn, `client_id` など) は英語のまま
+- **`reviewed` タグは付与しない**。一次情報との照合によるセルフレビューは実施するが、`reviewed` フロントマターの付与は `/review` スキル専用
 
 ## Article のタイプ
 
