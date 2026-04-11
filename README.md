@@ -17,6 +17,8 @@ npm install
 npm run docs:dev     # http://localhost:5173
 npm run docs:build
 npm run docs:preview
+npm run fmt          # oxfmt で docs/ をフォーマット
+npm run fmt:check    # フォーマット差分チェック
 ```
 
 ## 記事の執筆
