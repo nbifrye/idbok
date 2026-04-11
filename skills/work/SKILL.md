@@ -15,6 +15,8 @@ TodoWrite でタスクを管理しながら進める。
 
 ### Step 0. main ブランチに同期する
 
+> **このスキルは main ブランチ上での実行を前提とします。** feature branch のセッションから呼び出す場合は、先にブランチ状況を確認してください。
+
 作業開始前に main の最新状態を取り込む:
 
 ```bash
@@ -29,7 +31,7 @@ git pull origin main
 - `NEXT_WORK_ACTION=review:<path>` → Step 2へ（`<path>` がレビュー対象）
 - `NEXT_WORK_ACTION=write` → Step 3へ
 
-フック出力が見当たらない場合は、Glob と Read で `docs/specs/*.md` と `docs/articles/*.md` を直接スキャンして未レビュー記事を探す（先頭が `---` で始まり `reviewed` を含まないファイル）。
+フック出力が見当たらない場合は、Glob と Read で `docs/specs/*.md` と `docs/articles/*.md` を直接スキャンして未レビュー記事を探す（frontmatter がないか、frontmatter に `reviewed` タグが含まれていないファイル）。`index.md` は除外する。
 
 ### Step 2. [未レビューあり] レビューを実行する
 
@@ -47,9 +49,10 @@ Skill({ skill: "review", args: "<path>" })
 
 1. Glob で `docs/specs/*.md` と `docs/articles/*.md` の既存ファイル一覧を確認（重複を避ける）
 2. WebSearch でデジタルアイデンティティ領域の最新動向・未カバーの重要仕様を調査
-3. 優先順位の目安:
-   - **未カバーの基幹仕様**（OAuth 2.0, OIDC Core 1.0, WebAuthn, PKCE など）→ `/spec`
-   - **最新ニュース・横断トピック**（eIDAS 2.0, パスキー普及状況など）→ `/article`
+3. 優先順位:
+   - **基幹仕様が未カバー**（OAuth 2.0, OIDC Core 1.0, WebAuthn, PKCE, FIDO2 など）→ `/spec` を優先
+   - **基幹仕様が十分カバーされている、または時事性の高いトピック**（eIDAS 2.0, パスキー普及状況, 仕様比較など）→ `/article`
+   - 迷ったら「デジタルアイデンティティ初学者にとって今最も価値が高い 1 件」を選ぶ
 4. テーマを **1件** に絞る
 
 ### Step 4. [全記事レビュー済み] 記事を執筆する
@@ -85,6 +88,7 @@ Skill ツールで適切なスキルを呼び出す:
    軽微な改善（誤記修正、説明補足など）を適用する。
 
 改善が見つかった場合:
+- `.md` ファイルを変更した場合は `npm run docs:build` でビルドが通ることを確認してからコミットする
 ```bash
 git add <変更ファイル>
 git commit -m "Self-improve: <改善内容の概要>"

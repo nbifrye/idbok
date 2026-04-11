@@ -117,7 +117,7 @@ npm run docs:build
 
 ### 6. コミット
 
-完成したら git でコミットする (push はユーザーの明示的な指示があるまで行わない)。
+完成したら git でコミットする。push は行わない（`/work` スキルまたはユーザーの明示的な指示で行う）。
 
 ```bash
 git add docs/articles/<YYYY-MM-DD>-<slug>.md
