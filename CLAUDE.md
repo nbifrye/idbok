@@ -45,9 +45,17 @@ Spec 記事・Article 記事の frontmatter は **`reviewed` タグのためだ�
 | 公開日 (Article) | ファイル名の `YYYY-MM-DD-` プレフィックス |
 | 最終更新 | git の最終コミット日 (VitePress の `lastUpdated` 機能) |
 
-ファイルは必ず 1 行目が `# <タイトル>` で始まります (`docs/index.md` のような `layout: home` を使うトップページは例外)。
+ファイルの 1 行目は原則 `# <タイトル>` (H1) で始まります。例外は以下の 2 ケースのみです:
 
-- **Spec** の H1: 仕様の**英語正式タイトル** (`# The OAuth 2.0 Authorization Framework` のように)
+- `reviewed` フロントマターが付いている記事 — 1 行目は `---` になります (`sidebar.mts` の `extractTitle()` がフロントマターを自動スキップするため問題ありません)
+- `docs/index.md` のような `layout: home` を使うトップページ
+
+H1 の書き方:
+
+- **Spec** の H1: **一次ソース (RFC / 仕様ドキュメント) のタイトル行と完全に一致** させる。RFC 番号・サブタイトル・注釈を付け足さない
+  - ✅ `# The OAuth 2.0 Authorization Framework`
+  - ❌ `# The OAuth 2.0 Authorization Framework (RFC 6749)`
+  - ❌ `# OAuth 2.0 認可フレームワーク`
 - **Article** の H1: **日本語タイトル** (`# 2026年のパスキー普及状況まとめ` のように)
 
 **`reviewed` タグ**: `/review` スキルによるレビューが完了した記事にのみ付与されます。これ以外の frontmatter は書かないでください。
@@ -142,6 +150,8 @@ sequenceDiagram
 
 > **push ポリシー**: `/spec`・`/article`・`/review` スキルはコミットまでを担当し、push は行いません。push は `/work` スキルが最後に行うか、ユーザーが明示的に指示した場合に行います。
 
+> **`/work` の状態判定**: `/work` は SessionStart フックが表示する `NEXT_WORK_ACTION` を heads-up として参照するだけで、実際の判断は毎回 `bash scripts/check-unreviewed.sh` を再実行した結果に基づきます。同一セッションで `/work` を複数回呼んでも常に最新状態で動作します。
+
 ## 内部リンクの書き方
 
 `cleanUrls: true` なので、内部リンクには `.md` も `.html` も付けません。
@@ -161,6 +171,17 @@ npm run docs:preview # ビルド結果のプレビュー
 ```
 
 **記事をコミットする前に必ず `npm run docs:build` を通してください。** 警告 (dead link など) があれば解決します。
+
+## フォーマット
+
+記事とドキュメントは [`oxfmt`](https://oxc.rs/docs/guide/usage/formatter) でフォーマットします (Prettier 互換、Markdown をネイティブサポート)。`/spec`、`/article`、`/review` スキルはビルド検証の直前に `npm run fmt` を実行します。
+
+```bash
+npm run fmt          # docs/ 配下をフォーマット
+npm run fmt:check    # 差分があれば non-zero で終了 (検証用)
+```
+
+手動でファイルを編集した後は、コミット前に `npm run fmt` を実行してフォーマットを整えてください。
 
 ## デプロイ
 

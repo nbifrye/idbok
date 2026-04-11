@@ -101,7 +101,17 @@ Comparison なら比較項目ごとの検討。必要に応じてサブセクシ
 - 内部リンクは `cleanUrls: true` 前提なので `.md` / `.html` を付けない (`/articles/2026-04-10-what-is-passkey` の形)
 - **図が必要な場合は Mermaid を使う** (`sequenceDiagram`, `flowchart`, `stateDiagram-v2` など)。画像ファイルは Mermaid で表現できない場合のみ `docs/public/images/` に配置し `/images/<file>.png` でリンクする
 
-### 5. ビルド検証
+### 5. フォーマット
+
+執筆した記事を `oxfmt` でフォーマットする:
+
+```bash
+npm run fmt
+```
+
+差分が出た場合はその状態で次のビルド検証に進む (oxfmt の出力はそのままコミット対象)。
+
+### 6. ビルド検証
 
 リポジトリルートで:
 
@@ -115,7 +125,7 @@ npm run docs:build
 - `docs/.vitepress/dist/articles/<YYYY-MM-DD>-<slug>.html` が生成されている
 - サイドバーの一番上に新しい記事が拾われている (ファイル名降順ソートのため)
 
-### 6. コミット
+### 7. コミット
 
 完成したら git でコミットする。push は行わない（`/work` スキルまたはユーザーの明示的な指示で行う）。
 

@@ -26,12 +26,20 @@ git pull origin main
 
 ### Step 1. アクションを確認する
 
-このセッション開始時のフック出力（`=== idbok SessionStart ===` のブロック）を参照し、`NEXT_WORK_ACTION=` の行を読む。
+**権威ソースとして、毎回スクリプトを再実行してフレッシュな状態で判定する:**
 
-- `NEXT_WORK_ACTION=review:<path>` → Step 2へ（`<path>` がレビュー対象）
-- `NEXT_WORK_ACTION=write` → Step 3へ
+```bash
+bash scripts/check-unreviewed.sh
+```
 
-フック出力が見当たらない場合は、Glob と Read で `docs/specs/*.md` と `docs/articles/*.md` を直接スキャンして未レビュー記事を探す（frontmatter がないか、frontmatter に `reviewed` タグが含まれていないファイル）。`index.md` は除外する。
+出力の `NEXT_WORK_ACTION=` 行を読む:
+
+- `NEXT_WORK_ACTION=review:<path>` → Step 2 へ (`<path>` がレビュー対象)
+- `NEXT_WORK_ACTION=write` → Step 3 へ
+
+> SessionStart フックも同じスクリプトを実行して heads-up を表示するが、`/work` の実行判断はこの再実行結果にのみ基づく。同一セッションで `/work` が複数回呼ばれた場合でも常に最新状態で動作するためである。
+>
+> 万一スクリプトが存在しない/実行できない場合は、Glob と Read で `docs/specs/*.md` と `docs/articles/*.md` を直接スキャンして未レビュー記事を探す (frontmatter がない、または frontmatter に `reviewed` タグが含まれていないファイル)。`index.md` は除外する。
 
 ### Step 2. [未レビューあり] レビューを実行する
 
@@ -68,33 +76,42 @@ Skill ツールで適切なスキルを呼び出す:
 
 ### Step 5. 自己改善を実施する
 
-本タスク完了後、プロジェクトを継続的に成長させるための改善を **1件** 実施する。
+本タスク完了後、プロジェクトを継続的に成長させるために **以下の優先順で走査し、最初に該当した1件のみ** を実施する。どれも該当しない場合は何もせず Step 6 に進む。
 
-**改善候補（優先順）:**
+**P1. ビルド警告・エラーの修正 (最優先)**
 
-1. **デッドリンク・ビルド警告の修正**
-   `npm run docs:build` の出力を確認し、dead link 警告やビルドエラーがあれば修正する。
-
-2. **クロスリンクの追加**
-   新規記事を執筆した場合、関連する既存記事を Glob + Read でスキャンし、
-   末尾の「関連記事」や本文中に相互リンクを追記する。
-
-3. **スキルファイルの改善**
-   `skills/*/SKILL.md` を Read で確認し、今回の実行で気付いた改善点
-   （説明の明確化、手順の補足、エッジケースの追記など）を **1箇所** 適用する。
-
-4. **プロジェクト構造の改善**
-   `CLAUDE.md` / `docs/.vitepress/sidebar.mts` / `docs/.vitepress/config.mts` 等の
-   軽微な改善（誤記修正、説明補足など）を適用する。
-
-改善が見つかった場合:
-- `.md` ファイルを変更した場合は `npm run docs:build` でビルドが通ることを確認してからコミットする
 ```bash
-git add <変更ファイル>
-git commit -m "Self-improve: <改善内容の概要>"
+npm run docs:build 2>&1 | tee /tmp/idbok-build.log
 ```
 
-改善が不要と判断した場合: コミットせずそのまま Step 6 へ進む。
+出力に dead link / missing reference / Mermaid 構文エラー / VitePress 警告が **1件以上** あれば、その1つを修正する。該当なければ P2 へ。
+
+**P2. フォーマット違反の修正**
+
+```bash
+npm run fmt:check
+```
+
+non-zero で終了したら `npm run fmt` を実行して差分を適用する。該当なければ P3 へ。
+
+**P3. 新規記事のクロスリンク追加 (Step 4 経由の場合のみ)**
+
+直前に Step 4 で新規記事を執筆した場合のみ該当。Glob で `docs/specs/*.md` と `docs/articles/*.md` から関連しそうな既存記事を最大 5 件読み、本文中で **新規記事 → 既存記事** または **既存記事 → 新規記事** の内部リンクを1件以上追加できる箇所があれば追記する。該当なければ P4 へ。
+
+**P4. 直前実行で判明した曖昧さの解消 (該当時のみ)**
+
+直前の実行 (レビュー or 執筆) で **実際に迷った・詰まった点** があれば、`skills/*/SKILL.md` または `CLAUDE.md` を1箇所だけ修正する。思いつきの改善や予防的ドキュメント追加は **行わない** — 実タスクで具体的な不便があった場合のみ。
+
+**コミット**:
+
+`.md` ファイルを変更した場合は `npm run fmt` → `npm run docs:build` でフォーマットとビルドが通ることを確認してからコミットする:
+
+```bash
+git add <変更ファイル>
+git commit -m "Self-improve: <P番号> <概要>"
+```
+
+**改善を実施しなかった場合**: コミットはせず、最終報告にその旨を明記する。
 
 ### Step 6. main へ push する
 
