@@ -128,9 +128,9 @@ sequenceDiagram
 
 | スキル | 用途 | SKILL.md |
 | --- | --- | --- |
-| `/spec` | Spec 記事の新規作成 | `.claude/skills/spec/SKILL.md` |
-| `/article` | Article の新規作成 | `.claude/skills/article/SKILL.md` |
-| `/review` | 既存記事のレビューと `reviewed` タグ付与 | `.claude/skills/review/SKILL.md` |
+| `/spec` | Spec 記事の新規作成 | `skills/spec/SKILL.md` |
+| `/article` | Article の新規作成 | `skills/article/SKILL.md` |
+| `/review` | 既存記事のレビューと `reviewed` タグ付与 | `skills/review/SKILL.md` |
 
 > **`reviewed` タグについて**: `reviewed` タグは `/review` スキルのみが付与します。`/spec` や `/article` スキルはセルフレビューを実施しますが、このタグは付与しません。
 
