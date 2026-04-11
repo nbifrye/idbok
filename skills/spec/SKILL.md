@@ -12,6 +12,7 @@ idbok の Specs セクション (`docs/specs/<slug>.md`) に、**1 仕様 = 1 �
 ## 重要な規約
 
 - **frontmatter は書かない**。ファイルの 1 行目は `# <仕様の正式タイトル>` (H1)。タイトルはこの H1 から自動抽出される
+- **H1 タイトルは仕様の英語正式タイトル**を使う (`# The OAuth 2.0 Authorization Framework` のように)。日本語タイトルにしない
 - **ファイル名 = slug**。slug がそのまま URL になり、サイドバーの並び順 (昇順、数値順) にも使われる
 - **本文は日本語**。ただし以下は英語のまま:
   - 仕様名 / プロダクト名 (OAuth 2.0, OpenID Connect, WebAuthn …)
@@ -143,7 +144,7 @@ npm run docs:build
 
 ### 6. コミット
 
-完成したら git でコミットする (push はユーザーの明示的な指示があるまで行わない)。
+完成したら git でコミットする。push は行わない（`/work` スキルまたはユーザーの明示的な指示で行う）。
 
 ```bash
 git add docs/specs/<slug>.md

@@ -34,9 +34,9 @@ docs/
     └── images/          # (任意) 記事に使う画像の置き場
 ```
 
-## Frontmatter は使わない
+## Frontmatter のルール
 
-Spec 記事・Article 記事の **frontmatter は原則使いません**。必要な情報は以下のルールで導出されます。
+Spec 記事・Article 記事の frontmatter は **`reviewed` タグのためだけに使います**。それ以外の frontmatter は書かないでください。必要な情報は以下のルールで導出されます。
 
 | 情報 | 取得方法 |
 | --- | --- |
@@ -47,7 +47,10 @@ Spec 記事・Article 記事の **frontmatter は原則使いません**。必�
 
 ファイルは必ず 1 行目が `# <タイトル>` で始まります (`docs/index.md` のような `layout: home` を使うトップページは例外)。
 
-**例外 — `reviewed` タグ**: `/review` スキルによるレビューが完了した記事には、以下のフロントマターが付与されます。これ以外のフロントマターは Spec / Article ファイルに書かないでください。
+- **Spec** の H1: 仕様の**英語正式タイトル** (`# The OAuth 2.0 Authorization Framework` のように)
+- **Article** の H1: **日本語タイトル** (`# 2026年のパスキー普及状況まとめ` のように)
+
+**`reviewed` タグ**: `/review` スキルによるレビューが完了した記事にのみ付与されます。これ以外の frontmatter は書かないでください。
 
 ```markdown
 ---
@@ -131,8 +134,13 @@ sequenceDiagram
 | `/spec` | Spec 記事の新規作成 | `skills/spec/SKILL.md` |
 | `/article` | Article の新規作成 | `skills/article/SKILL.md` |
 | `/review` | 既存記事のレビューと `reviewed` タグ付与 | `skills/review/SKILL.md` |
+| `/work` | 自動ワークフロー（レビュー → 執筆のサイクル） | `skills/work/SKILL.md` |
+
+> **スキルファイルの構成**: `skills/*/SKILL.md` が各スキルの詳細な手順を持つ実体です。`.claude/skills/*/SKILL.md` は Claude Code ランタイム用の登録スタブで、`skills/` の内容を参照するだけです。スキルを更新する場合は `skills/` 側を編集してください。
 
 > **`reviewed` タグについて**: `reviewed` タグは `/review` スキルのみが付与します。`/spec` や `/article` スキルはセルフレビューを実施しますが、このタグは付与しません。
+
+> **push ポリシー**: `/spec`・`/article`・`/review` スキルはコミットまでを担当し、push は行いません。push は `/work` スキルが最後に行うか、ユーザーが明示的に指示した場合に行います。
 
 ## 内部リンクの書き方
 
