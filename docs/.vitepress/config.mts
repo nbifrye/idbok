@@ -1,7 +1,7 @@
-import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 import { buildSidebar } from './sidebar.mts'
 
-export default defineConfig({
+export default withMermaid({
   lang: 'ja',
   title: 'idbok',
   description:
@@ -18,6 +18,9 @@ export default defineConfig({
   markdown: {
     lineNumbers: true
   },
+
+  mermaid: {},
+  mermaidPlugin: {},
 
   themeConfig: {
     nav: [

@@ -102,6 +102,26 @@ tags:
   - パラメータ・フィールド・ヘッダ名 (`client_id`, `redirect_uri`, `Authorization` …)
   - HTTP メソッド・HTTP ステータス名 (`POST`, `Bearer`, `401 Unauthorized` …)
 
+## 図・ダイアグラム
+
+- **図が必要な場合は Mermaid を使用する。** 画像ファイル (PNG 等) ではなく Mermaid コードブロックで記述すること
+- よく使うダイアグラムタイプ:
+  - `sequenceDiagram` — プロトコルフロー・認証シーケンス
+  - `flowchart` / `graph` — 処理フロー・アーキテクチャ
+  - `stateDiagram-v2` — 状態遷移
+
+````markdown
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant AS as Authorization Server
+  C->>AS: Authorization Request
+  AS-->>C: Authorization Code
+```
+````
+
+- Mermaid でうまく表現できない場合のみ画像ファイルを `docs/public/images/` に配置し `/images/<file>` でリンクする
+
 ## 記事作成・レビューは必ずスキル経由で
 
 記事の執筆・レビューは、必ず以下のスキルを使ってください。スキルには調査・構成・配置・検証までのワークフローが含まれています。

@@ -99,7 +99,7 @@ Comparison なら比較項目ごとの検討。必要に応じてサブセクシ
 - 個人的意見は事実と明確に区別する
 - 関連する Spec 記事がリポジトリ内に存在する場合は必ず内部リンクする
 - 内部リンクは `cleanUrls: true` 前提なので `.md` / `.html` を付けない (`/articles/2026-04-10-what-is-passkey` の形)
-- 画像や図を使う場合は `docs/public/` 配下に配置し、`/images/<file>.png` 形式でリンクする
+- **図が必要な場合は Mermaid を使う** (`sequenceDiagram`, `flowchart`, `stateDiagram-v2` など)。画像ファイルは Mermaid で表現できない場合のみ `docs/public/images/` に配置し `/images/<file>.png` でリンクする
 
 ### 5. ビルド検証
 
