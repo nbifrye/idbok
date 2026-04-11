@@ -1,6 +1,6 @@
 # idbok — Digital Identity Body of Knowledge
 
-このリポジトリは、デジタルアイデンティティ領域の技術仕様やトピックを体系的にまとめた **日本語の Body of Knowledge サイト** です。すべての記事は AI エージェントが `/spec` または `/article` スキル経由で執筆することを前提としています。
+このリポジトリは、デジタルアイデンティティ領域の技術仕様やトピックを体系的にまとめた **日本語の Body of Knowledge サイト** です。すべての記事は AI エージェントが `/spec` または `/article` スキル経由で執筆し、`/review` スキル経由でレビューされることを前提としています。
 
 サイトは [VitePress 1.x](https://vitepress.dev/) でビルドされ、`main` への push で GitHub Pages (`idbok.nbifrye.com`) に自動デプロイされます。
 
@@ -36,7 +36,7 @@ docs/
 
 ## Frontmatter は使わない
 
-Spec 記事・Article 記事の **frontmatter は一切使いません**。必要な情報は以下のルールで導出されます。
+Spec 記事・Article 記事の **frontmatter は原則使いません**。必要な情報は以下のルールで導出されます。
 
 | 情報 | 取得方法 |
 | --- | --- |
@@ -45,7 +45,20 @@ Spec 記事・Article 記事の **frontmatter は一切使いません**。必�
 | 公開日 (Article) | ファイル名の `YYYY-MM-DD-` プレフィックス |
 | 最終更新 | git の最終コミット日 (VitePress の `lastUpdated` 機能) |
 
-ファイルは必ず 1 行目が `# <タイトル>` で始まります。frontmatter を書いても動作はしますが、不要なので書かないでください (`docs/index.md` のような `layout: home` を使うトップページは例外)。
+ファイルは必ず 1 行目が `# <タイトル>` で始まります (`docs/index.md` のような `layout: home` を使うトップページは例外)。
+
+**例外 — `reviewed` タグ**: `/review` スキルによるレビューが完了した記事には、以下のフロントマターが付与されます。これ以外のフロントマターは Spec / Article ファイルに書かないでください。
+
+```markdown
+---
+tags:
+  - reviewed
+---
+
+# 記事タイトル
+```
+
+`sidebar.mts` の `extractTitle()` はフロントマターブロックを自動スキップするため、サイドバーやビルドへの影響はありません。
 
 ## ファイル名と slug 規約
 
@@ -89,12 +102,17 @@ Spec 記事・Article 記事の **frontmatter は一切使いません**。必�
   - パラメータ・フィールド・ヘッダ名 (`client_id`, `redirect_uri`, `Authorization` …)
   - HTTP メソッド・HTTP ステータス名 (`POST`, `Bearer`, `401 Unauthorized` …)
 
-## 記事作成は必ずスキル経由で
+## 記事作成・レビューは必ずスキル経由で
 
-新しい記事を書くときは、必ず以下のスキルを使ってください。スキルには調査・構成・配置・検証までのワークフローが含まれています。
+記事の執筆・レビューは、必ず以下のスキルを使ってください。スキルには調査・構成・配置・検証までのワークフローが含まれています。
 
-- `/spec` → `.claude/skills/spec/SKILL.md`
-- `/article` → `.claude/skills/article/SKILL.md`
+| スキル | 用途 | SKILL.md |
+| --- | --- | --- |
+| `/spec` | Spec 記事の新規作成 | `.claude/skills/spec/SKILL.md` |
+| `/article` | Article の新規作成 | `.claude/skills/article/SKILL.md` |
+| `/review` | 既存記事のレビューと `reviewed` タグ付与 | `.claude/skills/review/SKILL.md` |
+
+> **`reviewed` タグについて**: `reviewed` タグは `/review` スキルのみが付与します。`/spec` や `/article` スキルはセルフレビューを実施しますが、このタグは付与しません。
 
 ## 内部リンクの書き方
 

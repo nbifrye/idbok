@@ -17,6 +17,7 @@ idbok の Specs セクション (`docs/specs/<slug>.md`) に、**1 仕様 = 1 �
   - 仕様名 / プロダクト名 (OAuth 2.0, OpenID Connect, WebAuthn …)
   - パラメータ・フィールド・ヘッダ名 (`client_id`, `redirect_uri`, `Authorization` …)
   - HTTP メソッド・HTTP ステータス (`POST`, `Bearer`, `401 Unauthorized` …)
+- **`reviewed` タグは付与しない**。一次情報との照合によるセルフレビューは実施するが、`reviewed` フロントマターの付与は `/review` スキル専用
 
 ## ワークフロー
 
