@@ -1,11 +1,4 @@
----
-name: work
-description: 記事ワークフローの自動エントリーポイント。SessionStart フックが出力した NEXT_WORK_ACTION を読み取り、未レビュー記事があればレビュー、なければ新規執筆を行う。完了後に自己改善フェーズを実行してプロジェクトを継続的に成長させる。Claude Code on Web のスケジュールタスクとして実行する。1回の実行でレビュー1件または執筆1件のみ処理する。
----
-
 # /work — 記事ワークフローのエントリーポイント
-
-SessionStart フックがセッション開始時に出力した `NEXT_WORK_ACTION` を読み取り、次のアクションを自動決定して実行する。完了後に自己改善フェーズを実行する。
 
 **1回の実行で行うこと: レビュー1件 または 執筆1件、その後自己改善1件**
 
@@ -37,8 +30,6 @@ bash scripts/check-unreviewed.sh
 - `NEXT_WORK_ACTION=review:<path>` → Step 2 へ (`<path>` がレビュー対象)
 - `NEXT_WORK_ACTION=write` → Step 3 へ
 
-> SessionStart フックも同じスクリプトを実行して heads-up を表示するが、`/work` の実行判断はこの再実行結果にのみ基づく。同一セッションで `/work` が複数回呼ばれた場合でも常に最新状態で動作するためである。
->
 > 万一スクリプトが存在しない/実行できない場合は、Glob と Read で `docs/specs/*.md` と `docs/articles/*.md` を直接スキャンして未レビュー記事を探す (frontmatter がない、または frontmatter に `reviewed` タグが含まれていないファイル)。`index.md` は除外する。
 
 ### Step 2. [未レビューあり] レビューを実行する

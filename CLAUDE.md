@@ -69,8 +69,6 @@ tags:
 # 記事タイトル
 ```
 
-`sidebar.mts` の `extractTitle()` はフロントマターブロックを自動スキップするため、サイドバーやビルドへの影響はありません。
-
 ## ファイル名と slug 規約
 
 小文字ケバブケース (`a-z`, `0-9`, `-`, `_`) を使います。
@@ -96,14 +94,7 @@ tags:
 
 ## サイドバーは自動生成される
 
-`docs/.vitepress/sidebar.mts` の `buildSidebar()` が、`docs/specs/` と `docs/articles/` の md ファイルを走査し、各ファイルの 1 つ目の H1 を読んでサイドバーを構築します。
-
-**記事を追加するときに `config.mts` を編集する必要はありません。**
-
-- **Specs**: ファイル名 (slug) 昇順、数値順 (例: RFC6749 → RFC6750 → RFC7636)
-- **Articles**: ファイル名降順 (日付プレフィックスにより新しい記事が上)
-
-`index.md` はサイドバーから除外されます。
+`docs/.vitepress/sidebar.mts` の `buildSidebar()` が `docs/specs/` と `docs/articles/` を走査して H1 からサイドバーを構築します。**記事を追加するときに `config.mts` を編集する必要はありません。**
 
 ## 言語ポリシー
 
@@ -180,8 +171,6 @@ npm run docs:preview # ビルド結果のプレビュー
 npm run fmt          # docs/ 配下をフォーマット
 npm run fmt:check    # 差分があれば non-zero で終了 (検証用)
 ```
-
-手動でファイルを編集した後は、コミット前に `npm run fmt` を実行してフォーマットを整えてください。
 
 ## デプロイ
 

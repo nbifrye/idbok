@@ -1,13 +1,4 @@
----
-name: spec
-description: Use this skill to write a new Spec article for the idbok Digital Identity Body of Knowledge. A Spec article covers exactly one technical specification (e.g., an IETF RFC, OpenID Foundation spec, W3C Recommendation, or FIDO specification). Invoke when the user asks to add, draft, write, or document a specification under docs/specs/.
----
-
 # /spec — Spec 記事を書く
-
-idbok の Specs セクション (`docs/specs/<slug>.md`) に、**1 仕様 = 1 記事** の形式で技術仕様解説を追加するためのワークフロー。
-
-対象は RFC / OpenID 仕様 / W3C 勧告 / FIDO 仕様 などの、公式の Spec ドキュメントそのものです。横断的なトピックや時事ニュースは `/article` スキルを使ってください。
 
 ## 重要な規約
 
@@ -46,11 +37,7 @@ TodoWrite でタスクを管理しながら順に進めてください。
 - 小文字ケバブケース (`a-z`, `0-9`, `-`, `_`)
 - RFC は番号 (`rfc6749`)、補助識別子を付ける場合は `rfc7636-pkce`
 - バージョン付き仕様は `_` を使う (`oidc-core-1_0`, `fapi-2_0-security-profile`)
-- 例:
-  - `rfc6749.md`
-  - `rfc7636-pkce.md`
-  - `oidc-core-1_0.md`
-  - `webauthn-l3.md`
+- 例: `rfc6749.md`, `oidc-core-1_0.md`, `webauthn-l3.md`
 - 配置先: `docs/specs/<slug>.md`
 
 サイドバーは slug を数値順に昇順ソートする (`rfc6749` → `rfc6750` → ...)。明示的なソートキーは不要。

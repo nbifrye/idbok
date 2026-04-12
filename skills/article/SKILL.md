@@ -1,13 +1,4 @@
----
-name: article
-description: Use this skill to write a new Article for the idbok Digital Identity Body of Knowledge. Articles cover individual topics, explainers, or time-sensitive news in the digital identity space (as opposed to Spec articles, which document a single technical specification). Invoke when the user asks to add, draft, or write a topic explainer, news recap, comparison, or opinion piece under docs/articles/.
----
-
 # /article — Article を書く
-
-idbok の Articles セクション (`docs/articles/<YYYY-MM-DD>-<slug>.md`) に、個別トピックの解説や時事ニュース、比較・考察を追加するためのワークフロー。
-
-対象は「1 つの公式仕様そのもの」ではなく、トピック横断、製品・実装の動向、業界ニュース、設計判断の考察などです。単一の RFC や仕様を記事にする場合は `/spec` スキルを使ってください。
 
 ## 重要な規約
 
@@ -48,11 +39,7 @@ TodoWrite でタスクを管理しながら順に進めてください。
 
 - 日付は公開日 (通常は今日の日付)
 - slug は小文字ケバブケース、トピック中心の名前
-- 例:
-  - `2026-04-10-what-is-passkey.md`
-  - `2026-04-10-oauth-2_1-overview.md`
-  - `2026-04-10-eidas-2-wallet-update.md`
-  - `2026-04-10-fedcm-vs-webauthn.md`
+- 例: `2026-04-10-what-is-passkey.md`, `2026-04-10-eidas-2-wallet-update.md`, `2026-04-10-fedcm-vs-webauthn.md`
 - 配置先: `docs/articles/<YYYY-MM-DD>-<slug>.md`
 
 同じ日に複数記事を書く場合は slug で区別する。

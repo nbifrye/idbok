@@ -1,13 +1,4 @@
----
-name: review
-description: Use this skill to review an existing Spec or Article in the idbok Digital Identity Body of Knowledge. Verifies factual accuracy against primary sources and, upon successful completion, marks the article with a "reviewed" tag in frontmatter. This is the ONLY skill that sets the reviewed tag — /spec and /article do not add it.
----
-
 # /review — 記事をレビューする
-
-idbok の Spec 記事または Article 記事を、**一次情報との照合**をもとに丁寧かつ正確にレビューするワークフロー。
-
-レビューが完了し記事の内容が一次情報と整合していることを確認できたら、記事ファイルに `reviewed` タグをフロントマターとして付与します。
 
 > **重要**: `reviewed` タグを付与できるのは `/review` スキルのみです。`/spec` と `/article` スキルはセルフレビューを実施しますが、このタグは付与しません。
 
