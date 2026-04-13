@@ -65,8 +65,14 @@ done
 作業完了後、変更をコミットして現在のブランチにプッシュする。**mainブランチであっても直接プッシュする。**
 
 ```bash
-git add -A
+# 記事の変更をコミット
+git add docs/specs/ docs/articles/
 git commit -m "適切なコミットメッセージ"
+
+# 自己改善の変更がある場合は別コミット
+git add CLAUDE.md claude/ docs/.vitepress/config.mts docs/index.md
+git commit -m "自己改善: 改善内容の要約" || true
+
 git push -u origin $(git branch --show-current)
 ```
 

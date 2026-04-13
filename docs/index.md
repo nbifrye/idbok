@@ -13,10 +13,10 @@ hero:
       text: 記事
       link: /articles/
 features:
-  - title: Specs
+  - title: 仕様解説
     details: RFC等の技術仕様を一つずつ丁寧に解説します
     link: /specs/
-  - title: Articles
+  - title: 記事
     details: デジタルアイデンティティに関するトピック記事・ニュースを扱います
     link: /articles/
 ---

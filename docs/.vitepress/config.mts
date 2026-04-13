@@ -32,6 +32,7 @@ function generateArticlesSidebar() {
 
   return files
     .sort()
+    .reverse()
     .map((f) => {
       const content = fs.readFileSync(path.join(dir, f), "utf-8");
       const title = extractTitle(content) || f.replace(".md", "");
@@ -44,11 +45,18 @@ export default withMermaid({
   title: "idbok",
   description: "Digital Identity Body of Knowledge",
   base: "/",
+  lastUpdated: true,
+  head: [
+    ["meta", { name: "description", content: "デジタルアイデンティティに関する技術知識体系" }],
+  ],
   themeConfig: {
+    lastUpdated: {
+      text: "最終更新",
+    },
     nav: [
-      { text: "Home", link: "/" },
-      { text: "Specs", link: "/specs/" },
-      { text: "Articles", link: "/articles/" },
+      { text: "ホーム", link: "/" },
+      { text: "仕様解説", link: "/specs/" },
+      { text: "記事", link: "/articles/" },
     ],
     sidebar: {
       "/specs/": [{ text: "仕様解説", items: generateSpecsSidebar() }],
@@ -56,6 +64,16 @@ export default withMermaid({
     },
     search: {
       provider: "local",
+      options: {
+        translations: {
+          button: { buttonText: "検索", buttonAriaLabel: "検索" },
+          modal: {
+            noResultsText: "該当する結果がありません",
+            resetButtonTitle: "検索をリセット",
+            footer: { selectText: "選択", navigateText: "移動", closeText: "閉じる" },
+          },
+        },
+      },
     },
     socialLinks: [{ icon: "github", link: "https://github.com/nbifrye/idbok" }],
   },
