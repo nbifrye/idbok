@@ -1,11 +1,16 @@
 **
 !**/
 
+!/.claude/skills/**/*.md
+!/.claude/settings.json
 !/.github/workflows/deploy.yml
+!/claude/hooks/**/*.sh
+!/claude/skills/**/*.md
 !/docs/.vitepress/config.mts
 !/docs/public/**
 !/docs/**/*.md
 !/.gitignore
+!/CLAUDE.md
 !/package-lock.json
 !/package.json
 !/README.md

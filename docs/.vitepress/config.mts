@@ -6,6 +6,11 @@ export default defineConfig({
   description: "idbok documentation site",
   base: "/",
   themeConfig: {
+    nav: [
+      { text: "Home", link: "/" },
+      { text: "Articles", link: "/articles/" },
+      { text: "Specs", link: "/specs/" },
+    ],
     search: {
       provider: "local",
     },
