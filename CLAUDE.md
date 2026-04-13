@@ -1,9 +1,5 @@
 # CLAUDE.md
 
-# currentDate
-
-Today's date is 2026-04-13.
-
 # idbok - Digital Identity Body of Knowledge
 
 デジタルアイデンティティに関する技術知識体系サイト。VitePressで構築し、GitHub Pagesでホスティング。
