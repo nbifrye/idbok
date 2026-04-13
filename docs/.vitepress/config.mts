@@ -6,6 +6,9 @@ export default defineConfig({
   description: "idbok documentation site",
   base: "/",
   themeConfig: {
+    search: {
+      provider: "local",
+    },
     socialLinks: [{ icon: "github", link: "https://github.com/nbifrye/idbok" }],
   },
 });
