@@ -3,7 +3,7 @@
 
 !/.claude/skills/**/*.md
 !/.claude/settings.json
-!/.github/workflows/deploy.yml
+!/.github/workflows/*.yml
 !/claude/hooks/**/*.sh
 !/claude/skills/**/*.md
 !/docs/.vitepress/config.mts

@@ -67,6 +67,12 @@ reviewed: true
 - 一次情報（RFC原文、公式仕様書等）に基づく正確な記述を心がける
 - 記事執筆後はoxfmtでフォーマット
 
+## フック
+
+- `claude/hooks/session-start.sh` がセッション開始時に実行される
+- `STATUS: ALL_REVIEWED` または `STATUS: UNREVIEWED_EXISTS` を出力
+- `/work` スキルはこの出力を参照してアクション（レビュー or 執筆）を決定する
+
 ## ディレクトリ構成
 
 - `.claude/` - Claude Code設定（最小限）。スキルファイルは `claude/` への参照のみ
