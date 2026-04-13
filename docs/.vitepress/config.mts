@@ -1,0 +1,11 @@
+import { defineConfig } from "vitepress";
+
+export default defineConfig({
+  lang: "ja",
+  title: "idbok",
+  description: "idbok documentation site",
+  base: "/",
+  themeConfig: {
+    socialLinks: [{ icon: "github", link: "https://github.com/nbifrye/idbok" }],
+  },
+});
