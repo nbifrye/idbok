@@ -62,9 +62,12 @@ done
 
 ### 4. 作業のコミットとプッシュ
 
-作業完了後、変更をコミットして現在のブランチにプッシュする。**mainブランチであっても直接プッシュする。**
+作業完了後、変更をコミットして **常に `main` ブランチにプッシュする。**
 
 ```bash
+# mainブランチに切り替え（既にmainなら何もしない）
+git checkout main
+
 # 記事の変更をコミット
 git add docs/specs/ docs/articles/
 git commit -m "適切なコミットメッセージ"
@@ -73,7 +76,7 @@ git commit -m "適切なコミットメッセージ"
 git add CLAUDE.md claude/ docs/.vitepress/config.mts docs/index.md
 git commit -m "自己改善: 改善内容の要約" || true
 
-git push -u origin $(git branch --show-current)
+git push -u origin main
 ```
 
 ### 5. 自己改善
@@ -92,5 +95,5 @@ git push -u origin $(git branch --show-current)
 
 - **一度に一つ**: 一回の実行でレビュー1件、または執筆1件のみ。複数記事を同時処理しない
 - **レビュー優先**: 未レビュー記事がある場合はレビューを優先する
-- **直接プッシュ**: PRは作成しない。現在のブランチに直接プッシュする
+- **直接プッシュ**: PRは作成しない。常に `main` ブランチに直接プッシュする
 - **reviewed タグ**: `/work` スキル自身は `reviewed: true` を設定しない。必ず `/review` スキルを経由する
