@@ -1,5 +1,6 @@
 ---
 title: "OpenID Connect Core 1.0"
+reviewed: true
 ---
 
 # OpenID Connect Core 1.0
@@ -177,23 +178,23 @@ Hybrid Flow や Implicit Flow では、IDトークンに以下のハッシュク
 
 OpenID Connect では OAuth 2.0 のパラメータに加えて以下を定義する。
 
-| パラメータ      | 必須/任意 | 説明                                                                                   |
-| --------------- | --------- | -------------------------------------------------------------------------------------- |
-| `scope`         | 必須      | `openid` を含む必要がある                                                              |
-| `response_type` | 必須      | 使用するフローを指定                                                                   |
-| `client_id`     | 必須      | RPのクライアントID                                                                     |
-| `redirect_uri`  | 必須      | レスポンスの送信先URI                                                                  |
-| `nonce`         | 推奨      | リプレイ攻撃防止用のランダム値（Implicit Flowでは必須）                                |
-| `display`       | 任意      | 認証・同意UIの表示方法（`page`, `popup`, `touch`, `wap`）                              |
-| `prompt`        | 任意      | OPの動作指示（`none`, `login`, `consent`, `select_account`）                           |
-| `max_age`       | 任意      | 許容される最大認証経過時間（秒）。この秒数以上前に認証されていた場合は再認証を要求する |
-| `ui_locales`    | 任意      | UIに使用する言語の優先順位リスト（BCP 47形式）                                         |
-| `id_token_hint` | 任意      | 以前に発行されたIDトークン（OPへのヒントとして使用）                                   |
-| `login_hint`    | 任意      | エンドユーザーのログイン識別子のヒント（メールアドレス等）                             |
-| `acr_values`    | 任意      | 要求する認証コンテキストクラス参照値のリスト                                           |
-| `claims`        | 任意      | 特定のクレームをリクエストするためのJSONオブジェクト                                   |
-| `request`       | 任意      | リクエストパラメータを含むJWT（Request Object）                                        |
-| `request_uri`   | 任意      | Request ObjectのURI                                                                    |
+| パラメータ      | 必須/任意 | 説明                                                                                                                   |
+| --------------- | --------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `scope`         | 必須      | `openid` を含む必要がある                                                                                              |
+| `response_type` | 必須      | 使用するフローを指定                                                                                                   |
+| `client_id`     | 必須      | RPのクライアントID                                                                                                     |
+| `redirect_uri`  | 必須      | レスポンスの送信先URI                                                                                                  |
+| `nonce`         | 推奨      | リプレイ攻撃防止用のランダム値（Implicit Flow、および Hybrid Flow の `code id_token`・`code id_token token` では必須） |
+| `display`       | 任意      | 認証・同意UIの表示方法（`page`, `popup`, `touch`, `wap`）                                                              |
+| `prompt`        | 任意      | OPの動作指示（`none`, `login`, `consent`, `select_account`）                                                           |
+| `max_age`       | 任意      | 許容される最大認証経過時間（秒）。この秒数以上前に認証されていた場合は再認証を要求する                                 |
+| `ui_locales`    | 任意      | UIに使用する言語の優先順位リスト（BCP 47形式）                                                                         |
+| `id_token_hint` | 任意      | 以前に発行されたIDトークン（OPへのヒントとして使用）                                                                   |
+| `login_hint`    | 任意      | エンドユーザーのログイン識別子のヒント（メールアドレス等）                                                             |
+| `acr_values`    | 任意      | 要求する認証コンテキストクラス参照値のリスト                                                                           |
+| `claims`        | 任意      | 特定のクレームをリクエストするためのJSONオブジェクト                                                                   |
+| `request`       | 任意      | リクエストパラメータを含むJWT（Request Object）                                                                        |
+| `request_uri`   | 任意      | Request ObjectのURI                                                                                                    |
 
 ### `prompt` パラメータ
 
