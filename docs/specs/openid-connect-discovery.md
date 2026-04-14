@@ -1,5 +1,6 @@
 ---
 title: "OpenID Connect Discovery 1.0"
+reviewed: true
 ---
 
 # OpenID Connect Discovery 1.0
@@ -127,7 +128,6 @@ OP は JSON 形式のメタデータを返す。
 | `registration_endpoint` | Dynamic Client Registration エンドポイントのURL |
 | `scopes_supported`      | サポートするOAuth 2.0スコープの配列             |
 | `claims_supported`      | 提供可能なクレームの配列                        |
-| `service_documentation` | 開発者向けドキュメントのURL                     |
 
 ### 主な任意フィールド
 
@@ -144,6 +144,7 @@ OP は JSON 形式のメタデータを返す。
 | `request_parameter_supported`                 | `request` パラメータ（JAR）のサポート有無                          |
 | `request_uri_parameter_supported`             | `request_uri` パラメータのサポート有無                             |
 | `require_request_uri_registration`            | `request_uri` の事前登録要否                                       |
+| `service_documentation`                       | 開発者向けドキュメントのURL                                        |
 | `op_policy_uri`                               | OPのプライバシーポリシーURL                                        |
 | `op_tos_uri`                                  | OPの利用規約URL                                                    |
 
