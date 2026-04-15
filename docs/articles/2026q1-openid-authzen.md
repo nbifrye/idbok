@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation AuthZEN WG 活動レポート (2026 Q1)"
+reviewed: true
 ---
 
 # OpenID Foundation AuthZEN WG 活動レポート (2026 Q1)
@@ -9,7 +10,7 @@ title: "OpenID Foundation AuthZEN WG 活動レポート (2026 Q1)"
 
 ## 概要
 
-AuthZEN Working Group（WG）は、Policy Decision Point（PDP）と Policy Enforcement Point（PEP）間の認可 API を標準化することを目的とした OpenID Foundation の Working Group です。共同議長は Atul Tulshibagwale、Alex Olivier、David Brossard の 3 名が務めています。
+AuthZEN Working Group（WG）は、Policy Decision Point（PDP）と Policy Enforcement Point（PEP）間の認可 API を標準化することを目的とした OpenID Foundation の Working Group です。共同議長は Atul Tulshibagwale（SGNL）、Alex Olivier（Cerbos）、David Brossard（Axiomatics）、Alex Babeanu（IndyKite）、Julio Auto De Medeiros（Bloomberg）の 5 名が務めています。
 
 2026 年 Q1 は AuthZEN WG にとって歴史的な四半期となりました。長年の成果である **Authorization API 1.0 の Final Specification が正式承認**され、さらに Gartner IAM Summit ロンドンでの存在感が高まるなど、標準としての成熟と市場への浸透が一気に加速した時期です。
 
