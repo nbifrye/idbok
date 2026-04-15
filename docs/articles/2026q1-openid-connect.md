@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation AB/Connect WG 活動レポート (2026 Q1)"
+reviewed: true
 ---
 
 # OpenID Foundation AB/Connect WG 活動レポート (2026 Q1)
@@ -39,7 +40,7 @@ OpenID Federation 1.0 承認と同日（2月17日）、Connect WG は **OpenID F
 - **レビュー期間:** 2026年2月17日〜4月18日（60日間）
 - **投票予定:** 2026年4月21日〜5月5日（14日間）
 
-OpenID Federation 1.1 は 1.0 に続く進化版であり、拡張仕様（OpenID Federation for Wallet Architectures 1.0、OpenID Federation Extended Subordinate Listing 1.0 等）とともに審査が進められている。
+OpenID Federation 1.1 は 1.0 に続く進化版であり、関連仕様（OpenID Federation for OpenID Connect 1.1）とともに審査が進められている。
 
 ### OpenID Connect Relying Party Metadata Choices 1.0 最終仕様承認（3月25日頃）
 
@@ -47,7 +48,7 @@ Connect WG が推薦した **OpenID Connect Relying Party Metadata Choices 1.0**
 
 **内容:** OpenID Connect Dynamic Client Registration 1.0 を拡張し、RP（Relying Party）がメタデータパラメータについて「単一の値」ではなく「対応値の集合」を表明できるようにする仕様。OpenID Federation の自動登録シナリオでは OpenID Provider からの登録レスポンスがないため、RP が事前にサポート値を申告することで OP が適切な選択を行えるようにすることが目的。
 
-- **著者:** Roland Hedberg、Stefan Santesson、Filip Skokan（共著者）
+- **著者:** Michael B. Jones（Self-Issued Consulting）、Roland Hedberg（independent）、John Bradley（Yubico）、Filip Skokan（Okta）
 - **レビュー期間:** 2026年1月9日〜3月10日（60日間）
 - **投票期間:** 2026年3月11日〜25日（14日間）
 - **仕様ドラフト:** レビュー期間中に指摘された文言の問題を修正した版（draft -05）が3月12日に公開された
@@ -79,7 +80,6 @@ OpenID Federation for Wallet Architectures 1.0（デジタルID ウォレット�
 - 参加実装数: 9実装
 - 参加者数: 12名
 - 参加国: クロアチア、フィンランド、ギリシャ、イタリア、オランダ、ポーランド、セルビア、スウェーデン、米国（9か国）
-- TIIME 全体の OpenID Federation デーには約90名のプラクティショナーが参加
 
 各国の実装がリアルタイムで相互接続のテストを行い、テスト用フェデレーションは対面セッション終了後も稼働を継続した。OpenID Foundation 理事の Mike Jones は「アイデンティティコミュニティが集まり、TIIME 2026 で OpenID Federation 専用デーを組織した」とコメントしている。
 
