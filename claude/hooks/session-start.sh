@@ -27,10 +27,10 @@ else
   done
 fi
 
-# --- OpenID Foundation 四半期レポートのカバレッジ検出 ---
+# --- OpenID Foundation 月次レポートのカバレッジ検出 ---
 #
 # WG/CG レジストリのミラー。`claude/skills/oidf/SKILL.md` の表が真の正典。
-# 形式: "<wg-id>:<since-year>:<since-quarter>"
+# 形式: "<wg-id>:<since-year>:<since-month>"
 # 変更時は SKILL.md と本配列を同じコミットで同期更新すること。
 oidf_registry=(
   "authzen:2024:1"
@@ -46,46 +46,46 @@ oidf_registry=(
   "dde:2024:1"
 )
 
-# 現在進行中の四半期を算出
+# 現在進行中の月を算出
 current_year=$(date +%Y)
 current_month=$(date +%-m)
-current_q=$(( (current_month - 1) / 3 + 1 ))
 
-# 直近完了四半期 = 現在進行中の一つ前
-if [ "$current_q" -eq 1 ]; then
+# 直近完了月 = 現在進行中の一つ前
+if [ "$current_month" -eq 1 ]; then
   latest_year=$(( current_year - 1 ))
-  latest_q=4
+  latest_month=12
 else
   latest_year=$current_year
-  latest_q=$(( current_q - 1 ))
+  latest_month=$(( current_month - 1 ))
 fi
 
-# 期待スロットを生成して、未カバーのものを (year, quarter, wg) でリストアップ
-# ソート順: year DESC, quarter DESC, wg ASC（新しい四半期から古い四半期、同四半期内は WG ID 昇順）
+# 期待スロットを生成して、未カバーのものを (year, month, wg) でリストアップ
+# ソート順: year DESC, month DESC, wg ASC（新しい月から古い月、同月内は WG ID 昇順）
 sorted_wgs=$(printf '%s\n' "${oidf_registry[@]}" | sort)
 missing_slots=()
 for y in $(seq "$latest_year" -1 2020); do
   if [ "$y" -eq "$latest_year" ]; then
-    q_start=$latest_q
+    m_start=$latest_month
   else
-    q_start=4
+    m_start=12
   fi
-  for q in $(seq "$q_start" -1 1); do
+  for m in $(seq "$m_start" -1 1); do
     while IFS= read -r entry; do
       wg=${entry%%:*}
       rest=${entry#*:}
       since_year=${rest%%:*}
-      since_q=${rest##*:}
-      # since 以降か判定: (y > since_year) OR (y == since_year AND q >= since_q)
+      since_month=${rest##*:}
+      # since 以降か判定: (y > since_year) OR (y == since_year AND m >= since_month)
       if [ "$y" -lt "$since_year" ]; then
         continue
       fi
-      if [ "$y" -eq "$since_year" ] && [ "$q" -lt "$since_q" ]; then
+      if [ "$y" -eq "$since_year" ] && [ "$m" -lt "$since_month" ]; then
         continue
       fi
-      file="$PROJECT_DIR/docs/articles/${y}q${q}-openid-${wg}.md"
+      mm=$(printf '%02d' "$m")
+      file="$PROJECT_DIR/docs/articles/${y}m${mm}-openid-${wg}.md"
       if [ ! -f "$file" ]; then
-        missing_slots+=("${y}q${q}:${wg}")
+        missing_slots+=("${y}-${mm}:${wg}")
       fi
     done <<< "$sorted_wgs"
   done
