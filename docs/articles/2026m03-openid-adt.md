@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation Australian Digital Trust CG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation Australian Digital Trust CG 活動レポート (2026年3月)
