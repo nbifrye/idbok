@@ -5,6 +5,7 @@ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-.}"
 
 echo "=== idbok Session Status ==="
 
+# --- 未レビュー記事の検出 ---
 unreviewed=()
 for f in "$PROJECT_DIR"/docs/specs/*.md "$PROJECT_DIR"/docs/articles/*.md; do
   [ -f "$f" ] || continue
@@ -24,4 +25,84 @@ else
   for f in "${unreviewed[@]}"; do
     echo "  - $f"
   done
+fi
+
+# --- OpenID Foundation 四半期レポートのカバレッジ検出 ---
+#
+# WG/CG レジストリのミラー。`claude/skills/oidf/SKILL.md` の表が真の正典。
+# 形式: "<wg-id>:<since-year>:<since-quarter>"
+# 変更時は SKILL.md と本配列を同じコミットで同期更新すること。
+oidf_registry=(
+  "authzen:2024:1"
+  "connect:2024:1"
+  "dcp:2024:1"
+  "ekyc-ida:2024:1"
+  "eap:2024:1"
+  "fapi:2024:1"
+  "igov:2024:1"
+  "modrna:2024:1"
+  "sharedsignals:2024:1"
+  "aiid:2024:1"
+  "dde:2024:1"
+)
+
+# 現在進行中の四半期を算出
+current_year=$(date +%Y)
+current_month=$(date +%-m)
+current_q=$(( (current_month - 1) / 3 + 1 ))
+
+# 直近完了四半期 = 現在進行中の一つ前
+if [ "$current_q" -eq 1 ]; then
+  latest_year=$(( current_year - 1 ))
+  latest_q=4
+else
+  latest_year=$current_year
+  latest_q=$(( current_q - 1 ))
+fi
+
+# 期待スロットを生成して、未カバーのものを (year, quarter, wg) でリストアップ
+# ソート順: year DESC, quarter DESC, wg ASC（新しい四半期から古い四半期、同四半期内は WG ID 昇順）
+sorted_wgs=$(printf '%s\n' "${oidf_registry[@]}" | sort)
+missing_slots=()
+for y in $(seq "$latest_year" -1 2020); do
+  if [ "$y" -eq "$latest_year" ]; then
+    q_start=$latest_q
+  else
+    q_start=4
+  fi
+  for q in $(seq "$q_start" -1 1); do
+    while IFS= read -r entry; do
+      wg=${entry%%:*}
+      rest=${entry#*:}
+      since_year=${rest%%:*}
+      since_q=${rest##*:}
+      # since 以降か判定: (y > since_year) OR (y == since_year AND q >= since_q)
+      if [ "$y" -lt "$since_year" ]; then
+        continue
+      fi
+      if [ "$y" -eq "$since_year" ] && [ "$q" -lt "$since_q" ]; then
+        continue
+      fi
+      file="$PROJECT_DIR/docs/articles/${y}q${q}-openid-${wg}.md"
+      if [ ! -f "$file" ]; then
+        missing_slots+=("${y}q${q}:${wg}")
+      fi
+    done <<< "$sorted_wgs"
+  done
+done
+
+missing_count=${#missing_slots[@]}
+if [ "$missing_count" -eq 0 ]; then
+  echo "OIDF_COVERAGE_MISSING: 0"
+else
+  head_n=10
+  if [ "$missing_count" -lt "$head_n" ]; then
+    head_n=$missing_count
+  fi
+  preview=""
+  for ((i=0; i<head_n; i++)); do
+    preview="${preview}${missing_slots[$i]} "
+  done
+  preview=${preview% }
+  echo "OIDF_COVERAGE_MISSING: ${missing_count} slots (newest first, showing ${head_n}): ${preview}"
 fi

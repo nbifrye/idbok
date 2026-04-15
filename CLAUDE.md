@@ -14,9 +14,26 @@
 
 ### Article（記事）
 
-- 個別トピックの記事やID領域の時事的なニュース
+`docs/articles/` 配下の記事は以下の二系統に分かれる。いずれもフロントマターは `title` のみで統一される。
+
+#### 自由トピック記事
+
+- 個別トピックの解説やID領域の時事的なニュース
 - ファイル: `docs/articles/YYYY-MM-DD-topic-name.md`（例: `2026-04-13-passkeys-adoption.md`）
-- サイドバー: 執筆日順にソート（ファイル名の日付接頭辞による）
+- 執筆: `/article` スキル
+- ファイル名先頭は **執筆日**
+
+#### OpenID Foundation 四半期レポート
+
+- OpenID Foundation の各 WG/CG の活動を四半期ごとにまとめた記事
+- ファイル: `docs/articles/<year>q<n>-openid-<wg-id>.md`（例: `2025q3-openid-fapi.md`）
+- 執筆: `/oidf` スキル（過去四半期の遡及執筆が主目的）
+- ファイル名先頭は **対象四半期**（執筆日ではない）。遡及執筆でもサイドバーの並びを安定させるため
+- 執筆日は本文冒頭に明記する
+
+#### サイドバー表示
+
+両系統とも `docs/articles/` に同居し、ファイル名の文字列降順で並ぶ。年単位では新しい順、同一年内では `q` (0x71) > `-` (0x2D) のため四半期レポートが先、トピック記事が後の順で表示される。
 
 ## フロントマター規約
 
@@ -47,8 +64,10 @@ reviewed: true
 
 - `/work` スキルが単一のエントリーポイント
 - 一度の実行で一記事のレビュー、もしくは一記事の執筆を実施
-- 未レビュー記事がある場合は `/review` を優先
-- 全記事レビュー済みの場合は新規テーマを選定して `/spec` または `/article` を実行
+- 優先順位:
+  1. 未レビュー記事があれば `/review`
+  2. 未カバーの OIDF 四半期スロットがあれば `/oidf <wg> <YYYY> <Qn>`（過去四半期の遡及執筆を最優先）
+  3. それ以外は新規テーマを選定して `/spec` または `/article`
 - 作業後は常に `main` ブランチに直接push
 - 作業完了後に自己改善を実施
 
@@ -76,8 +95,10 @@ reviewed: true
 ## フック
 
 - `claude/hooks/session-start.sh` がセッション開始時に実行される
-- `STATUS: ALL_REVIEWED` または `STATUS: UNREVIEWED_EXISTS` を出力
-- `/work` スキルはこの出力を参照してアクション（レビュー or 執筆）を決定する
+- 出力:
+  - `STATUS: ALL_REVIEWED` または `STATUS: UNREVIEWED_EXISTS`（および未レビュー記事一覧）
+  - `OIDF_COVERAGE_MISSING: <count> slots ...`（未カバーの OIDF 四半期スロットを新しい順に表示）
+- `/work` スキルはこの出力を参照してアクション（レビュー / OIDF 四半期執筆 / 自由トピック執筆）を決定する
 
 ## ディレクトリ構成
 
