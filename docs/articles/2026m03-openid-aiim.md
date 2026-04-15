@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation AI Identity Management CG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation AI Identity Management CG 活動レポート (2026年3月)
