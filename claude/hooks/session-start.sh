@@ -33,17 +33,20 @@ fi
 # 形式: "<wg-id>:<since-year>:<since-month>"
 # 変更時は SKILL.md と本配列を同じコミットで同期更新すること。
 oidf_registry=(
+  "adt:2024:1"
+  "aiim:2025:4"
   "authzen:2024:1"
   "connect:2024:1"
+  "dade:2024:9"
   "dcp:2024:1"
   "ekyc-ida:2024:1"
-  "eap:2024:1"
+  "escg:2024:1"
   "fapi:2024:1"
   "igov:2024:1"
+  "ipsie:2024:10"
   "modrna:2024:1"
+  "rande:2024:1"
   "sharedsignals:2024:1"
-  "aiid:2024:1"
-  "dde:2024:1"
 )
 
 # 現在進行中の月を算出

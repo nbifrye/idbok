@@ -23,19 +23,24 @@ OpenID Foundation の各 Working Group (WG) / Community Group (CG) の活動を 
 
 | ID | 名称 | WG/CG ページ | GitHub | メーリングリスト (listinfo) | アーカイブ (pipermail) | 議事録所在 | since |
 |---|---|---|---|---|---|---|---|
+| `adt` | Australian Digital Trust CG | https://openid.net/cg/australian-digital-trust-community-group/ | https://github.com/openid/cg-australian-digital-trust | https://lists.openid.net/mailman/listinfo/openid-au-digital-trust | https://lists.openid.net/pipermail/openid-au-digital-trust/ | GitHub wiki | 2024-01 |
+| `aiim` | AI Identity Management CG (AIIM) | https://openid.net/cg/artificial-intelligence-identity-management-community-group/ | https://github.com/openid/cg-ai-identity-management | https://lists.openid.net/mailman/listinfo/openid-aiim | https://lists.openid.net/pipermail/openid-aiim/ | GitHub issues（議事録は non-public） | 2025-04 |
 | `authzen` | AuthZEN WG | https://openid.net/wg/authzen/ | https://github.com/openid/authzen | https://lists.openid.net/mailman/listinfo/openid-specs-authzen | https://lists.openid.net/pipermail/openid-specs-authzen/ | https://hackmd.io/@oidf-wg-authzen | 2024-01 |
 | `connect` | AB/Connect WG | https://openid.net/wg/connect/ | https://github.com/openid/connect | https://lists.openid.net/mailman/listinfo/openid-specs-ab | https://lists.openid.net/pipermail/openid-specs-ab/ | non-public（ML 内のみ） | 2024-01 |
+| `dade` | Death and the Digital Estate CG (DADE) | https://openid.net/cg/death-and-the-digital-estate/ | https://github.com/openid/death-and-the-digital-estate | https://lists.openid.net/mailman/listinfo/openid-digital-directives | https://lists.openid.net/pipermail/openid-digital-directives/ | HackMD https://hackmd.io/uJgxxlm-QcS8SD6r8kXTLw + GitHub wiki https://github.com/openid/death-and-the-digital-estate/wiki/Resources | 2024-09 |
 | `dcp` | Digital Credentials Protocols WG | https://openid.net/wg/digital-credentials-protocols/ | https://github.com/openid (OpenID4VC*) | https://lists.openid.net/mailman/listinfo/openid-specs-digital-credentials-protocols | https://lists.openid.net/pipermail/openid-specs-digital-credentials-protocols/ | ML アーカイブ内に投稿 | 2024-01 |
 | `ekyc-ida` | eKYC & Identity Assurance WG | https://openid.net/wg/ekyc-ida/ | https://github.com/openid/ekyc-ida | https://lists.openid.net/mailman/listinfo/openid-specs-ekyc-ida | https://lists.openid.net/pipermail/openid-specs-ekyc-ida/ | https://bitbucket.org/openid/ekyc-ida/wiki/browse/ | 2024-01 |
-| `eap` | Enhanced Authentication Profile WG | https://openid.net/wg/eap/ | https://github.com/openid/eap | non-public（archived WG） | non-public | non-public | 2024-01 |
+| `escg` | Ecosystem Support CG | https://openid.net/cg/ecosystem-support-community-group/ | https://github.com/openid/cg-ecosystem-support | https://lists.openid.net/mailman/listinfo/openid-ecosystem-support | https://lists.openid.net/pipermail/openid-ecosystem-support/ | non-public | 2024-01 |
 | `fapi` | FAPI WG | https://openid.net/wg/fapi/ | https://github.com/openid/fapi | https://lists.openid.net/mailman/listinfo/openid-specs-fapi | https://lists.openid.net/pipermail/openid-specs-fapi/ | https://bitbucket.org/openid/fapi/wiki/browse/ (FAPI_Meeting_Notes_YYYY) | 2024-01 |
 | `igov` | iGov WG | https://openid.net/wg/igov/ | https://github.com/openid/iGov | https://lists.openid.net/mailman/listinfo/openid-specs-igov | https://lists.openid.net/pipermail/openid-specs-igov/ | non-public | 2024-01 |
-| `modrna` | MODRNA WG | https://openid.net/wg/mobile-profile/ | https://github.com/openid/MODRNA | https://lists.openid.net/mailman/listinfo/openid-specs-mobile-profile | https://lists.openid.net/pipermail/openid-specs-mobile-profile/ | non-public | 2024-01 |
+| `ipsie` | IPSIE WG | https://openid.net/wg/ipsie/ | https://github.com/openid/ipsie | https://lists.openid.net/mailman/listinfo/openid-specs-ipsie | https://lists.openid.net/pipermail/openid-specs-ipsie/ | HackMD https://hackmd.io/zbL4VSdhTcWnxlSwl43qVA | 2024-10 |
+| `modrna` | MODRNA WG | https://openid.net/wg/modrna/ | https://github.com/openid/MODRNA | https://lists.openid.net/mailman/listinfo/openid-specs-mobile-profile | https://lists.openid.net/pipermail/openid-specs-mobile-profile/ | non-public | 2024-01 |
+| `rande` | R&E WG | https://openid.net/wg/rande/ | （公開リポジトリは確認できず） | https://lists.openid.net/mailman/listinfo/openid-specs-rande | https://lists.openid.net/pipermail/openid-specs-rande/ | non-public | 2024-01 |
 | `sharedsignals` | Shared Signals WG | https://openid.net/wg/sharedsignals/ | https://github.com/openid/sharedsignals | https://lists.openid.net/mailman/listinfo/openid-specs-risc | https://lists.openid.net/pipermail/openid-specs-risc/ | https://github.com/openid/sharedsignals/wiki/Meetings | 2024-01 |
-| `aiid` | AI Identity Management CG (AIIM) | https://openid.net/cg/artificial-intelligence-identity-management-community-group/ | （該当リポジトリは個別調査） | https://lists.openid.net/mailman/listinfo/openid-aiim | https://lists.openid.net/pipermail/openid-aiim/ | non-public | 2024-01 |
-| `dde` | Death and the Digital Estate CG (DADE) | https://openid.net/cg/death-and-the-digital-estate/ | https://github.com/openid/death-and-the-digital-estate | https://lists.openid.net/mailman/listinfo/openid-digital-directives | https://lists.openid.net/pipermail/openid-digital-directives/ | https://github.com/openid/death-and-the-digital-estate/wiki/Resources | 2024-01 |
 
-「議事録所在」が `non-public` の WG/CG については、議事録が公開されていないため、メーリングリストと GitHub の議論掘り下げで補完する。
+「議事録所在」が `non-public` の WG/CG（Connect, iGov, MODRNA, R&E, AIIM, Ecosystem Support 等）については、議事録が公開されていないため、メーリングリストと GitHub の議論掘り下げで補完する。
+
+アーカイブ済みの WG（EAP, FastFed, HEART 等）は本レジストリには含めない。新規記事の対象となるのは現在アクティブな WG/CG のみ。
 
 ## 手順
 
@@ -63,7 +68,7 @@ WebSearch / WebFetch を使い、以下の順序で対象 WG/CG の対象月の�
    - 到達した合意・未解決のまま残った論点
 4. ノイズ（純粋な事務連絡、登録通知等）は除外
 
-**取得できなかった場合の代替:** ML が non-public な WG（EAP）または対象月にスレッドゼロの場合は、その旨を明示し、GitHub・議事録の掘り下げで補完。
+**取得できなかった場合の代替:** 対象月に ML スレッドゼロの場合は、その旨を明示し、GitHub・議事録の掘り下げで補完。
 
 #### 2-2. 議事録の掘り下げ（重点）
 
@@ -79,7 +84,7 @@ WebSearch / WebFetch を使い、以下の順序で対象 WG/CG の対象月の�
    - 重要な発言・問題提起
 3. **議事録抜粋は短い原文引用（`>` ブロック）または日本語要約に `(議事録 YYYY-MM-DD より)` と出典注記**
 
-**取得できなかった場合の代替:** 議事録 non-public な WG（Connect, iGov, MODRNA, AIIM 等）は、ML スレッドおよび GitHub PR/issue から議論内容を再構成し、その旨を明記。
+**取得できなかった場合の代替:** 議事録 non-public な WG（Connect, iGov, MODRNA, R&E, AIIM, Ecosystem Support 等）は、ML スレッドおよび GitHub PR/issue から議論内容を再構成し、その旨を明記。
 
 #### 2-3. GitHub 上の議論の掘り下げ（重点）
 
@@ -112,7 +117,7 @@ WebSearch / WebFetch を使い、以下の順序で対象 WG/CG の対象月の�
 - **対象月当時の視点で情報を再構成すること。後の月で起きた出来事は混入させない**
 - 「今後の予定」節は、対象月完了直後の視点で記述する
 - 読者にとって有益な場合に限り「補足: その後の動向」節を任意で末尾に追加してよい
-- 一次情報が乏しい WG/CG（MODRNA, iGov, EAP, eKYC-IDA 等が静かな月を持つことがある）は、ML・議事録・GitHub をすべて確認した上で「該当月に公開された記録は確認できなかった」と明示する
+- 一次情報が乏しい WG/CG（MODRNA, iGov, R&E, eKYC-IDA, Ecosystem Support, Australian Digital Trust 等が静かな月を持つことがある）は、ML・議事録・GitHub をすべて確認した上で「該当月に公開された記録は確認できなかった」と明示する
 
 ### 3. ファイル作成
 
@@ -205,7 +210,7 @@ title: "OpenID Foundation <WG/CG 名> WG/CG 活動レポート (YYYY年M月)"
 
 ## 活動が希薄な場合の最低ライン
 
-静かな WG（MODRNA / iGov / EAP / eKYC-IDA 等）で対象月に**実質的な公開活動ゼロ**の場合:
+静かな WG/CG（MODRNA / iGov / R&E / eKYC-IDA / Ecosystem Support / Australian Digital Trust 等）で対象月に**実質的な公開活動ゼロ**の場合:
 
 - §3〜§5 を統合した「該当月に公開記録は確認できなかった」の 1 節のみで完結可
 - ただし ML pipermail の対象月インデックス・議事録所在・GitHub の対象月 issues/PRs を**実際に確認した上で**「調査したが記録なし」と記述する（見ずに書かない）
