@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation Digital Credentials Protocols WG 活動レポート (2026 Q1)"
+reviewed: true
 ---
 
 # OpenID Foundation Digital Credentials Protocols WG 活動レポート (2026 Q1)
@@ -112,8 +113,6 @@ Q1 のインタロップイベントに関しては、確認できた公開情�
 - [Digital Credentials Protocols (DCP) Working Group – OpenID Foundation](https://openid.net/wg/digital-credentials-protocols/)
   - DCP WG の公式ページ。仕様一覧・憲章・リポジトリへのリンクを提供。
 - [Conformance Testing for OpenID for Verifiable Presentations – OpenID Foundation](https://openid.net/certification/conformance-testing-for-openid-for-verifiable-presentations/)
-  - OID4VP コンフォーマンステストの技術詳細（対応バージョン・テスト項目など）。
-- [How to Run Conformance Tests for OpenID for Verifiable Presentations – OpenID Foundation](https://openid.net/certification/conformance-testing-for-openid-for-verifiable-presentations/)
-  - テスト実行手順のガイド。
+  - OID4VP コンフォーマンステストの技術詳細（対応バージョン・テスト項目・実行手順など）。
 - [OpenID Foundation launching self-certification program for 3 specs in Feb 2026 – Biometric Update](https://www.biometricupdate.com/202512/openid-foundation-launching-self-certification-program-for-3-specs-in-feb-2026)
   - メディアによるプログラムローンチの報道。価格体系等の詳細を含む。
