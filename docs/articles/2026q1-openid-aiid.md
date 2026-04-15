@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation AI Identity Management CG 活動レポート (2026 Q1)"
+reviewed: true
 ---
 
 # OpenID Foundation AI Identity Management CG 活動レポート (2026 Q1)
@@ -13,7 +14,7 @@ title: "OpenID Foundation AI Identity Management CG 活動レポート (2026 Q1)
 
 Co-Chair は Atul Tulshibagwale（SGNL）と Jeff Lombardo（AWS）が務め、三つのサブグループ（Taxonomy、Use-cases、Threat Modelling）が隔週木曜日の定例コールを中心に活動している。
 
-2026 Q1 における最大のイベントは、**NIST の AI エージェントセキュリティに関する意見公募（NIST-2025-0035）への回答提出**（3 月 11 日）であった。2025 年 10 月に公開したホワイトペーパーの分析を具体的な政策提言に昇華させたこの提出は、AIIM CG が対外的なアドボカシー機能を担い始めたことを示している。
+2026 Q1 における最大のイベントは、**NIST の AI エージェントセキュリティに関する意見公募（NIST-2025-0035）への回答提出**（3 月 6 日）であった。2025 年 10 月に公開したホワイトペーパーの分析を具体的な政策提言に昇華させたこの提出は、AIIM CG が対外的なアドボカシー機能を担い始めたことを示している。
 
 ## 2. 公開された仕様・ドラフト改訂
 
@@ -27,7 +28,7 @@ AIIM CG として Q1 2026 に公開した仕様や公式ドラフトは確認で
 
 NIST は 2026 年 1 月 8 日付の Federal Register にて、AI エージェントのセキュリティに関する意見公募（Request for Information）を開始した。コメント締め切りは 2026 年 3 月 9 日。
 
-AIIM CG の **Threat Modelling サブグループ**はこれに応じ、2026 年 3 月 11 日に OIDF 名義で正式な回答文書を提出した（文書番号: NIST-2025-0035-0001）。回答の要旨は以下のとおり。
+AIIM CG の **Threat Modelling サブグループ**はこれに応じ、2026 年 3 月 6 日に OIDF 名義で正式な回答文書を提出した（文書番号: NIST-2025-0035-0001）。OIDF によるブログ記事での発表は 3 月 11 日。回答の要旨は以下のとおり。
 
 - **問題の本質は技術的障害ではなく信頼の失敗にある**: AI エージェントが自分自身をどのように証明するか、何の権限で行動しているか、問題発生時の説明責任をどこに帰属させるかが未解決。
 - **現状の問題点**: 多くの組織が手動管理されたアクセスリスト・署名なし資格情報・不明確な責任連鎖に頼っており、複数組織をまたぐ規模になると機能しない。
@@ -48,7 +49,7 @@ Taxonomy・Use-cases・Threat Modelling の 3 サブグループが Q1 2026 を�
 
 ### OIDF ハイブリッドワークショップの予告
 
-2026 年 3 月 13 日に、OIDF が 4 月 27 日開催のハイブリッドワークショップの参加登録を開始した。同ワークショップは IIW Spring 2026 の直前にカリフォルニア州マウンテンビュー近郊（対面＋オンライン）で開催予定。アジェンダには "Deep dive into latest white papers" および "Working Group Updates" が含まれており、AIIM CG のホワイトペーパーや NIST 回答が議題に上がることが期待されていた。
+2026 年 3 月 13 日に、OIDF が 4 月 27 日開催のハイブリッドワークショップの参加登録を開始した。同ワークショップは IIW Spring 2026 の直前にカリフォルニア州サンノゼ（シスコ・サンタナロウ、対面＋オンライン）で開催予定。アジェンダには "Deep dive into latest white papers" および "Working Group Updates" が含まれており、AIIM CG のホワイトペーパーや NIST 回答が議題に上がることが期待されていた。
 
 ## 5. 今後の予定
 
