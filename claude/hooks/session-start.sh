@@ -33,7 +33,7 @@ fi
 # 形式: "<wg-id>:<since-year>:<since-month>"
 # 変更時は SKILL.md と本配列を同じコミットで同期更新すること。
 oidf_registry=(
-  "adt:2024:1"
+  "adt:2025:2"
   "aiim:2025:4"
   "authzen:2024:1"
   "connect:2024:1"

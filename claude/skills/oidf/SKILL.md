@@ -23,7 +23,7 @@ OpenID Foundation の各 Working Group (WG) / Community Group (CG) の活動を 
 
 | ID | 名称 | WG/CG ページ | GitHub | メーリングリスト (listinfo) | アーカイブ (pipermail) | 議事録所在 | since |
 |---|---|---|---|---|---|---|---|
-| `adt` | Australian Digital Trust CG | https://openid.net/cg/australian-digital-trust-community-group/ | https://github.com/openid/cg-australian-digital-trust | https://lists.openid.net/mailman/listinfo/openid-au-digital-trust | https://lists.openid.net/pipermail/openid-au-digital-trust/ | GitHub wiki | 2024-01 |
+| `adt` | Australian Digital Trust CG | https://openid.net/cg/australian-digital-trust-community-group/ | https://github.com/openid/cg-australian-digital-trust | https://lists.openid.net/mailman/listinfo/openid-au-digital-trust | https://lists.openid.net/pipermail/openid-au-digital-trust/ | GitHub リポジトリ内 `minutes/` および `TrustFrameworkAnalysis/minutes/` + HackMD `@adtcg` | 2025-02 |
 | `aiim` | AI Identity Management CG (AIIM) | https://openid.net/cg/artificial-intelligence-identity-management-community-group/ | https://github.com/openid/cg-ai-identity-management | https://lists.openid.net/mailman/listinfo/openid-aiim | https://lists.openid.net/pipermail/openid-aiim/ | GitHub issues（議事録は non-public） | 2025-04 |
 | `authzen` | AuthZEN WG | https://openid.net/wg/authzen/ | https://github.com/openid/authzen | https://lists.openid.net/mailman/listinfo/openid-specs-authzen | https://lists.openid.net/pipermail/openid-specs-authzen/ | https://hackmd.io/@oidf-wg-authzen | 2024-01 |
 | `connect` | AB/Connect WG | https://openid.net/wg/connect/ | https://github.com/openid/connect | https://lists.openid.net/mailman/listinfo/openid-specs-ab | https://lists.openid.net/pipermail/openid-specs-ab/ | non-public（ML 内のみ） | 2024-01 |
