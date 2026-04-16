@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation MODRNA WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation MODRNA WG 活動レポート (2026年3月)
@@ -16,14 +17,17 @@ MODRNA (Mobile Operator Discovery, Registration & autheNticAtion) WG は、モ�
 
 2026年3月に MODRNA WG が発行した仕様のパブリックレビュー告知・投票通知・エディターズドラフト改訂は、`openid.net` サイトの公式ニュース一覧（同サイトが調査期間中 503 エラーを返していたため取得できず）からは確認できなかった。
 
-MODRNA WG の現行仕様群としては以下が知られており、いずれも 2026年3月以前に安定状態に達している:
+MODRNA WG の現行仕様群としては以下が知られている:
 
-| 仕様名                                       | 最終ステータス                                |
-| -------------------------------------------- | --------------------------------------------- |
-| OpenID Connect MODRNA Authentication Profile | Implementer's Draft                           |
-| OpenID Connect MODRNA Discovery Profile      | Implementer's Draft / Editor's Draft 更新継続 |
-| CIBA Core 1.0                                | Final Specification (2021年9月承認)           |
-| CIBA MODRNA Profile                          | Editor's Draft                                |
+| 仕様名                                                           | ステータス                      |
+| ---------------------------------------------------------------- | ------------------------------- |
+| OpenID Connect Client Initiated Backchannel Auth (CIBA) Core 1.0 | Final Specification (2021年9月) |
+| OpenID Connect MODRNA Authentication Profile                     | Implementer's Draft             |
+| OpenID Connect Account Porting                                   | Implementer's Draft             |
+| OpenID Connect User Questioning API                              | Implementer's Draft             |
+| MODRNA Discovery Profile                                         | Draft                           |
+| MODRNA Registration Profile                                      | Draft                           |
+| MODRNA: Client Initiated Backchannel Authentication Profile      | Draft                           |
 
 ## 3. 公開記録が確認できなかった項目（ミーティング・ML・GitHub）
 
