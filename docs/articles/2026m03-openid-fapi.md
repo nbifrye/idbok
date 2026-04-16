@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation FAPI WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation FAPI WG 活動レポート (2026年3月)
@@ -32,11 +33,11 @@ FAPI 2.0 Security Profile の TLS 要件は BCP 195（RFC 9325）を参照して
 - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
 - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
 
-TLS 1.3 では上記に加え TLS_CHACHA20_POLY1305_SHA256 が許可されています。
+TLS 1.3 の暗号スイートは RFC 8446 で定義され（RFC 9325 は TLS 1.3 暗号スイートを指定せず RFC 8446 に委ねています）、TLS_CHACHA20_POLY1305_SHA256 が利用できます。
 
 #### 実際に起きた問題: ChaCha20-Poly1305 事例
 
-ある FAPI 2.0 準拠の実装が適合性テストに失敗しました。その原因は、サーバーが TLS 1.2 で `TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256` を提示していたためです。ChaCha20-Poly1305 は TLS 1.3 では mandatory-to-implement であり、AES ハードウェアアクセラレーションを持たない環境では性能面でも優れています。にもかかわらず、RFC 9325 の厳格な解釈によって TLS 1.2 では拒否されてしまいました。
+ある FAPI 2.0 準拠の実装が適合性テストに失敗しました。その原因は、サーバーが TLS 1.2 で `TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256` を提示していたためです。ChaCha20-Poly1305 は TLS 1.3 では SHOULD implement（RFC 8446 Section 9.1）と位置付けられており、AES ハードウェアアクセラレーションを持たない環境では性能面でも優れています。にもかかわらず、RFC 9325 の厳格な解釈によって TLS 1.2 では拒否されてしまいました。
 
 #### 解決策: IANA レジストリへの動的参照
 
