@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation IPSIE WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation IPSIE WG 活動レポート (2026年3月)
@@ -137,11 +138,11 @@ Mark Drummond は「セクション 2〜3 は汎用ガイダンスとして優�
 
 ## 6. 関連イベント
 
-2026年3月中、IPSIE WG が公式スポンサーまたは主催者として参画したカンファレンス・外部イベントは特に確認できない。3月17日の定例コール内で、4月以降に予定される以下のイベントが参加予定として共有された:
+2026年3月中、IPSIE WG が公式スポンサーまたは主催者として参画したカンファレンス・外部イベントは特に確認できない。3月17日の定例コール内で、以下の主要イベントが参加予定として共有された:
 
-- **IETF 125（深圳）**: 2026年4月
-- **IIW（Internet Identity Workshop）**: 2026年4月
-- **EIC（European Identity and Cloud Conference）**: 2026年5月19〜22日（ミュンヘン）
+- **IETF 125（深圳）**: 2026年3月14〜20日（コール時点でほぼ終了間際）
+- **IIW（Internet Identity Workshop）**: 2026年4月28〜30日（マウンテンビュー）
+- **EIC（European Identity and Cloud Conference）**: 2026年5月19〜22日（ベルリン）
 - **OAuth Security Workshop**: 2026年5月27〜29日
 - **Identiverse**: 2026年6月15〜18日
 
