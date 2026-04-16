@@ -1,5 +1,6 @@
 ---
 title: "EU Digital Identity Wallet（EUDI Wallet）— 2026年末の全EU展開に向けた現状と技術詳解"
+reviewed: true
 ---
 
 # EU Digital Identity Wallet（EUDI Wallet）— 2026年末の全EU展開に向けた現状と技術詳解
@@ -62,14 +63,14 @@ EUDI Walletの技術仕様の核となるのが **ARF（Architecture and Referen
 
 ARFで定義される主要コンポーネントは以下の通りだ。
 
-| コンポーネント    | 説明                                                                             |
-| ----------------- | -------------------------------------------------------------------------------- |
-| **Wallet Unit**   | ユーザーのデバイス上で動作するWalletアプリの実体                                 |
-| **WSCD**          | Wallet Secure Cryptographic Device。秘密鍵を保護するセキュアエレメント（TEE/SE） |
-| **WIA**           | Wallet Instance Attestation。Wallet自体の正当性を証明する                        |
-| **WTE**           | Wallet Trust Evidence。Walletの信頼根拠を表す                                    |
-| **PID Provider**  | Person Identification Dataを発行する政府機関                                     |
-| **Relying Party** | Walletからの証明書を検証するサービス提供者                                       |
+| コンポーネント    | 説明                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------ |
+| **Wallet Unit**   | ユーザーのデバイス上で動作するWalletアプリの実体                                           |
+| **WSCD**          | Wallet Secure Cryptographic Device。秘密鍵を保護するセキュアエレメント（TEE/SE）           |
+| **WIA**           | Wallet Instance Attestation。Wallet自体の正当性を証明する                                  |
+| **WUA**           | Wallet Unit Attestation。Wallet UnitおよびWSCDを含む全コンポーネントの要件適合性を証明する |
+| **PID Provider**  | Person Identification Dataを発行する政府機関                                               |
+| **Relying Party** | Walletからの証明書を検証するサービス提供者                                                 |
 
 ### 証明書フォーマット：二重対応の設計
 
@@ -168,7 +169,7 @@ EUDI Walletは**デジタルアイデンティティのグローバルスタン�
 
 1. **ENISAの認証スキーム確定**: 2026年前半に確定見込み。Walletの適合性評価が可能になる
 2. **Implementing Actsの整備**: 技術仕様を補完する実施細則の完成度が実装品質を左右する
-3. **Large Scale Pilots（LSPs）の成果**: 26加盟国・350以上の組織が参加する大規模実証の知見が実装に反映される
+3. **Large Scale Pilots（LSPs）の成果**: 26加盟国・550以上の組織が参加する大規模実証（6プロジェクト）の知見が実装に反映される
 4. **相互運用性の確認**: 国境を越えたクロスボーダー証明書交換の実証（ルーマニアでの実証が先行事例）
 
 EUDI Walletは単なるアプリではなく、欧州のデジタル主権とプライバシー中心のアイデンティティ基盤を再定義する試みだ。2026年末の展開がどこまで実現するかは加盟国ごとの実装力に依存するが、標準規格レベルでは世界最先端のデジタルIDエコシステムが形成されつつある。
