@@ -1,0 +1,187 @@
+---
+title: "OpenID Foundation IPSIE WG 活動レポート (2026年3月)"
+---
+
+# OpenID Foundation IPSIE WG 活動レポート (2026年3月)
+
+**執筆日: 2026-04-16**（2026年3月の活動を遡及してまとめたレポートです）
+
+## 1. 概要
+
+IPSIE（Interoperability Profiling for Secure Identity in the Enterprise）Working Group は、エンタープライズにおける安全なアイデンティティ管理を実現するため、既存の標準仕様（OpenID Connect, OAuth 2.0, SCIM, SAML, Shared Signals 等）の**相互運用性プロファイル**を策定する OpenID Foundation の WG である。2024年10月に設立され、共同議長は Aaron Parecki（Okta）と Dick Hardt（Hellō）が務める。当初の対象領域は SSO・ユーザーライフサイクル管理・エンタイトルメント・リスクシグナル共有・ログアウト・トークン失効の 6 分野であり、それぞれ IPSIE のセキュリティレベル（AL1〜AL3、SL1〜SL3 等）と紐付く形でプロファイル化が進められている。
+
+2026年3月時点で WG が抱えるアクティブな草案は次の 3 本である:
+
+- IPSIE Common Requirements Profile（共通要件プロファイル）
+- OpenID Connect **SL1**（シングルサインオン セッション管理プロファイル レベル 1）
+- SCIM **AL1**（アカウントライフサイクルプロファイル レベル 1）
+
+2026年3月は、これら 3 本のうち特に **セッション管理系（SL2 へ向けた拡張）と SCIM プロファイルのリストラクチャリング**が中心議題となった月である。Karl McGuinness によって持ち込まれた新しいセッションライフサイクル仕様ドラフトに対して、3 回の定例コールでレビューと改訂方針の議論が行われ、Danny Zollner による SCIM プロファイルを「プロトコル相互運用プロファイル」と「リソース別プロファイル」の二本立てに分離する提案が承認された。
+
+月次活動の要点:
+
+- 3月10日・17日・24日の定例コールが開催された（3月31日の定例はスキップ）
+- 3月10日・24日のコールで Karl McGuinness 提案のセッションライフサイクル仕様について「認証メソッド vs ACR 値」「人間のプレゼンス (presence) を intent として扱うか」等の根本論点が掘り下げられた
+- 3月17日のコールで Danny Zollner が SCIM プロファイルを SAML2int モデル風に二文書化する再編方針を提示し、WG が概ね合意した
+- GitHub `openid/ipsie` リポジトリ上での新規 issue / PR のオープンはなく、議論はもっぱらメーリングリスト投稿される議事録と定例コール上で進められた
+
+## 2. 公開された仕様・ドラフト改訂
+
+2026年3月中に、IPSIE WG から Implementer's Draft / Final Specification として公式に公開された仕様改訂は確認できなかった。WG は以下のエディターズドラフト群を GitHub 上で継続的に更新している段階にある:
+
+- `ipsie-v1-draft.md`（共通要件プロファイル本体）
+- `ipsie-levels.md`（AL1〜AL3 / SL1〜SL3 等のセキュリティレベル定義）
+- `ipsie-terminology.md`（用語定義）
+
+`openid/ipsie` リポジトリの `main` ブランチに対する新規コミットは、3月中に見当たらず（確認時点の commit 履歴では 2月26日が直近）、これは「議論フェーズが続いており、文書への反映は次月以降」という WG の段階を反映している。SCIM プロファイルの二文書化方針、セッションライフサイクル仕様の統合など、3月の議論結果はいずれも 4月以降の草案改訂に落ちていくと WG 内で予告された。
+
+また、Karl McGuinness がセッション管理用に用意したレビュー用ドラフトは WG メンバー宛の GitHub プレビューリンクとして共有されたが、本稿執筆時点で `openid/ipsie` 公開リポジトリにマージされたブランチは確認できない。
+
+## 3. ミーティングと議論
+
+IPSIE WG の定例コールは毎週火曜 9:00 PT に開催される。3月の開催状況は以下の通り:
+
+| 開催日     | 議事録投稿            | 主要テーマ                                                              |
+| ---------- | --------------------- | ----------------------------------------------------------------------- |
+| 2026-03-10 | Dick Hardt（3月10日） | Karl のセッション仕様レビュー（認証メソッド vs ACR / 人間のプレゼンス） |
+| 2026-03-17 | Dick Hardt（3月18日） | SCIM プロファイル二文書化方針（Danny Zollner 提案）                     |
+| 2026-03-24 | Dick Hardt（3月25日） | Karl のセッション仕様レビュー（intent / command の整理）                |
+| 2026-03-31 | —                     | 定例なし                                                                |
+
+議事録はすべて Dick Hardt から `openid-specs-ipsie` メーリングリストに投稿された要約形式であり、HackMD に置かれた詳細ノートへのリンクを含む。以下、3 回のコールの論点を再構成する。
+
+### 2026-03-10 コール: セッション仕様の根本論点
+
+参加者は George Fletcher、Karl McGuinness、Dick Hardt を中心に、出席者リストが後で復元不能になったと議事録冒頭で明記されている。議論は Karl が持ち込んだ新しいセッションライフサイクル仕様ドラフトのレビューに集中した。
+
+**論点 1: 認証メソッド vs ACR 値**
+
+George Fletcher が「RP（Relying Party）は個別の認証メソッドを指定すべきではない」と強く主張。代わりに抽象的な保証レベル（ACR 値）を指定し、IDP 側がそのしきい値を満たすメソッドを選ぶべきだと述べた。Karl はこの方針が WG の既存合意と矛盾しない旨を確認しつつ、標準的な MFA を超える要件を表現するために **IPSIE 固有の ACR 値**を導入する必要があるかもしれないと応答した。この議論の中で、ドラフト本文の "Identity Service" と "IDP" の用語不整合も指摘され、用語統一が課題として残った。
+
+**論点 2: セッション管理の委譲モデル**
+
+Karl は「RP は IDP にセッションライフサイクル管理を完全委譲し、IDP が（SSO を含む）全セッション管理の "accountable decision point" となる」モデルを提案した。ただしエンタープライズ環境では、**15 以上のアプリケーションに単一のクライアント ID が割り当てられる**ケースが多いことが実装上の論点として挙げられた。このケースでは、RP 個別のセッション粒度と委譲先 IDP の判断が一致しないため、単純な委譲だけでは表現しきれないとの指摘がなされた。
+
+**論点 3: Human Presence を authentication intent に含めるか**
+
+George が「単に同一ユーザーが戻ってきたことを確認する」場合と「人間が物理的に存在することを確認する」場合を区別する必要があると主張し、後者を authentication intent に加えることを提案した。Dick はこの区別の実装可能性（資格情報検証と ID プルーフィングの差）に疑問を呈し、議論の結果、当面は intent ドキュメントに追記だけ行い、プロファイルでの強制要件化は保留することで一致した。
+
+### 2026-03-17 コール: SCIM プロファイル再編
+
+参加者は Okta、Crowdstrike、Auth0、Empire Life、Hellō、および個人貢献者を含む 9 名。定例の事務連絡（アンチトラスト方針、コントリビューター契約、Slack アクセス）を行った後、4月以降の主要イベント（IETF 深圳、IIW、EIC、OAuth Security Workshop、Identiverse）を確認。主要議題は SCIM プロファイルの戦略再編である。
+
+**Danny Zollner 提案: 二文書モデル**
+
+Danny Zollner は、従来単一の IPSIE 固有 SCIM プロファイルとして書かれていた作業を、**プロトコル相互運用プロファイル**と**リソース別（AL1/AL2/AL3）プロファイル**の二つに分離する方針を提示した。これは SAML 分野における "SAML2int" のモデル（プロトコル層とプロファイル層を分離）に着想を得たもの。
+
+- **プロトコル相互運用プロファイル**: リソース非依存のプロトコル上の問題（フィルタリング、PATCH の動作仕様、ケースセンシティビティ等）のみを扱う
+- **リソース別プロファイル（IPSY AL1/AL2/AL3）**: ユーザー・グループ等の具体的リソース要件を扱い、プロトコル層プロファイルを参照する
+
+この構成により、SCIM 全般の相互運用性改善と、IPSIE が要求するリソース仕様要件（パスワード属性の同期禁止、アカウントライフサイクル系の `filter` / `patch` 要件等）を独立に進化させられる、との説明がなされた。
+
+**技術的優先度**
+
+- **ページネーション**: アカウントライフサイクル管理上必須とみなされ、サービスプロバイダーは少なくとも 1 方式のサポートが必要
+- **PATCH 操作**: 仕様が 20〜30 ページに渡り実装に不整合が多いため、IPSIE が利用する具体的ユースケースに絞ってスコープを限定する
+- **パスワード属性**: SCIM 経由の同期対象から除外。セキュリティ上の理由により明示的に禁止とする方針
+
+WG は議論の結果として、Danny がプロファイル本体から「リソース固有の記述」を除去し、必要ならば **"SCIM Protocol Interoperability Profile"** へ改名することを引き受ける形で合意した。また IPSY 側のドキュメントは、このプロトコルプロファイルを参照する形に更新される。Karl が準備中の SAML 向けドラフトのレビューは翌週に持ち越された。
+
+### 2026-03-24 コール: Karl のセッション仕様再レビュー
+
+参加者は Dick Hardt（Hellō）、Mark Drummond（Empire Life）、Karl McGuinness、George Fletcher、Bjorn Hjelm。3月10日の議論を踏まえて改訂された Karl のセッション管理仕様ドラフトをセクション単位でレビューした。
+
+**ドキュメント構造への評価**
+
+Mark Drummond は「セクション 2〜3 は汎用ガイダンスとして優秀」と評価し、George Fletcher は「能力（capabilities）と実装の分離が良くできている」と述べた。一方で、ドラフトの一部は「規範的要件（normative）」ではなく「ベストプラクティス」として切り出し、別文書にする余地があるとの提案も出た。
+
+**Authentication Intent の整理**
+
+既存セッションに対する RP-initiated intent として **4 種類**が定義された。各 intent は「silent」または「interactive」で動作でき、該当する IDP セッションが存在しない場合はエラーを返す。**初回セッション確立は intent のスコープ外**とすることを明示。
+
+**IDP-initiated Session Commands（SL2 向け）**
+
+- **reestablish session（"relogin"）**: 既存トークンを保持したまま再ログインをトリガする非破壊的コマンド
+- **invalidate access**: すべてのトークンを破棄するコマンド（ログアウト相当）
+
+これらはプロトコル横断の IPC（inter-protocol communication）レベルで定義され、具体的な OIDC / SAML / SCIM / Shared Signals 等へのマッピングは別途行う方針。
+
+**User Presence と AMR クレーム**
+
+`amr`（Authentication Methods References）クレームの扱いについて、RP と IDP の情報非対称性を中心に議論が紛糾した。IDP は検証に用いたメソッドの詳細なエビデンスを `amr` で返せる一方、RP は要求側でメソッドを指定できない（ACR のみ指定可能）という構造が、**RP 側で `amr` を見て判断する実装が出現することで実質的な非互換を引き起こす**恐れが指摘された。監査証跡としての価値と相互運用性トレードオフが整理されたが、この論点は未解決のまま次回以降に持ち越された。
+
+## 4. メーリングリストの主要スレッド
+
+2026年3月の `openid-specs-ipsie` メーリングリスト（pipermail アーカイブ、週次インデックス）への投稿は、**Dick Hardt による定例コールの議事録 3 件のみ**であった。技術的議論は基本的に定例コールと HackMD / GitHub プレビュー上で行われており、メーリングリスト上で独立したスレッドとして展開された技術討議は確認できなかった。
+
+参考として、以下は 3月中の投稿の全容である:
+
+- [[Openid-specs-ipsie] Meeting Notes March 10](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260309/000170.html) — Dick Hardt, 2026-03-10 投稿。§3 で再構成した 3月10日コールの論点（認証メソッド vs ACR、セッション委譲モデル、human presence）を要約
+- [[Openid-specs-ipsie] IPSIE WG Meeting Minutes - 2026-03-17](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260316/000171.html) — Dick Hardt, 2026-03-18 投稿。§3 で再構成した SCIM 二文書化方針を要約
+- [[Openid-specs-ipsie] 2026 March 24 minutes](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260323/000172.html) — Dick Hardt, 2026-03-25 投稿。Karl のセッション仕様ドラフト改訂版レビュー結果を要約
+
+いずれも返信が付かず、スレッド化された技術議論は発生していない。IPSIE WG はこの時点において、**議論の場を非同期メーリングリストよりも同期的な定例コール（と HackMD ライブノート）に寄せる運用**を取っていることが読み取れる。
+
+## 5. GitHub 上の議論
+
+`openid/ipsie` リポジトリ上で、2026年3月の期間に以下の GitHub 検索を実施した:
+
+- `is:issue created:2026-03-01..2026-03-31` → 該当なし
+- `is:pr created:2026-03-01..2026-03-31` → 該当なし
+- `is:pr updated:2026-03-01..2026-03-31` → 該当なし
+- `is:issue commented:2026-03-01..2026-03-31` → 該当なし
+
+いずれの検索もヒット 0 件であり、**3月中は GitHub 上での新規 issue / PR / コメント活動は確認できなかった**。これは、上述の通り議論が定例コール上で進行し、文書への反映が翌月以降に後置されるという WG の運用実態と整合する。
+
+なお、`openid/ipsie` リポジトリ全体としてはこの時点で 38 件の open issue / 8 件の open PR を抱えており、3月以前から継続している issue が議論の焦点（認証 intent の定義、セッション管理委譲モデル、SCIM プロファイル構造等）として残っている状況にある。3月の定例コール上の議論は、これら継続 issue に対する実質的な方針決定を含んでいるため、4月以降に関連 issue / PR がオープンされた際に 3月の議事録が参照されることが予想される。
+
+## 6. 関連イベント
+
+2026年3月中、IPSIE WG が公式スポンサーまたは主催者として参画したカンファレンス・外部イベントは特に確認できない。3月17日の定例コール内で、4月以降に予定される以下のイベントが参加予定として共有された:
+
+- **IETF 125（深圳）**: 2026年4月
+- **IIW（Internet Identity Workshop）**: 2026年4月
+- **EIC（European Identity and Cloud Conference）**: 2026年5月19〜22日（ミュンヘン）
+- **OAuth Security Workshop**: 2026年5月27〜29日
+- **Identiverse**: 2026年6月15〜18日
+
+3月17日の定例コールでは、これらのイベントへの参加予定が議題として挙げられたが、各イベントにおける具体的な登壇枠・パネル構成については議事録要約からは確認できなかった。
+
+## 7. 今後の予定
+
+2026年3月末時点で、IPSIE WG が 4月以降に向けて予定している主要作業は以下の通り:
+
+- **Karl のセッションライフサイクル仕様ドラフトの GitHub マージと公開レビュー化**: 3月の 2 回の定例での論点（認証メソッド vs ACR、session intent / command の整理、`amr` 非対称性）を反映した改訂版を本リポジトリに取り込む予定
+- **SCIM プロファイル再編**: Danny Zollner が "SCIM Protocol Interoperability Profile"（仮称）と IPSY AL1/AL2/AL3 プロファイルの二本立てドラフトを準備し、4月の定例でレビューを開始
+- **SAML 関連ドラフトのレビュー**: Karl が準備中の SAML 向け草案を 4月第一週以降の定例で扱う予定
+- **4月の IIW 出張準備**: WG メンバーによる IPSIE 紹介セッション・パネル参加の調整
+- **未解決論点の継続議論**: `amr` 非対称性、エンタープライズ環境での単一クライアント ID 問題、"human presence" の扱い
+
+なお、3月31日は定例コールが開催されず、次回定例は 2026年4月7日（火）に予定されていた。
+
+## 8. 参考情報源
+
+### OpenID Foundation 公式
+
+- [IPSIE Working Group](https://openid.net/wg/ipsie/) — WG 概要・議長・メーリングリスト情報
+- [IPSIE Charter](https://openid.net/wg/ipsie/ipsie-charter/) — 目的・スコープ・対象仕様
+- [Announcing the IPSIE Working Group](https://openid.net/announcing-ipsie-working-group/) — 2024年10月の WG 設立告知
+
+### メーリングリスト（Pipermail アーカイブ）
+
+- [openid-specs-ipsie 週次アーカイブインデックス](https://lists.openid.net/pipermail/openid-specs-ipsie/) — 全期間の週次アーカイブ
+- [Week-of-Mon-20260309/thread.html](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260309/thread.html) — 3月第2週（3月10日議事録のみ）
+- [Week-of-Mon-20260316/thread.html](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260316/thread.html) — 3月第3週（3月17日議事録のみ）
+- [Week-of-Mon-20260323/thread.html](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260323/thread.html) — 3月第4週（3月24日議事録のみ）
+- [Meeting Notes March 10（本文）](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260309/000170.html) — Dick Hardt 投稿、3月10日コール
+- [IPSIE WG Meeting Minutes - 2026-03-17（本文）](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260316/000171.html) — Dick Hardt 投稿、3月17日コール
+- [2026 March 24 minutes（本文）](https://lists.openid.net/pipermail/openid-specs-ipsie/Week-of-Mon-20260323/000172.html) — Dick Hardt 投稿、3月24日コール
+
+### GitHub
+
+- [openid/ipsie リポジトリ](https://github.com/openid/ipsie) — IPSIE WG の公開リポジトリ（共通要件プロファイル、レベル定義、用語定義等）
+- [openid/ipsie Wiki - 会議記録](https://github.com/openid/ipsie/wiki) — 定例コールの議事録インデックス（3月分は pipermail にリンク）
+
+### 議事録補助リソース
+
+- [IPSIE WG HackMD トップ](https://hackmd.io/zbL4VSdhTcWnxlSwl43qVA) — 定例コールのライブノート置き場（2026年4月時点で 503 応答のためアクセス不可。メーリングリスト議事録で代替した）
