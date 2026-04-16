@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation AB/Connect WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation AB/Connect WG 活動レポート (2026年3月)
