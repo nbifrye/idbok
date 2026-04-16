@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation Ecosystem Support CG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation Ecosystem Support CG 活動レポート (2026年3月)
@@ -8,7 +9,7 @@ title: "OpenID Foundation Ecosystem Support CG 活動レポート (2026年3月)"
 
 ## 1. 概要
 
-**Ecosystem Support CG (ESCG)** は、OpenID Foundation が展開するエコシステム全体の支援活動を担うコミュニティグループである。Open Banking / オープンファイナンス領域の実装者や規制当局との連携促進、OIDF 加盟組織へのアウトリーチ、各国・地域での OIDF 認定プログラムの普及支援などを主な活動領域とする。チェアは Dima Postnikov が務め、月次ミーティングを EU 時間帯と Pacific 時間帯で交互に開催している。
+**Ecosystem Support CG (ESCG)** は、OpenID Foundation が展開するエコシステム全体の支援活動を担うコミュニティグループである。Open Banking / オープンファイナンス領域の実装者や規制当局との連携促進、OIDF 加盟組織へのアウトリーチ、各国・地域での OIDF 認定プログラムの普及支援などを主な活動領域とする。仕様策定そのものはスコープ外とし、エコシステムごとの実装ベストプラクティスや「Open Banking Reference Technical Architecture and Best Practices」のようなガイダンス文書の整備、エコシステム間の経験共有を主眼とする。共同チェアは Dima Postnikov、Ralph Bragg、Mark Verstege の3名が務め、月次ミーティングを EU 時間帯と Pacific 時間帯で交互に開催している。
 
 2026年3月の活動について、公開されているメーリングリストアーカイブ・GitHub リポジトリ・openid.net ブログの各情報源を調査したが、**公開された記録を確認することはできなかった**。このCGは議事録が非公開であり、メーリングリストへの投稿も主に会議前アジェンダ通知に限定される運用スタイルをとっている。以下、調査した情報源ごとに結果を記録する。
 
@@ -55,7 +56,7 @@ GitHub リポジトリ（https://github.com/openid/cg-ecosystem-support）は 20
 - 4月の月次ミーティング（EU 会議: 4月13日頃、Pacific 会議: 4月23日頃）
 - OIDF グローバルイベント（2026年後半開催予定）に関するアンケートやアウトリーチ活動の継続
 
-## 8. 参考情報源
+## 6. 参考情報源
 
 | 情報源                      | URL                                                                | 備考                                                |
 | --------------------------- | ------------------------------------------------------------------ | --------------------------------------------------- |
