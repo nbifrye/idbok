@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation Digital Credentials Protocols WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation Digital Credentials Protocols WG 活動レポート (2026年3月)
