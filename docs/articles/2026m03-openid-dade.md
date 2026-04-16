@@ -82,7 +82,7 @@ Death and the Digital Estate Community Group（DADE CG）は、個人の死亡�
 
 - **[Friday March 19th meeting cancelled](https://lists.openid.net/pipermail/openid-digital-directives/2026-March/000084.html)** — 2026-03-20 開始（Dean H. Saxe）
 
-内容は3月19日（現地時間）の定例会キャンセルの通知であり、技術的議論は含まれない。
+内容は3月20日（現地時間）の定例会キャンセルの通知であり、技術的議論は含まれない。
 
 対象月の ML スレッドとしてはこの1件のみが記録されており、活発な技術議論や設計判断を伴う往復は確認できなかった。3月は文書公開という成果物中心の活動であったため、ML での議論はほぼ発生しなかったものと考えられる。
 
