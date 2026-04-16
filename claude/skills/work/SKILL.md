@@ -23,6 +23,14 @@ SessionStartフックの出力を確認し、以下の二点を把握する:
 bash claude/hooks/session-start.sh
 ```
 
+**作業開始前に必ず `main` を `origin/main` に同期する。** Claude Code on Web ではセッションがフィーチャーブランチ上で起動し、ローカル `main` が `origin/main` から大幅に遅れていることがある。この状態でフィーチャーブランチ上でファイルを編集してから `git checkout main` すると、`stash`/`checkout` のコンフリクトで作業が複雑化する。最初に以下を実行してから編集に入ること:
+
+```bash
+git fetch origin main
+git checkout main
+git reset --hard origin/main
+```
+
 ### 2. アクションの決定
 
 **一度の実行で一つのアクションのみ実施する。**
