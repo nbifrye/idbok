@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation DADE CG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation DADE CG 活動レポート (2026年3月)
@@ -10,14 +11,14 @@ title: "OpenID Foundation DADE CG 活動レポート (2026年3月)"
 
 Death and the Digital Estate Community Group（DADE CG）は、個人の死亡または行動不能時にデジタル資産をどのように管理・継承するかという問題に取り組む OpenID Foundation のコミュニティグループである。Dean H. Saxe、Eve Maler らが共同議長を務め、法律・技術・文化的な側面を横断したスタンダード策定を目指している。
 
-2026年3月は、DADE CG にとって**成果物の公開というマイルストーン月**となった。2025年9月から行ったパブリックレビューを経て最終化した2文書——ホワイトペーパー「The Unfinished Digital Estate」とデジタル遺産計画ガイド——を3月3日に同時公開し、業界メディアに広く取り上げられた。一方でミーティング活動は低調で、3月4日に公開を振り返る定例会が開かれたものの、3月19日予定の次回会議はアジェンダなしとして中止となった。
+2026年3月は、DADE CG にとって**成果物の公開というマイルストーン月**となった。2025年9月から行ったパブリックレビューを経て最終化した2文書——ホワイトペーパー「The Unfinished Digital Estate」とデジタル遺産計画ガイド——を3月3日に同時公開し、業界メディアに広く取り上げられた。一方でミーティング活動は低調で、3月4日に公開を振り返る定例会が開かれたものの、3月20日予定の次回会議はアジェンダなしとして中止となった。
 
 月次活動の要点：
 
 - 2026年3月3日、ホワイトペーパー「The Unfinished Digital Estate」と「Digital Estate Planning Guide」を最終版として公開
 - 公開を受けた OpenID Foundation ブログ記事「Why digital estates need standards, and why we need them now」を4名の共著者が執筆
 - 3月4日のミーティングで公開の振り返りと広報活動・Talking Tour の計画を議論
-- 3月19日のミーティングは共同議長判断でキャンセル（進展なし）
+- 3月20日のミーティングは共同議長判断でキャンセル（進展なし）
 - 3月23〜26日の RSA Conference San Francisco に Eve Maler が参加
 - メーリングリストへの投稿は会議キャンセル通知の1件のみ
 - GitHub リポジトリでは3月中に新規 issue / PR の作成なし
@@ -71,9 +72,9 @@ Death and the Digital Estate Community Group（DADE CG）は、個人の死亡�
 
 **次回**: 2026年3月20日 午前7時（PDT）
 
-### 3月19日定例会（キャンセル）
+### 3月20日定例会（キャンセル）
 
-「Friday March 19th meeting cancelled」として Dean H. Saxe からメーリングリスト（openid-digital-directives）に通知が送付された（2026年3月20日 01:06 UTC）。理由として「共同議長に共有すべき関連するアップデートがない」と記されており、会議は中止となった。次回は2週間後の通常スケジュールに戻る旨が案内された。
+「Friday March 19th meeting cancelled」として Dean H. Saxe からメーリングリスト（openid-digital-directives）に通知が送付された（2026年3月20日 01:06 UTC）。件名は「March 19th」となっているが、2026年3月19日は木曜日であり、実際にキャンセルとなった定例会は金曜日の3月20日分である（送信者による日付の誤記と考えられる）。理由として「共同議長に共有すべき関連するアップデートがない」と記されており、会議は中止となった。次回は2週間後の通常スケジュールに戻る旨が案内された。
 
 ## 4. メーリングリストの主要スレッド
 
