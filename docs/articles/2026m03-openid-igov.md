@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation iGov WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation iGov WG 活動レポート (2026年3月)
@@ -25,7 +26,7 @@ iGov (International Government Assurance) WG は、公共部門サービスへ�
 | パブリックレビュー期間 | 2026年2月11日〜2026年3月28日（45日間）                          |
 | 投票通知発出           | 2026年3月22日                                                   |
 
-本仕様は iGov WG が公開する**初めての Implementer's Draft**であり、IP 保護が付与される安定版として位置づけられます。
+本仕様は iGov OAuth 2.0 プロファイルの**初めての Implementer's Draft**であり、IP 保護が付与される安定版として位置づけられます。なお iGov WG としては OpenID Connect プロファイル (draft-03) が 2018年10月に先行して Implementer's Draft となっている。
 
 フォーマット: HTML (`openid-igov-oauth2-1_0-09.html`)、XML、TXT で提供。
 
