@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation eKYC & IDA WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation eKYC & IDA WG 活動レポート (2026年3月)
