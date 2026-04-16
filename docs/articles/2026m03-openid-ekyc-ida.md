@@ -69,26 +69,85 @@ Errata に含まれる具体的な技術的修正の詳細は公式アナウン�
 
 ## 3. ミーティングと議論
 
-eKYC-IDA WG は毎週水曜 15:00 UTC に定例コールを開催しており、2026年3月には 2026-03-04・2026-03-11・2026-03-18・2026-03-25 の4回が想定される。議事録は Bitbucket wiki（`https://bitbucket.org/openid/ekyc-ida/wiki/`）に公開されているが、2026年3月分の各会議ページは本記事執筆時点（2026-04-16）にアクセスが確認できなかった。
+eKYC-IDA WG は毎週水曜 15:00 UTC に定例コールを開催している。2026年3月は週別のメーリングリストアーカイブから開催状況を確認した結果、次の通りであった。
 
-公開情報から推定される主要議題は以下の通り：
+| 日付       | 開催状況                               |
+| ---------- | -------------------------------------- |
+| 2026-03-04 | **開催**（議題あり）                   |
+| 2026-03-11 | **中止**（Hodari 都合・Mark 体調不良） |
+| 2026-03-18 | ML 投稿なし（詳細不明）                |
+| 2026-03-25 | **開催**（議題あり）                   |
 
-- **ASC 1.0 Implementer's Draft 推薦の準備**（3月初旬〜3月6日公開）
-- **ASC 1.0 公開レビュー開始に向けた告知・手続き**（3月16日開始）
-- **OpenID Connect for Identity Assurance 1.0 Errata 内容のレビューと推薦決定**（3月30日推薦）
-- **NIST SP 1800-42 公開草案（3月18日公開）への対応方針検討**
+議事録は Bitbucket wiki に公開される慣例だが、2026年3月分のページは本記事執筆時点（2026-04-16）においてアクセス不可であり、以下はメーリングリストの議題メールから再構成したものである。
+
+### 2026-03-04 定例コール
+
+Mark Haine が送付した議題メールから主要議題を抽出する。
+
+**Identity Assurance**
+
+- Hodari による ISO 更新報告
+- Errata 公開に関する事務処理（Mark & Hodari 担当）
+
+**Advanced Syntax for Claims**
+
+- ASC 1.0 Implementer's Draft（ID1）公開のための事務処理（Mark & Hodari 担当）
+
+**Conformance & Certification**
+
+- Issue #1437: 最終 Conformance Profile の策定（Edmund 担当）
+- Issue #1469: eKYC & IDA ネガティブテスト
+
+**Authority（新 work item）**
+
+- PR #1 のレビューと議論
+- Authority Charter のレビュー・アーキテクチャ検討
+- リポジトリ管理（README・CONTRIBUTING.md・LICENSE.md 整備）
+- AIIM CG との連携調整
+
+**Profiles & Registries**
+
+- リポジトリ管理セットアップ
+- eKYC & mDL ディスカッションペーパーの高レベルレビュー
+- Purpose & Scope に関するフィードバック収集
+- 優先アクションアイテムとタイムラインの確定
+
+**Implementer Clinic / AOB**
+
+### 2026-03-11 コール中止
+
+Hodari McClain が直前にコール中止を告知した。理由は Hodari 自身の都合と Mark Haine の体調不良であり、翌週に再開する旨が伝えられた。Rachel O'Connell がすぐに了解の返信を送り「Mark, hope you feel better soon」と添えた。
+
+### 2026-03-25 定例コール
+
+Mark Haine が送付した議題メールより。3月4日からほぼ同じ構成を引き継いでいるが、以下の変化が見られる。
+
+- **ASC 1.0 公開レビュー中**（3月16日開始）であることが明記され、進行中のレビューへの参加が促された
+- **Delegated Authority** として「PR #1 のレビュー（Rune 担当）」と「Charter レビュー・アーキテクチャ議論」が引き続き議題に
+- **Profiles & Registries** で Juliana Cafik が提案する「Format Agnostic Digital Identity Claims and Values」ディスカッションペーパーへのフィードバック収集
+- 外部組織・イベントのカレンダー共有（OIDF Google カレンダーへの追加）
 
 ---
 
 ## 4. メーリングリストの主要スレッド
 
-メーリングリスト（`openid-specs-ekyc-ida@lists.openid.net`）の 2026年3月アーカイブ（`https://lists.openid.net/pipermail/openid-specs-ekyc-ida/2026-March/`）は存在が確認されているが、本記事執筆時点でアーカイブインデックスページへのアクセスができず（HTTP 404）、個別スレッドの内容を取得できなかった。
+メーリングリスト（`openid-specs-ekyc-ida@lists.openid.net`）の 2026年3月アーカイブは週別形式で公開されており、以下のスレッドが確認された。
 
-公開アナウンスの内容から、以下の議題がメーリングリストでも議論されていた可能性が高い：
+### [WG Discussion Paper Updated Purpose & Scope](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260309/001012.html) — 2026-03-10 開始
 
-- ASC 1.0 Draft -01 の技術的内容（race condition 修正、Transformed Claims の関数定義）
-- OpenID Connect for Identity Assurance 1.0 Errata の具体的な修正内容確認
-- NIST SP 1800-42 に対応する新 work item の方向性
+Juliana Cafik（Identity Standards & Solutions Architect、独立エキスパート）が新 work item に向けたディスカッションペーパーの「Purpose & Scope」更新版を WG 全体に共有したスレッド。
+
+ペーパーのタイトルは **"eKYC Format-Agnostic Digital Identity Claims & Values for Cross-Sector Compliance & Examiner Defence"**。金融・行政などセクターを横断した規制対応のために、フォーマット非依存の形でデジタル ID クレームと値を定義することを目指す。更新版は GitHub リリースとして公開され、WG メンバーへのレビューと直接フィードバックが呼びかけられた。
+
+このペーパーは 3月4日議題の「eKYC & mDL ディスカッションペーパー」および 3月25日議題の「Format Agnostic Digital Identity Claims and Values」と同一の作業の流れに位置し、4月に正式発足する eKYC work item for mDL adoption の概念的な原型となったと考えられる。
+
+### [Canceling today's call](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260309/001013.html) — 2026-03-11
+
+Hodari McClain が 3月11日のコール当日に中止を告知したスレッド（全3通）。「都合のつかない予定と Mark の体調不良」を理由に挙げ、翌週再開と案内した。Rachel O'Connell が即座に了解の返信をした。
+
+### [Format Agnostic Digital Identity Claims and Values Discussion Paper](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260323/001016.html) — 2026-03-25 開始
+
+3月25日コール終了後に Juliana Cafik が最新版ディスカッションペーパーへのリンクをリストに共有したスレッド。ペーパーの内容はデジタル ID クレームと値の「フォーマット非依存な」標準化であり、OpenID Foundation GitHub リポジトリにホスティングされている。レビューと直接連絡を呼びかけた。
 
 ---
 
@@ -144,5 +203,10 @@ OIDF は本プロジェクトに2年間参加しており、レポートには O
 - [OpenID launches working group to ease KYC with mDLs — Biometric Update](https://www.biometricupdate.com/202604/openid-launches-working-group-to-ease-kyc-with-mdls) — 外部メディアによる同トピック報道
 - [eKYC & IDA WG 公式ページ](https://openid.net/wg/ekyc-ida/) — WG 概要・仕様一覧
 - [eKYC & IDA WG 仕様一覧](https://openid.net/wg/ekyc-ida/specifications/) — 管理仕様の一覧
-- [openid-specs-ekyc-ida メーリングリスト アーカイブ](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/) — 月次メーリングリストアーカイブ（2026年3月分は本記事執筆時点でアクセス不可）
-- [Bitbucket openid/ekyc-ida リポジトリ](https://bitbucket.org/openid/ekyc-ida/) — 議事録・仕様ドラフトのホスティング先
+- [openid-specs-ekyc-ida メーリングリスト アーカイブ](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/) — 週別アーカイブ一覧
+- [ML: eKYC and IDA WG Agenda 04-03-2026](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260302/001011.html) — Mark Haine による 3/4 議題メール
+- [ML: WG Discussion Paper Updated Purpose & Scope](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260309/001012.html) — Juliana Cafik による Purpose & Scope 更新共有（3/10）
+- [ML: Canceling today's call](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260309/001013.html) — 3/11 コール中止告知
+- [ML: eKYC and IDA WG Agenda 25-03-2026](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260323/001015.html) — Mark Haine による 3/25 議題メール
+- [ML: Format Agnostic Digital Identity Claims and Values Discussion Paper](https://lists.openid.net/pipermail/openid-specs-ekyc-ida/Week-of-Mon-20260323/001016.html) — Juliana Cafik によるペーパー共有（3/25）
+- [Bitbucket openid/ekyc-ida リポジトリ](https://bitbucket.org/openid/ekyc-ida/) — 議事録・仕様ドラフトのホスティング先（2026年3月の議事録ページは本記事執筆時点でアクセス不可）
