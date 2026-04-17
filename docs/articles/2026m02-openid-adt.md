@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation Australian Digital Trust CG 活動レポート (2026年2月)"
+reviewed: true
 ---
 
 # OpenID Foundation Australian Digital Trust CG 活動レポート (2026年2月)
@@ -12,7 +13,7 @@ title: "OpenID Foundation Australian Digital Trust CG 活動レポート (2026�
 
 Australian Digital Trust Community Group（ADT CG）は、OpenID Foundation（OIDF）の傘下で運営されるコミュニティグループであり、オーストラリアにおけるデジタルアイデンティティおよびトラスト・エコシステムに関する専門家が協働するための中立的なプラットフォームを提供している。グループはDima Postnikov、Victoria Richardson、Dave Hyland、Brad Carr、Olaf Greweの5名が共同議長を務め、隔週月曜日（オーストラリア東部標準時 17:00）にビデオ会議を開催している。
 
-2026年2月は、2024年11月30日に施行されたオーストラリアの**Digital ID Act 2024**の実装が本格化する時期にあたり、ADT CG では国際的なトラストフレームワークとの相互運用性分析および政府・民間エコシステムへの対応が主な関心事となっていた。
+2026年2月は、2024年12月1日に施行されたオーストラリアの**Digital ID Act 2024**の実装が本格化する時期にあたり、ADT CG では国際的なトラストフレームワークとの相互運用性分析および政府・民間エコシステムへの対応が主な関心事となっていた。
 
 月中の主な活動は以下のとおり：
 
@@ -105,7 +106,7 @@ ADT CG は隔週月曜日に開催するスケジュールであり、参加者�
 
 ### Australian Digital ID System の実装状況
 
-2026年2月時点で、Australia の Digital ID Act 2024（2024年11月30日施行）に基づく Australian Government Digital ID System（AGDIS）は公的機関向け参加申請フェーズにあった。ACCC（Australian Competition and Consumer Commission）が Digital ID Regulator として機能しており、民間セクターへの拡大は Act 施行から2年以内（2026年12月まで）に予定されていた。
+2026年2月時点で、Australia の Digital ID Act 2024（2024年12月1日施行）に基づく Australian Government Digital ID System（AGDIS）は公的機関向け参加申請フェーズにあった。ACCC（Australian Competition and Consumer Commission）が Digital ID Regulator として機能しており、民間セクターへの拡大は Act 施行から2年以内（2026年12月まで）に予定されていた。
 
 ADT CG はこうした政策的背景のもと、オーストラリアの規制枠組みと国際標準との整合性確保において重要な役割を担っていた。
 
