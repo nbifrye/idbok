@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation R&E WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation R&E WG 活動レポート (2026年3月)
@@ -54,7 +55,7 @@ R&E WG の会議議事録は非公開（non-public）である。メーリング
 - **実装数**: 9実装
 - **主催組織**: NORDUnet、SUNET、SURF、GÉANT、Internet2 などの R&E インフラ機関が中心
 
-OpenID Foundation が発表した公式記事では「研究・教育コミュニティの早期かつ熱心な参加が基盤を築いた（The early and enthusiastic support from the Research and Education community was foundational.）」と評価されており、R&E セクターが OpenID Federation の普及において中心的な役割を担っていることが改めて示された。
+イベントは GARR の Davide Vaghetti と SURF の Niels van Dijk が共同主催しており、両者とも R&E インフラ機関の代表者である。OpenID Foundation の Gail Hodges エグゼクティブディレクターは「信頼管理仕様の選択を模索しているエコシステムは、これらの先駆的な実装者・採用者の努力から恩恵を受けるだろう（Ecosystems that are exploring what trust management specifications are right for their needs will stand to benefit from the hard work of these early innovators and adopters.）」と評価しており、R&E セクターが OpenID Federation 普及の実践的な牽引役となっていることが示された。
 
 このインターオプは OpenID Federation 1.0 の最終仕様承認と同日（2月17日承認）の直前に行われており、1.0 策定の完了を祝うコミュニティイベントとしての性格も持っていた。
 
