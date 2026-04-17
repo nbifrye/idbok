@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation AI Identity Management CG 活動レポート (2026年2月)"
+reviewed: true
 ---
 
 # OpenID Foundation AI Identity Management CG 活動レポート (2026年2月)
@@ -8,7 +9,7 @@ title: "OpenID Foundation AI Identity Management CG 活動レポート (2026年2
 
 ## 1. 概要
 
-**AI Identity Management Community Group（AIIM CG）** は、OpenID Foundation が 2025 年に設立した Community Group で、AI エージェントとデジタルアイデンティティ基盤の交差点を探求する。共同議長は Atul Tulshibagwale（SGNL）と Jeff Lombardo（AWS）が務め、三つのサブグループ――Taxonomy（用語集）、Use Cases（ユースケース）、Threat Modelling（脅威モデリング）――が隔週木曜日 9am PT の定例ミーティングを持ち回りで開催している。
+**AI Identity Management Community Group（AIIM CG）** は、OpenID Foundation が 2025 年に設立した Community Group で、AI エージェントとデジタルアイデンティティ基盤の交差点を探求する。共同議長は Atul Tulshibagwale（SGNL）、Tobin South（WorkOS）、Jeff Lombardo（AWS）が務め、三つのサブグループ――Taxonomy（用語集）、Use Cases（ユースケース）、Threat Modelling（脅威モデリング）――が隔週木曜日 9am PT の定例ミーティングを持ち回りで開催している。
 
 2026 年 2 月は、1 月 22 日の Threat Modelling サブグループによる MCP Identity Threat Matrix 策定セッションに続き、その成果を NIST への意見提出（3 月 6 日付）へと昇華させる集中作業の期間にあたる。GitHub 上では「エージェントのオントロジー的定義」と「MCP のスコープ／RAR 問題」という二つの新規議論が起票され、コミュニティの関心が認証・認可の「プリミティブ層」から「エージェントとは何か」という基礎的問いへと広がりつつある局面だった。
 
