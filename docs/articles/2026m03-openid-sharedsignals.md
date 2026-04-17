@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation Shared Signals WG 活動レポート (2026年3月)"
+reviewed: true
 ---
 
 # OpenID Foundation Shared Signals WG 活動レポート (2026年3月)
@@ -44,7 +45,7 @@ Thomas Darimont がテスト整備の遅れを認め、直近のフィードバ�
 
 #### Microsoft による SSF 採用
 
-Sean O'Dell より、Microsoft が ITDR（Intelligent Threat Detection and Response）プラットフォームに SSF のサポートを追加する計画であることが報告された。具体的なユースケースとして以下が挙げられた：
+Sean O'Dell より、Microsoft が ITDR（Identity Threat Detection and Response）プラットフォームに SSF のサポートを追加する計画であることが報告された。具体的なユースケースとして以下が挙げられた：
 
 - Graph API 呼び出しを介さないセッション失効
 - メッセージングアクセス制御
