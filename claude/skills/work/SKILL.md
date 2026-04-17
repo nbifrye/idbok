@@ -83,7 +83,7 @@ git reset --hard origin/main
 git checkout main
 
 # 記事の変更をコミット
-git add docs/specs/ docs/articles/
+git add docs/specs/ docs/articles/ docs/oidf/
 git commit -m "適切なコミットメッセージ"
 
 # 自己改善の変更がある場合は別コミット

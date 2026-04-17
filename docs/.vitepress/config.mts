@@ -40,6 +40,53 @@ function generateArticlesSidebar() {
     });
 }
 
+// OIDF WG/CG 表示順のマスタリスト。`claude/skills/oidf/SKILL.md` のレジストリと
+// `claude/hooks/session-start.sh` の oidf_registry と同期する（表示順のため順序は重要だが
+// WG 追加時は 3 箇所同時に更新すること）。
+const OIDF_WG_ORDER: Array<{ id: string; label: string }> = [
+  { id: "connect", label: "AB/Connect WG" },
+  { id: "authzen", label: "AuthZEN WG" },
+  { id: "dcp", label: "Digital Credentials Protocols WG" },
+  { id: "ekyc-ida", label: "eKYC & Identity Assurance WG" },
+  { id: "fapi", label: "FAPI WG" },
+  { id: "igov", label: "iGov WG" },
+  { id: "ipsie", label: "IPSIE WG" },
+  { id: "modrna", label: "MODRNA WG" },
+  { id: "rande", label: "R&E WG" },
+  { id: "sharedsignals", label: "Shared Signals WG" },
+  { id: "aiim", label: "AI Identity Management CG" },
+  { id: "adt", label: "Australian Digital Trust CG" },
+  { id: "dade", label: "Death and the Digital Estate CG" },
+  { id: "escg", label: "Ecosystem Support CG" },
+];
+
+function generateOidfSidebar() {
+  const baseDir = path.join(docsDir, "oidf");
+  const groups = OIDF_WG_ORDER.map(({ id, label }) => {
+    const wgDir = path.join(baseDir, id);
+    if (!fs.existsSync(wgDir) || !fs.statSync(wgDir).isDirectory()) return null;
+    const files = fs
+      .readdirSync(wgDir)
+      .filter((f) => f.endsWith(".md") && f !== "index.md")
+      .sort()
+      .reverse();
+    const items = [
+      { text: "概要", link: `/oidf/${id}/` },
+      ...files.map((f) => {
+        const content = fs.readFileSync(path.join(wgDir, f), "utf-8");
+        const title = extractTitle(content) || f.replace(".md", "");
+        return { text: title, link: `/oidf/${id}/${f.replace(".md", "")}` };
+      }),
+    ];
+    return { text: label, collapsed: true, items };
+  }).filter((g): g is { text: string; collapsed: boolean; items: { text: string; link: string }[] } => g !== null);
+
+  return [
+    { text: "OIDF ホーム", link: "/oidf/" },
+    ...groups,
+  ];
+}
+
 export default withMermaid({
   lang: "ja",
   title: "idbok",
@@ -56,10 +103,12 @@ export default withMermaid({
     nav: [
       { text: "ホーム", link: "/" },
       { text: "仕様解説", link: "/specs/" },
+      { text: "OIDF", link: "/oidf/" },
       { text: "記事", link: "/articles/" },
     ],
     sidebar: {
       "/specs/": [{ text: "仕様解説", items: generateSpecsSidebar() }],
+      "/oidf/": generateOidfSidebar(),
       "/articles/": [{ text: "記事", items: generateArticlesSidebar() }],
     },
     search: {

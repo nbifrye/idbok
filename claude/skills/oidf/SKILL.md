@@ -50,7 +50,7 @@ OpenID Foundation の各 Working Group (WG) / Community Group (CG) の活動を 
 - `<YYYY> M<n>` が以下の条件をすべて満たすことを確認:
   - 対象 WG/CG の `since` 以降の月
   - **完了済み**の月（`date +%Y-%m-%d` で今日の日付を確認し、現在進行中の月は対象外）
-- 同じ `<year>m<mm>-openid-<wg-id>.md` が既に存在する場合は重複として中止（`mm` は 2 桁ゼロパディング）
+- 同じ `docs/oidf/<wg-id>/<year>-<mm>.md` が既に存在する場合は重複として中止（`mm` は 2 桁ゼロパディング）
 
 ### 2. 一次情報の収集（深掘り探索チェックリスト）
 
@@ -121,10 +121,11 @@ WebSearch / WebFetch を使い、以下の順序で対象 WG/CG の対象月の�
 
 ### 3. ファイル作成
 
-- パス: `docs/articles/<year>m<mm>-openid-<wg-id>.md`
-  - 例: `docs/articles/2026m03-openid-fapi.md`
-  - `<mm>` は **2 桁ゼロパディング**（`m01`〜`m12`）
-  - 注: ファイル名先頭は **対象月** であり、**執筆日ではない**。これは遡及執筆でもサイドバーの並び（対象月降順）が安定するための設計
+- パス: `docs/oidf/<wg-id>/<year>-<mm>.md`
+  - 例: `docs/oidf/fapi/2026-03.md`
+  - `<mm>` は **2 桁ゼロパディング**（`01`〜`12`）
+  - 注: ファイル名は **対象月** であり、**執筆日ではない**。これは遡及執筆でも WG ごとのサイドバーの並び（対象月降順）が安定するための設計
+  - 注: 対応する WG/CG ディレクトリ（`docs/oidf/<wg-id>/`）が既に存在することを前提とする。新規 WG/CG 追加時はディレクトリと `index.md` も作成する
 - フロントマター: `title` のみ
   - `reviewed: true` は絶対に付与しない（`/review` スキルのみが付与）
 
@@ -196,7 +197,7 @@ title: "OpenID Foundation <WG/CG 名> WG/CG 活動レポート (YYYY年M月)"
 
 ### 6. フォーマット
 
-`npx oxfmt docs/articles/<year>m<mm>-openid-<wg-id>.md --write` でフォーマット（失敗した場合はスキップしてよい）。
+`npx oxfmt docs/oidf/<wg-id>/<year>-<mm>.md --write` でフォーマット（失敗した場合はスキップしてよい）。
 
 ### 7. セルフレビュー
 
@@ -236,4 +237,6 @@ WG の組織関係や仕様間の関係を示す場合に限り使用する。�
 
 1. 本ファイルの「対象 WG/CG レジストリ」表を更新
 2. `claude/hooks/session-start.sh` の OIDF カバレッジ計算ロジック内の WG ID 配列と `since` 値を同期更新
-3. 両ファイルの変更を同じコミットに含める
+3. `docs/.vitepress/config.mts` の `OIDF_WG_ORDER` 配列に WG ID と表示名を追加（サイドバー表示順を制御）
+4. 新規 WG/CG の場合は `docs/oidf/<wg-id>/index.md` を作成
+5. 上記変更を同じコミットに含める

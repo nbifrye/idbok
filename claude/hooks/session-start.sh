@@ -7,7 +7,7 @@ echo "=== idbok Session Status ==="
 
 # --- 未レビュー記事の検出 ---
 unreviewed=()
-for f in "$PROJECT_DIR"/docs/specs/*.md "$PROJECT_DIR"/docs/articles/*.md; do
+for f in "$PROJECT_DIR"/docs/specs/*.md "$PROJECT_DIR"/docs/articles/*.md "$PROJECT_DIR"/docs/oidf/*/*.md; do
   [ -f "$f" ] || continue
   basename=$(basename "$f")
   [ "$basename" = "index.md" ] && continue
@@ -86,7 +86,7 @@ for y in $(seq "$latest_year" -1 2020); do
         continue
       fi
       mm=$(printf '%02d' "$m")
-      file="$PROJECT_DIR/docs/articles/${y}m${mm}-openid-${wg}.md"
+      file="$PROJECT_DIR/docs/oidf/${wg}/${y}-${mm}.md"
       if [ ! -f "$file" ]; then
         missing_slots+=("${y}-${mm}:${wg}")
       fi
