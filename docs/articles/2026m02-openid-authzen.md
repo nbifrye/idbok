@@ -1,5 +1,6 @@
 ---
 title: "OpenID Foundation AuthZEN WG 活動レポート (2026年2月)"
+reviewed: true
 ---
 
 # OpenID Foundation AuthZEN WG 活動レポート (2026年2月)
@@ -56,7 +57,7 @@ AuthZEN Working Group (WG) は、Policy Decision Point (PDP) と Policy Enforcem
 
 **主要議題と決定事項:**
 
-- **MCP 次のステップ**: Atul の COAZ（Context-Oriented AuthZation）プロポーザルと Martin Besozzi の提案の 2 つが並行して進んでいることを確認。次回以降で統合方針を議論。
+- **MCP 次のステップ**: Atul の COAZ（Compatible with OpenID AuthZen）プロポーザルと Martin Besozzi の提案の 2 つが並行して進んでいることを確認。次回以降で統合方針を議論。
 - **認定シナリオの更新**: 認定レベルを「Core/Properties 分割」方式で確定。Core は識別子のみのテスト、Properties はサブジェクト・リソース・アクションの属性評価を含む。
 - **バッチエラー処理の厳格化**: PDP は HTTP 200 に正しい評価件数を返すこととし、失敗ケースは HTTP エラーではなく `"decision": false` で表現する。
 - **デフォルト値のマージ動作**: エンティティレベルでの上書き（サブフィールドマージではなく）とすることを決定。
@@ -79,7 +80,7 @@ AuthZEN Working Group (WG) は、Policy Decision Point (PDP) と Policy Enforcem
 ### Fwd: first draft of AuthZen profile for MCP（PR #435 告知、2026-02-04）
 
 - **発端**: Atul Tulshibagwale が PR #435「AuthZen profile for MCP の最初のドラフト」（tulshi 著）を ML に転送して周知。
-- **内容**: PR では MCP メソッドを AuthZEN の評価リクエストにマッピングする「COAZ（Context-Oriented AuthZation）」拡張の仕様ドラフトが含まれる。マルチバリュー評価マッピング（複数の権限チェックが必要なツール）や AuthZEN Search API の活用案が議論の焦点となった。
+- **内容**: PR では MCP メソッドを AuthZEN の評価リクエストにマッピングする「COAZ（Compatible with OpenID AuthZen）」拡張の仕様ドラフトが含まれる。マルチバリュー評価マッピング（複数の権限チェックが必要なツール）や AuthZEN Search API の活用案が議論の焦点となった。
 
 ### Cert profile update: sub-levels, batch merge test, discovery level, properties-based search（2026-02-19）
 
