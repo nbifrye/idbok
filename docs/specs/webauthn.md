@@ -1,5 +1,6 @@
 ---
 title: "WebAuthn - Web Authentication API Level 2"
+reviewed: true
 ---
 
 # WebAuthn - Web Authentication API Level 2
@@ -171,11 +172,12 @@ RPは全オーセンティケーターを信頼する（`none`相当の扱い）
 
 ### 拡張機能（Extensions）
 
-WebAuthnは拡張機能による機能追加メカニズムを持つ。代表的な拡張として：
+WebAuthnは拡張機能による機能追加メカニズムを持つ。Level 2で定義されている代表的な拡張として：
 
 - **`credProps`**: クレデンシャルのプロパティ（常駐か否か等）を返す
 - **`largeBlob`**: オーセンティケーターに任意のデータを保存する
-- **`prf`**: HMAC Pseudo-Random Functionで鍵素材を派生させる（暗号化用途）
+
+なお、**`prf`**（HMAC Pseudo-Random Functionで鍵素材を派生させる拡張）はWebAuthn Level 3（候補勧告）で新たに定義されたものであり、Level 2には含まれない。
 
 ## セキュリティに関する考慮事項
 
