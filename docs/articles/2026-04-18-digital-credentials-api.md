@@ -1,5 +1,6 @@
 ---
 title: "Digital Credentials API — ブラウザが本人確認の新インフラになる日"
+reviewed: true
 ---
 
 # Digital Credentials API — ブラウザが本人確認の新インフラになる日
@@ -108,7 +109,7 @@ Safariは現時点でこのフォーマット（`org-iso-mdoc`）のみをサポ
 
 W3C Verifiable CredentialsをJWT形式で表現し、SD-JWT（Selective Disclosure JWT）による選択的開示を組み合わせたフォーマット。ChromeはOpenID4VPプロトコルを通じてこのフォーマットに対応する。
 
-EU域内では `dc+sd-jwt` 形式がEUDI Walletの標準形式として採用されており、OpenID FoundationのOID4VC認定プログラムによるインターオペラビリティ認証も2026年2月より開始された。
+EU域内では `dc+sd-jwt` 形式がEUDI Walletの標準形式として採用されており、OpenID FoundationのOID4VCセルフ認証プログラム（適合性検査）も2026年2月より開始された。
 
 ### DCQL（Digital Credentials Query Language）
 
