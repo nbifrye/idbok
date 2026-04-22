@@ -32,15 +32,51 @@ OpenID Foundation の各 Working Group (WG) / Community Group (CG) の活動を 
 | `ekyc-ida` | eKYC & Identity Assurance WG | https://openid.net/wg/ekyc-ida/ | https://github.com/openid/ekyc-ida | https://lists.openid.net/mailman/listinfo/openid-specs-ekyc-ida | https://lists.openid.net/pipermail/openid-specs-ekyc-ida/ | https://bitbucket.org/openid/ekyc-ida/wiki/browse/ | 2024-01 |
 | `escg` | Ecosystem Support CG | https://openid.net/cg/ecosystem-support-community-group/ | https://github.com/openid/cg-ecosystem-support | https://lists.openid.net/mailman/listinfo/openid-ecosystem-support | https://lists.openid.net/pipermail/openid-ecosystem-support/ | non-public | 2024-01 |
 | `fapi` | FAPI WG | https://openid.net/wg/fapi/ | https://github.com/openid/fapi | https://lists.openid.net/mailman/listinfo/openid-specs-fapi | https://lists.openid.net/pipermail/openid-specs-fapi/ | https://bitbucket.org/openid/fapi/wiki/browse/ (FAPI_Meeting_Notes_YYYY) | 2024-01 |
-| `igov` | iGov WG | https://openid.net/wg/igov/ | https://github.com/openid/iGov | https://lists.openid.net/mailman/listinfo/openid-specs-igov | https://lists.openid.net/pipermail/openid-specs-igov/ | non-public | 2024-01 |
+| `igov` | iGov WG | https://openid.net/wg/igov/ | https://bitbucket.org/openid/igov/ （GitHub 移行計画進行中、2026-03〜） | https://lists.openid.net/mailman/listinfo/openid-specs-igov | https://lists.openid.net/pipermail/openid-specs-igov/ | non-public | 2024-01 |
 | `ipsie` | IPSIE WG | https://openid.net/wg/ipsie/ | https://github.com/openid/ipsie | https://lists.openid.net/mailman/listinfo/openid-specs-ipsie | https://lists.openid.net/pipermail/openid-specs-ipsie/ | HackMD https://hackmd.io/zbL4VSdhTcWnxlSwl43qVA | 2024-10 |
-| `modrna` | MODRNA WG | https://openid.net/wg/modrna/ | https://github.com/openid/MODRNA | https://lists.openid.net/mailman/listinfo/openid-specs-mobile-profile | https://lists.openid.net/pipermail/openid-specs-mobile-profile/ | non-public | 2024-01 |
+| `modrna` | MODRNA WG | https://openid.net/wg/modrna/ | https://bitbucket.org/openid/mobile/ | https://lists.openid.net/mailman/listinfo/openid-specs-mobile-profile | https://lists.openid.net/pipermail/openid-specs-mobile-profile/ | non-public | 2024-01 |
 | `rande` | R&E WG | https://openid.net/wg/rande/ | （公開リポジトリは確認できず） | https://lists.openid.net/mailman/listinfo/openid-specs-rande | https://lists.openid.net/pipermail/openid-specs-rande/ | non-public | 2024-01 |
 | `sharedsignals` | Shared Signals WG | https://openid.net/wg/sharedsignals/ | https://github.com/openid/sharedsignals | https://lists.openid.net/mailman/listinfo/openid-specs-risc | https://lists.openid.net/pipermail/openid-specs-risc/ | https://github.com/openid/sharedsignals/wiki/Meetings | 2024-01 |
 
 「議事録所在」が `non-public` の WG/CG（Connect, iGov, MODRNA, R&E, AIIM, Ecosystem Support 等）については、議事録が公開されていないため、メーリングリストと GitHub の議論掘り下げで補完する。
 
 アーカイブ済みの WG（EAP, FastFed, HEART 等）は本レジストリには含めない。新規記事の対象となるのは現在アクティブな WG/CG のみ。
+
+## データソースの既知の制約
+
+執筆前に以下を理解しておくこと。これらは過去記事の調査で判明した恒久的/構造的制約であり、毎回同じことで詰まらないようにするためのメモ。
+
+### pipermail アーカイブの URL 形式
+
+OpenID Foundation の pipermail は **リストによって月次インデックスの提供有無が異なる**:
+
+| 形式 | リスト |
+|---|---|
+| **月次 `YYYY-Month/` が提供されている** | `openid-specs-ab` (Connect), `openid-specs-authzen`, `openid-specs-fapi`, `openid-specs-risc` (Shared Signals), `openid-digital-directives` (DADE) |
+| **週次 `Week-of-Mon-YYYYMMDD/` のみ** | `openid-specs-digital-credentials-protocols` (DCP), `openid-specs-ipsie`, `openid-au-digital-trust` (ADT), `openid-specs-igov`, `openid-aiim`, `openid-specs-mobile-profile` (MODRNA) |
+
+週次のみのリストで月次 URL を叩くと必ず 404 になる。親インデックス（`https://lists.openid.net/pipermail/<list>/`）を先に取得してリストの形式を確認すること。
+
+### 公開アーカイブが存在しないリスト
+
+- **`openid-ecosystem-support` (ESCG)**: 2025-10 以降は private list 運用に切り替わり、公開アーカイブに **一切エントリがない**。2025-09 以前のみ公開されている。ESCG の月次レポートでは「公開インデックスに該当月の公開エントリなし」と中立に記述し、代替情報源（GitHub、openid.net アナウンス）で補完する
+- **`openid-specs-mobile-profile` (MODRNA)**: アクティブな月とゼロ投稿の月が混在する。週次インデックスに該当月のエントリが一切ない場合、当該月は ML 投稿ゼロが事実
+
+### Bitbucket リポジトリの取り扱い
+
+- Bitbucket Cloud は SPA (JavaScript レンダリング) で HTML を生成するため、**WebFetch では本文を取得できない**（認証の有無以前の問題）。Bitbucket 依存 WG（eKYC-IDA, FAPI, iGov, MODRNA）の議事録・Issue 詳細は WebFetch 経由では確認できないと理解しておくこと
+- 代替手段: (1) 議事録は ML 投稿（Draft meeting notes スレッド）から内容を取得、(2) Issue 内容は `Issue #NNN: <title>` 形式の ML スレッドで概要を把握、(3) 仕様ドラフト本体は `openid.net/specs/` で公開版を取得
+- **Bitbucket Cloud Issues/Wiki は 2026-08-20 に完全削除予定**（2026-03 の Atlassian 通知）。OpenID 配下の移行先（GitHub / Jira / Confluence 等）を随時追跡すること
+- iGov は 2026-03 に GitHub 移行計画が ML で告知済み。RFC Markdown 版の新規リポジトリが `github.com/openid/` 配下に作成される予定
+
+### 存在しない GitHub リポジトリ（過去記事の誤記訂正）
+
+- `github.com/openid/MODRNA`: **存在しない**。MODRNA WG の公式リポジトリは `bitbucket.org/openid/mobile/`
+- `github.com/openid/iGov`: **存在しない**。iGov WG の公式リポジトリは `bitbucket.org/openid/igov/`（GitHub 移行計画進行中）
+
+### openid.net の間欠障害
+
+`openid.net/wg/<wg>/` `/news/` `/specs/` 等は 503 を返すことがある。数回試行すれば復旧することが多い。復旧しない場合でも記事本文に「503 エラー」と書かず、後日再試行するか、他の情報源で代替する。
 
 ## 手順
 
@@ -230,6 +266,7 @@ WG の組織関係や仕様間の関係を示す場合に限り使用する。�
 - **重複禁止**: 同じ WG × 月の記事が既に存在する場合は新規作成しない
 - **一次情報主義**: 出典のないクレームを書かない。確認できないことは「確認できなかった」と明示する
 - **議論の再構成主義**: 公式アナウンスの寄せ集めではなく、ML・議事録・GitHub から「どのような議論があったか」を本文の中心に据える
+- **ツールアクセス失敗は本文に書かない**: 「503 エラーで取得できなかった」「404 のためアクセス不可」「認証エラー」等の執筆時のネットワーク障害メモは **記事本文に一切含めない**。読者にとって無関係な作業ログだからである。取得できなかった場合は、(1) リトライする、(2) 代替情報源（親インデックス、週次アーカイブ、GitHub issue 等）で補完する、(3) それでも情報がない場合は「該当月に公開された記録は確認できなかった」と**中立に**記述する（ツールエラーへの言及なし）。§8 参考情報源の URL も「(アクセス不可)」等の付記は付けない。**「本稿執筆時点で」「調査時点で」といった時刻限定の作業メモも同様に禁止**
 
 ## レジストリ更新時の手順
 
