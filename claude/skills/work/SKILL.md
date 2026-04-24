@@ -12,16 +12,16 @@ Claude Code on Webのスケジュールタスクとして定期的に実行さ�
 
 ### 1. 現状の確認
 
-SessionStartフックの出力を確認し、以下の二点を把握する:
-
-- 未レビュー記事の有無（`STATUS:` 行）
-- 未カバーの OpenID Foundation 月次レポートスロット（`OIDF_COVERAGE_MISSING:` 行）
-
-フック出力が確認できない場合は、以下のコマンドで直接フックを実行する:
+以下のコマンドを実行して最新の状態を取得する（SessionStart フックの出力は使用しない）:
 
 ```bash
 bash claude/hooks/session-start.sh
 ```
+
+出力から以下の二点を把握する:
+
+- 未レビュー記事の有無（`STATUS:` 行）
+- 未カバーの OpenID Foundation 月次レポートスロット（`OIDF_COVERAGE_MISSING:` 行）
 
 **作業開始前に必ず `main` を `origin/main` に同期する。** Claude Code on Web ではセッションがフィーチャーブランチ上で起動し、ローカル `main` が `origin/main` から大幅に遅れていることがある。この状態でフィーチャーブランチ上でファイルを編集してから `git checkout main` すると、`stash`/`checkout` のコンフリクトで作業が複雑化する。最初に以下を実行してから編集に入ること:
 
