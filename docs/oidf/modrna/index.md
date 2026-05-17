@@ -9,7 +9,7 @@ OpenID Foundation の MODRNA (Mobile Operator Discovery, Registration and AutheN
 ## 外部リンク
 
 - WG ページ: [openid.net/wg/modrna](https://openid.net/wg/modrna/)
-- GitHub: [openid/MODRNA](https://github.com/openid/MODRNA)
+- 仕様リポジトリ: [bitbucket.org/openid/mobile](https://bitbucket.org/openid/mobile/src/master/) (`github.com/openid` 配下に MODRNA の公式リポジトリは存在しない)
 - メーリングリスト: [openid-specs-mobile-profile](https://lists.openid.net/mailman/listinfo/openid-specs-mobile-profile) / [アーカイブ](https://lists.openid.net/pipermail/openid-specs-mobile-profile/)
 - 議事録: non-public
 
