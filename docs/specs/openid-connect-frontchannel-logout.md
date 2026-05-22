@@ -1,12 +1,13 @@
 ---
 title: "OpenID Connect Front-Channel Logout 1.0"
+reviewed: true
 ---
 
 # OpenID Connect Front-Channel Logout 1.0
 
 ## 1. 概要
 
-OpenID Connect Front-Channel Logout 1.0 は、OpenID Provider (OP) からリライングパーティ (Relying Party, RP) に対してエンドユーザーのセッション終了を通知するための、ユーザーエージェント (ブラウザ) を経由したフロントチャネル方式のログアウトメカニズムを定義する仕様である。2022 年 9 月 12 日に Final として発行され、編集者は M. Jones (Self-Issued Consulting、当時 Microsoft) である。
+OpenID Connect Front-Channel Logout 1.0 は、OpenID Provider (OP) からリライングパーティ (Relying Party, RP) に対してエンドユーザーのセッション終了を通知するための、ユーザーエージェント (ブラウザ) を経由したフロントチャネル方式のログアウトメカニズムを定義する仕様である。2022 年 9 月 12 日に Final として発行され、著者は Michael B. Jones (Microsoft) である。
 
 本仕様は、OP が動的に構築したログアウトページ上に各 RP の `frontchannel_logout_uri` を `src` 属性に持つ `iframe` 要素を並べて埋め込み、ブラウザが各 iframe を読み込む過程で RP 側のセッション (Cookie や HTML5 ローカルストレージ等) をクリアさせるという仕組みを採る。OP が自身のページに RP の iframe を埋め込む点が特徴であり、Session Management 1.0 のように RP のページに OP の iframe を埋め込んで `postMessage` でセッション状態を継続的にポーリングする方式とは方向が逆である。
 
@@ -86,17 +87,19 @@ OP は Discovery のメタデータとして次の二つを公開する。
 
 RP は Dynamic Client Registration 等のクライアント登録時に次のメタデータを宣言する。
 
-- `frontchannel_logout_uri` (URI): OP がログアウトページ内に iframe として埋め込み、ブラウザに読み込ませる RP の URL。絶対 URI でなければならず、フラグメント (`#...`) を含めてはならない。クエリ文字列を含めることは許される
+- `frontchannel_logout_uri` (URI): OP がログアウトページ内に iframe として埋め込み、ブラウザに読み込ませる RP の URL。RFC 3986 に従う絶対 URI でなければならず、フラグメント (`#...`) を含めてはならない。クエリ文字列を含めることは許される。さらに、その scheme・domain・port は登録済みの Redirection URI のいずれかと一致しなければならない
 - `frontchannel_logout_session_required` (Boolean): RP が Logout URI 呼び出し時に `iss` と `sid` の両パラメータを必須とするかを示す。デフォルトは `false`
 
-`frontchannel_logout_uri` のスキームは通常 `https` であり、Web アプリケーションのトップレベルパスの一部として、ブラウザの通常のページとして提供されることが想定される。
+`frontchannel_logout_uri` のスキームは `https` を用いることが推奨される (SHOULD)。Web アプリケーションのトップレベルパスの一部として、ブラウザの通常のページとして提供されることが想定される。
 
 ### 5.3 OP の動作
 
 OP は、エンドユーザーのセッション終了時にそのセッションに紐づいているすべての RP の `frontchannel_logout_uri` を集約し、それらを `iframe` の `src` として並列に埋め込んだログアウトページを生成し、ユーザーエージェントに返す。各 RP がセッション識別を必要とする場合 (RP の `frontchannel_logout_session_required` が `true` の場合、あるいは OP の判断による場合)、OP は Logout URI に対し次のクエリパラメータを付与する。
 
 - `iss`: OP の Issuer 識別子。RP は自身が信頼する OP からの通知であることを確認するために用いる
-- `sid`: 当該 OP におけるエンドユーザーのセッション識別子。ID Token に含めた `sid` と一致する
+- `sid`: 当該 OP におけるエンドユーザーのセッション識別子。ID Token に含めた `sid` と一致する。構文は OAuth 2.0 の Client Identifier と同じ
+
+仕様上、これらのパラメータは OP が付与しても付与しなくてもよいが、どちらか一方を含める場合は両方を必ず一緒に含めなければならない (MUST)。また、`frontchannel_logout_session_supported` が `true` の場合、OP が発行する ID Token にも `sid` クレームが含められる。
 
 これらは ID Token 内の同名クレームと対応しており、RP は ID Token 受領時に保存した `(iss, sid)` の組と突き合わせることで、どのローカルセッションをクリアすればよいかを特定できる。
 
