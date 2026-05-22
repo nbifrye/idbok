@@ -1,5 +1,6 @@
 ---
 title: "OpenID Connect Client-Initiated Backchannel Authentication (CIBA) Core 1.0"
+reviewed: true
 ---
 
 # OpenID Connect Client-Initiated Backchannel Authentication (CIBA) Core 1.0
@@ -211,12 +212,14 @@ Push モードで発行される ID Token は、ID Token・Access Token・Refres
 
 #### Token Endpoint (CIBA 固有)
 
-| error                   | 意味                                                                                  |
-| ----------------------- | ------------------------------------------------------------------------------------- |
-| `authorization_pending` | 認可要求は処理中。Client は `interval` を維持してポーリング継続                       |
-| `slow_down`             | `authorization_pending` の派生。`interval` を **5 秒以上** 引き上げてポーリングを継続 |
-| `expired_token`         | `auth_req_id` が期限切れ。新規に認証要求を作り直す必要がある                          |
-| `access_denied`         | エンドユーザーが拒否した                                                              |
+| error                   | 意味                                                                             |
+| ----------------------- | -------------------------------------------------------------------------------- |
+| `authorization_pending` | 認可要求は処理中。Client は `interval` を維持してポーリング継続                  |
+| `slow_down`             | `authorization_pending` の派生。`interval` を 5 秒以上引き上げてポーリングを継続 |
+| `expired_token`         | `auth_req_id` が期限切れ。新規に認証要求を作り直す必要がある                     |
+| `access_denied`         | エンドユーザーが拒否した                                                         |
+| `invalid_grant`         | `auth_req_id` が無効、または他の Client に発行されたもの                         |
+| `unauthorized_client`   | Client が Push モードで構成されているため Token Endpoint からの取得ができない    |
 
 ### 5.7 クライアント認証
 
