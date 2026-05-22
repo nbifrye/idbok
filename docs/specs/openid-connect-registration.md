@@ -1,5 +1,6 @@
 ---
 title: "OpenID Connect Dynamic Client Registration 1.0"
+reviewed: true
 ---
 
 # OpenID Connect Dynamic Client Registration 1.0
@@ -139,7 +140,7 @@ flowchart LR
 `application_type` の値によって `redirect_uris` の制約が異なる。
 
 - `web` クライアント: `https` スキームのみ許容され、ホスト名に `localhost` を使ってはならない。`response_type=code id_token` 等の Implicit/Hybrid を使う場合は特に厳格に検証される
-- `native` クライアント: カスタム URI スキーム、または `http` のループバック (`127.0.0.1` / `[::1]`) のみ許容される
+- `native` クライアント: カスタム URI スキーム、または `http` のループバック URL (ホスト名は `localhost` / `127.0.0.1` / `[::1]`) のみ許容される
 
 これらの制約は、Authorization Code・ID Token を意図しない第三者に漏洩させないための基本防御である。
 
