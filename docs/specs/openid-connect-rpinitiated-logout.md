@@ -1,5 +1,6 @@
 ---
 title: "OpenID Connect RP-Initiated Logout 1.0"
+reviewed: true
 ---
 
 # OpenID Connect RP-Initiated Logout 1.0
@@ -72,7 +73,7 @@ sequenceDiagram
 
 ### 5.1 Logout Endpoint の発見
 
-RP は OP の Discovery レスポンス (OpenID Connect Discovery 1.0 で定義される `.well-known/openid-configuration`) から `end_session_endpoint` を取得する。このエンドポイントは HTTPS スキームでなければならない。クエリ部分を含んではならず、フラグメントも含んではならない。
+RP は OP の Discovery レスポンス (OpenID Connect Discovery 1.0 で定義される `.well-known/openid-configuration`) から `end_session_endpoint` を取得する。この URL は HTTPS スキームでなければならず、ポート・パス・クエリパラメータ部分を含んでもよい。
 
 Discovery を使用しない構成では、エンドポイント URL は事前に OP/RP 間で合意される必要がある。
 
@@ -89,7 +90,7 @@ RP は `end_session_endpoint` に対して HTTP GET または POST でリクエ�
 | `state`                    | OPTIONAL    | RP がリクエストとコールバックの間で状態を維持するための不透明値。CSRF 対策にも利用できる            |
 | `ui_locales`               | OPTIONAL    | ログアウト確認 UI で OP に希望する言語・スクリプトの優先リスト (BCP47 形式)                         |
 
-`id_token_hint` は必須ではないが、OP がリクエストの正当性を判断する根拠となるため、強く推奨される。`id_token_hint` がない場合は OP は通常エンドユーザーに対して明示的な確認を求めることが期待される。
+`id_token_hint` は必須ではないが、OP がリクエストの正当性を判断する根拠となるため、強く推奨される。`id_token_hint` が提示されない場合、もしくは提示された ID Token が現在の OP セッションに対応しない場合、OP はエンドユーザーに対してログアウト意図の確認を求めなければならない (MUST)。
 
 `client_id` は、`id_token_hint` を提示できない場面 (例: ID Token を保持していないパブリッククライアントが期限切れ後にログアウトを要求する場合) のために導入された。`id_token_hint` と `client_id` の両方が指定された場合、両者が指す RP が一致しなければならない。
 
@@ -110,7 +111,7 @@ OP は次の手順でリクエストを処理する。
 1. `id_token_hint` が指定されていれば署名検証を行い、`aud` から RP を特定する
 2. `client_id` が指定されていれば、`id_token_hint` の `aud` と整合することを確認する
 3. `post_logout_redirect_uri` が指定されていれば、当該 RP に登録された URI と完全一致するか検証する
-4. 必要であれば、エンドユーザーに対してログアウト確認 UI を表示する。`id_token_hint` がない場合は確認 UI を表示することが強く推奨される
+4. `id_token_hint` が提示されない、または提示された ID Token が現在の OP セッションや現在ログイン中のエンドユーザーに対応しない場合は、エンドユーザーにログアウト意図の確認を求める (MUST)
 5. OP におけるエンドユーザーの認証セッションを終了する
 6. 当該セッションに紐づく他の RP に対して、Front-Channel Logout / Back-Channel Logout の手順でログアウトを通知する
 7. `post_logout_redirect_uri` が指定されていれば、`state` を含めてリダイレクトを返す
@@ -150,7 +151,7 @@ RP-Initiated Logout は、ログアウトの「起点」を提供する仕様で
 
 ### 6.1 サービス拒否 (DoS) のリスク
 
-`id_token_hint` のないログアウト要求は、第三者が任意の URL にエンドユーザーをログアウトさせる手段になり得る。OP は `id_token_hint` を伴わないリクエストに対しては、エンドユーザーに明示的な確認を求めることが推奨される。
+`id_token_hint` のないログアウト要求は、第三者がエンドユーザーをログアウトさせる手段になり得る。本仕様は、`id_token_hint` を伴わない (または現在の OP セッションに対応しない ID Token を伴う) リクエストに対し、OP がエンドユーザーから明示的な確認を取得することを要求している (MUST)。
 
 ### 6.2 リダイレクト URI の事前登録
 
@@ -170,7 +171,7 @@ RP は推測困難な `state` を生成し、コールバック時に検証す�
 
 ### 6.6 id_token_hint の有効期限
 
-`id_token_hint` として渡される ID Token は期限切れでも構わない。OP はログアウト要求の正当性判定にのみ用いるため、`exp` クレームによる拒否は行わない。ただし署名検証は実施すべきである。
+`id_token_hint` として渡される ID Token は期限切れでも構わない。OP は当該 ID Token が指す RP に現在もしくは直近のセッションが存在する場合、`exp` を過ぎていても受理することが推奨される (SHOULD)。OP は ID Token の発行者が自身であることを検証しなければならず、`sid` クレームが現在または直近のセッションに対応しない場合はログアウト要求を不審とみなし拒否することができる。
 
 ## 7. 関連仕様
 
