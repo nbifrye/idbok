@@ -1,12 +1,13 @@
 ---
 title: "OpenID Connect Back-Channel Logout 1.0"
+reviewed: true
 ---
 
 # OpenID Connect Back-Channel Logout 1.0
 
 ## 1. 概要
 
-OpenID Connect Back-Channel Logout 1.0 は、OpenID Provider (OP) からリライングパーティ (Relying Party, RP) に対してエンドユーザーのセッション終了を通知するための、サーバー間 (バックチャネル) 通信ベースのログアウトメカニズムを定義する仕様である。2022 年 9 月 12 日に Final として発行され、編集者は M. Jones (Microsoft)、J. Bradley (Yubico)、N. Agarwal (Microsoft) である。
+OpenID Connect Back-Channel Logout 1.0 は、OpenID Provider (OP) からリライングパーティ (Relying Party, RP) に対してエンドユーザーのセッション終了を通知するための、サーバー間 (バックチャネル) 通信ベースのログアウトメカニズムを定義する仕様である。2022 年 9 月に Final として発行され、2023 年 12 月 15 日付で errata set 1 を反映した版が公開されている。編集者は M. Jones (Self-Issued Consulting、当時 Microsoft) および J. Bradley (Yubico) である。
 
 本仕様は、Front-Channel Logout 1.0 や Session Management 1.0 がブラウザのユーザーエージェント経由でログアウト通知を伝搬するのに対し、ユーザーエージェントを介在させずに OP が各 RP のバックチャネルログアウトエンドポイントへ直接 HTTP POST を送信することで、より信頼性の高いシングルログアウトを実現する。OP は Logout Token と呼ばれる新しい JWT を通知ペイロードとして用いる。
 
@@ -74,7 +75,7 @@ OP の Discovery メタデータ:
 
 RP の Client メタデータ (Dynamic Client Registration 等で登録):
 
-- `backchannel_logout_uri` (URI): OP がログアウト通知を POST する RP のエンドポイント。絶対 URI であり、HTTPS が強く推奨される。機密クライアントであれば HTTP も許容される
+- `backchannel_logout_uri` (URI): OP がログアウト通知を POST する RP のエンドポイント。絶対 URI で、`https` スキームの使用が推奨される。`http` の使用は、クライアントタイプが confidential であり、かつ OP が `http` の RP URI を許容している場合に限って許される
 - `backchannel_logout_session_required` (Boolean): RP が Logout Token に `sid` クレームを必須とするかを示す。デフォルトは `false`
 
 ### 5.2 Logout Token
@@ -86,16 +87,13 @@ Logout Token は ID Token に類似した署名付き JWT であり、用途を�
 - `iss`: 発行者識別子。ID Token と同じ値
 - `aud`: オーディエンス。通知先 RP のクライアント ID
 - `iat`: 発行時刻
+- `exp`: 有効期限。OP はリプレイ対策として短い有効期限 (推奨では未来 2 分以内) を設定することが推奨されている
 - `jti`: トークン一意識別子。リプレイ検出に用いられる
 - `events`: メンバーとして `http://schemas.openid.net/event/backchannel-logout` を含む JSON オブジェクト。当該メンバーの値は空オブジェクト `{}` が推奨される
 
 条件付き必須:
 
 - `sub` または `sid` のいずれか、もしくは両方。`sub` のみであれば「当該ユーザーの当該 RP におけるすべてのセッションを終了」、`sid` を含む場合は「特定のセッションのみを終了」を意味する
-
-任意クレーム:
-
-- `exp`: 有効期限。リプレイ対策として短い有効期限 (推奨では数分以内) を設定すべき
 
 禁止クレーム:
 
@@ -114,6 +112,7 @@ Logout Token の JSON 例を以下に示す (署名前のクレーム部)。
   "sub": "248289761001",
   "aud": "s6BhdRkqt3",
   "iat": 1706000000,
+  "exp": 1706000120,
   "jti": "bWJq",
   "sid": "08a5019c-17e1-4977-8f42-65a12843ea02",
   "events": {
@@ -140,7 +139,7 @@ Content-Type: application/x-www-form-urlencoded
 logout_token=eyJhbGciOiJSUzI1NiIsInR5cCI6ImxvZ291dCtqd3QiLCJraWQiOiIuLi4ifQ...
 ```
 
-RP が処理を正常に受理した場合は HTTP 200 を返す。Logout Token の検証に失敗した場合は HTTP 400 Bad Request を返す。応答ボディは推奨で `Cache-Control: no-store` ヘッダを伴うべきである。OP は復旧可能なネットワーク障害が疑われる場合に限り再送信してよく、それ以外で繰り返し送信してはならない。
+RP が処理を正常に受理した場合は HTTP 200 OK (もしくは 204 No Content) を返す。Logout Token の検証に失敗した場合は HTTP 400 Bad Request を返し、応答ボディには `application/json` 形式で OAuth 2.0 流の `error` および `error_description` パラメータを含めることができる。応答には推奨で `Cache-Control: no-store` ヘッダを付与する。OP は復旧可能なネットワーク障害が疑われる場合に限り再送信してよい。
 
 ### 5.4 Logout Token の検証
 
