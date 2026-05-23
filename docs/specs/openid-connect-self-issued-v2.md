@@ -1,5 +1,6 @@
 ---
 title: "Self-Issued OpenID Provider v2 (SIOPv2)"
+reviewed: true
 ---
 
 # Self-Issued OpenID Provider v2 (SIOPv2)
@@ -62,7 +63,7 @@ sequenceDiagram
 
 ### Cross-Device フロー
 
-RP がブラウザ等で動作し、SIOP が別デバイス（スマートフォン上のウォレット）で動作するパターン。RP は Authorization Request を QR コードや Deep Link としてエンコードし、SIOP は `response_mode=post` により RP の指定エンドポイントへ HTTPS POST で ID Token を直接送信する。
+RP がブラウザ等で動作し、SIOP が別デバイス（スマートフォン上のウォレット）で動作するパターン。RP は Authorization Request を QR コードや Deep Link としてエンコードし、SIOP は本仕様で新規導入される `response_mode=direct_post` により RP の指定エンドポイントへ HTTPS POST で ID Token を直接送信する。POST 先のエンドポイントは標準パラメータ `redirect_uri` で伝達される（OpenID4VP の `response_uri` ではなく `redirect_uri` を再利用する点に注意）。
 
 ```mermaid
 sequenceDiagram
@@ -71,10 +72,10 @@ sequenceDiagram
     participant SIOP as Self-Issued OP (スマホ Wallet)
 
     RPBrowser->>RPBackend: 認証開始
-    RPBackend->>RPBrowser: QR (siopv2:// + nonce + state + response_mode=post + response_uri)
+    RPBackend->>RPBrowser: QR (siopv2:// + nonce + state + response_mode=direct_post + redirect_uri)
     Note over RPBrowser,SIOP: ユーザーが QR をスキャン
     SIOP->>SIOP: ユーザー同意・鍵選択・ID Token 署名
-    SIOP->>RPBackend: HTTPS POST に id_token を含めて送信
+    SIOP->>RPBackend: redirect_uri へ HTTPS POST で id_token を送信
     RPBackend->>RPBackend: nonce/aud/署名検証
     RPBackend->>RPBrowser: WebSocket / ポーリング等で完了通知
 ```
@@ -107,15 +108,15 @@ SIOPv2 では古典的な OIDC Dynamic Client Registration が利用できない
 
 SIOPv2 が OIDC Core に追加する主要パラメータは次のとおり。
 
-| パラメータ            | 説明                                                                                    |
-| --------------------- | --------------------------------------------------------------------------------------- |
-| `response_type`       | `id_token` 固定                                                                         |
-| `scope`               | 通常は `openid`                                                                         |
-| `nonce`               | 必須。リプレイ攻撃対策                                                                  |
-| `client_metadata`     | RP のメタデータをインラインで送付                                                       |
-| `client_metadata_uri` | RP メタデータを参照可能な URI として送付                                                |
-| `id_token_type`       | `subject_signed_id_token`（自己署名）/ `attester_signed_id_token`（第三者発行、既定値） |
-| `response_mode`       | Cross-Device の場合は `post`、Same-Device の場合は `fragment` 等                        |
+| パラメータ            | 説明                                                                                      |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| `response_type`       | `id_token` 固定                                                                           |
+| `scope`               | 通常は `openid`                                                                           |
+| `nonce`               | 必須。リプレイ攻撃対策                                                                    |
+| `client_metadata`     | RP のメタデータをインラインで送付                                                         |
+| `client_metadata_uri` | RP メタデータを参照可能な URI として送付                                                  |
+| `id_token_type`       | `subject_signed_id_token`（自己署名）/ `attester_signed_id_token`（第三者発行、既定値）   |
+| `response_mode`       | Cross-Device の場合は本仕様で導入される `direct_post`、Same-Device の場合は `fragment` 等 |
 
 `client_metadata` と `client_metadata_uri` は相互排他であり、`request` / `request_uri` も併用されない場合には OpenID Federation を使わない限りどちらかが必須となる。
 
@@ -167,7 +168,7 @@ SIOPv2 では `sub` の形式は Subject Syntax Type によって区別される
 
 ### Authorization Response（§10）
 
-正常応答では `id_token` をリダイレクト URI（`response_mode` に応じて fragment / query / form_post）または Cross-Device の場合は `response_uri` に POST する。
+正常応答では `id_token` をリダイレクト URI（`response_mode` に応じて fragment / query / form_post）に返却する。Cross-Device で `response_mode=direct_post` を用いる場合は、SIOP が `redirect_uri` で示されたエンドポイントへ HTTPS POST で直接送信する。
 
 エラーレスポンスの追加コードは以下。
 
