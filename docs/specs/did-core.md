@@ -1,5 +1,6 @@
 ---
 title: "W3C DID Core 1.0 - Decentralized Identifiers"
+reviewed: true
 ---
 
 # W3C DID Core 1.0 - Decentralized Identifiers
@@ -221,15 +222,14 @@ DID Method 仕様は、特定の `method-name` について以下の操作を定
 
 ## 表現 (Representation) と相互変換
 
-DID Document は中核データモデルとして抽象的に定義され、複数の表現形式を持つ。
+DID Document は中核データモデルとして抽象的に定義され、複数の表現形式を持つ。DID Core 1.0 が定義する表現は JSON と JSON-LD の 2 種類である。
 
 | 表現    | Media Type                | 特徴                                  |
 | ------- | ------------------------- | ------------------------------------- |
 | JSON    | `application/did+json`    | 軽量。`@context` を持たない           |
 | JSON-LD | `application/did+ld+json` | `@context` を持ち、意味論的拡張が可能 |
-| CBOR    | (登録時)                  | バイナリ表現                          |
 
-Producer (DID Document を生成する側) と Consumer (利用する側) は、表現間で決定論的・可逆・無損失に変換できるよう規格に従う。これにより、JSON-LD で配布されたドキュメントを Plain JSON として処理することも、その逆も可能となる。
+Producer (DID Document を生成する側) と Consumer (利用する側) は、表現間で決定論的・可逆・無損失に変換できるよう規格に従う。これにより、JSON-LD で配布されたドキュメントを Plain JSON として処理することも、その逆も可能となる。仕様は他の表現形式を追加するための拡張機構の存在も認めているが、本仕様自体は JSON / JSON-LD 以外の具体的なバインディングを規定しない。
 
 ## 拡張機構: DID Specification Registries
 
