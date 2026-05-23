@@ -1,5 +1,6 @@
 ---
 title: "OAuth Token Status List (draft-ietf-oauth-status-list)"
+reviewed: true
 ---
 
 # OAuth Token Status List (draft-ietf-oauth-status-list)
@@ -188,7 +189,7 @@ Issuer が複数の Status List Token を運用する場合、それらの URI �
 }
 ```
 
-エンドポイントは `status_list.aggregation_uri` または `.well-known/status-list-aggregation` で発見される。Relying Party はこれを定期取得することで、オフライン検証や事前ウォームアップに用いられる。
+エンドポイントは Status List Token 内の `status_list.aggregation_uri` で示すか、Issuer が OAuth Authorization Server の場合は [RFC 8414](./rfc8414.md) Authorization Server Metadata に `status_list_aggregation_endpoint` パラメータとして公開する方法が推奨される。Relying Party はこれを定期取得することで、オフライン検証や事前ウォームアップに用いられる。
 
 ### 5.7 検証手順
 
