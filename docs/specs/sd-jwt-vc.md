@@ -1,12 +1,13 @@
 ---
 title: "SD-JWT VC - SD-JWT-based Verifiable Digital Credentials"
+reviewed: true
 ---
 
 # SD-JWT VC - SD-JWT-based Verifiable Digital Credentials
 
 ## 概要
 
-SD-JWT-based Verifiable Digital Credentials（以下 SD-JWT VC）は、検証可能なデジタルクレデンシャル（Verifiable Digital Credential, VC）を JSON ペイロードと JWS 署名で表現し、Selective Disclosure for JWTs（SD-JWT, RFC 9901）の選択的開示機構に乗せて発行・提示するためのデータフォーマットおよび処理規則を定義する仕様である。本記事執筆時点では `draft-ietf-oauth-sd-jwt-vc-16` として IETF OAuth WG で策定され、IESG により Publication Requested 状態にある Proposed Standard 候補である。
+SD-JWT-based Verifiable Digital Credentials（以下 SD-JWT VC）は、検証可能なデジタルクレデンシャル（Verifiable Digital Credential, VC）を JSON ペイロードと JWS 署名で表現し、Selective Disclosure for JWTs（SD-JWT, RFC 9901）の選択的開示機構に乗せて発行・提示するためのデータフォーマットおよび処理規則を定義する仕様である。本記事執筆時点では `draft-ietf-oauth-sd-jwt-vc-16` として IETF OAuth WG で策定中であり、Intended Status は Proposed Standard である。
 
 SD-JWT VC は、OpenID for Verifiable Credential Issuance（OpenID4VCI）や OpenID for Verifiable Presentations（OpenID4VP）といったウォレット系プロトコルにおける「実際にやり取りされるクレデンシャル本体」のフォーマットとして採用されており、W3C Verifiable Credentials Data Model とは別系統の、JWT 中心の VC フォーマットとして位置付けられる。
 
@@ -97,20 +98,21 @@ SD-JWT VC のメディアタイプは `application/dc+sd-jwt` である（旧称
 
 ## JWT クレーム
 
-SD-JWT VC は、以下のクレームに関する選択的開示可否の規約を定める。
+SD-JWT VC は、以下の登録済み JWT クレームに関する必須性と選択的開示可否の規約を定める。
 
-| クレーム | 用途                         | 選択的開示 |
-| -------- | ---------------------------- | ---------- |
-| `iss`    | Issuer の識別子（HTTPS URL） | 不可       |
-| `sub`    | Subject 識別子               | 可         |
-| `iat`    | 発行時刻                     | 可         |
-| `exp`    | 有効期限                     | 不可       |
-| `nbf`    | 有効開始時刻                 | 不可       |
-| `cnf`    | Key Binding 鍵の参照         | 不可       |
-| `vct`    | クレデンシャル種別識別子     | 不可       |
-| `status` | Status List 参照             | 不可       |
+| クレーム        | 用途                           | 必須性                                   | 選択的開示 |
+| --------------- | ------------------------------ | ---------------------------------------- | ---------- |
+| `vct`           | クレデンシャル種別識別子       | 必須                                     | 不可       |
+| `vct#integrity` | Type Metadata の完全性ハッシュ | 任意                                     | 不可       |
+| `iss`           | Issuer の識別子（HTTPS URI）   | 任意                                     | 不可       |
+| `iat`           | 発行時刻                       | 任意                                     | 可         |
+| `nbf`           | 有効開始時刻                   | 任意                                     | 不可       |
+| `exp`           | 有効期限                       | 任意                                     | 不可       |
+| `cnf`           | Key Binding 鍵の参照           | Key Binding サポート時必須、それ以外任意 | 不可       |
+| `status`        | Status List 参照               | 任意                                     | 不可       |
+| `sub`           | Subject 識別子                 | 任意                                     | 可         |
 
-`exp` `nbf` `iss` `cnf` `vct` `status` といった「クレデンシャル全体の検証可能性に直結するクレーム」は、Holder の意思で隠せないように選択的開示の対象外とされている。一方で `sub` `iat` などプライバシー観点で隠したい場合があるクレームは、選択的開示の対象とすることができる。
+`exp` `nbf` `iss` `cnf` `vct` `vct#integrity` `status` といった「クレデンシャル全体の検証可能性に直結するクレーム」は、Holder の意思で隠せないように選択的開示の対象外とされている。一方で `sub` `iat` などプライバシー観点で隠したい場合があるクレームは、選択的開示の対象とすることができる。
 
 業務固有のクレーム（氏名、生年月日、住所など）は、Issuer の方針に基づき選択的開示の対象とするかどうかを決定する。
 
@@ -150,12 +152,15 @@ SD-JWT VC は、以下のクレームに関する選択的開示可否の規約�
 主なフィールド:
 
 - `vct`（必須）: 対象となる種別識別子
-- `name` / `description`: 人間可読な説明
-- `extends`: 他の Type Metadata を継承する場合の親 `vct`
-- `display`: 言語ごとの表示情報
-- `claims`: 各クレームに関するメタデータ（必須性 `mandatory`、選択的開示の可否 `sd`、表示ラベル等）
+- `name` / `description`（任意）: 人間可読な説明
+- `extends`（任意）: 他の Type Metadata を継承する場合の親 `vct`
+- `extends#integrity`（任意）: `extends` で参照するドキュメントの完全性ハッシュ
+- `display`（任意）: 言語ごとの表示情報
+- `claims`（任意）: 各クレームに関するメタデータ（必須性 `mandatory`、選択的開示の可否 `sd`、表示ラベル等）
 
 `extends` による継承はチェーンを形成し得るが、循環参照（circular extends）は検出して拒否しなければならない。
+
+なお、Issuer-signed JWT 側に `vct#integrity` クレームを含めると、その `vct` に対応する Type Metadata の完全性を Verifier がハッシュで検証できる。Type Metadata の取得後にハッシュを比較することで、想定したメタデータ定義に基づいてクレデンシャルが解釈されることを保証する。
 
 ## cnf と Key Binding
 
@@ -198,19 +203,22 @@ Key Binding が必須のユースケースでは、Holder は提示時に **KB-J
 
 ## Issuer メタデータの発見
 
-Verifier は Issuer の公開鍵を取得するため、`iss` クレームを起点に well-known エンドポイントを問い合わせる。
+Verifier は Issuer の公開鍵を取得するため、`iss` クレームを起点に well-known エンドポイントを問い合わせる。`iss` の URL は HTTPS であり、クエリ・フラグメントを含まないこと、また `/.well-known/jwt-vc-issuer` は URL のホスト部とパス部の**間**に挿入される点に注意する。
 
 ```
-iss = https://example.com/issuer1
-→ GET https://example.com/.well-known/jwt-vc-issuer/issuer1
+iss = https://example.com
+→ GET https://example.com/.well-known/jwt-vc-issuer
+
+iss = https://example.com/tenant/1234
+→ GET https://example.com/.well-known/jwt-vc-issuer/tenant/1234
 ```
 
 レスポンスは JSON で、以下のフィールドを含む。
 
-- `issuer`（必須）: `iss` 値と一致しなければならない
-- `jwks` または `jwks_uri`（いずれか必須、両方を同時に含めてはならない）
+- `issuer`（必須）: `iss` 値と完全一致しなければならない
+- `jwks` または `jwks_uri`: いずれか一方を必ず含め、両方を同時に含めてはならない
 
-Verifier はここから取得した鍵集合を用いて、Issuer-signed JWT の署名を検証する。
+Verifier はここから取得した鍵集合を用いて、Issuer-signed JWT の署名を検証する。`kid` ヘッダパラメータを併用することで、鍵集合中の該当鍵を特定する。
 
 ## ペイロード例
 
