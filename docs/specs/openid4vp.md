@@ -1,5 +1,6 @@
 ---
 title: "OpenID for Verifiable Presentations (OID4VP) 1.0"
+reviewed: true
 ---
 
 # OpenID for Verifiable Presentations (OID4VP) 1.0
@@ -125,7 +126,7 @@ OID4VP の Authorization Request は OAuth 2.0 の Authorization Request を拡�
 | `decentralized_identifier` | DID で識別                                     | 必須                            |
 | `verifier_attestation`     | Verifier Attestation JWT                       | 必須                            |
 
-ブラウザ統合フローでは `web-origin:` 接頭辞 (Appendix A) も定義され、ブラウザが提供する Origin が `client_id` として安全に利用できる。
+ブラウザ統合フロー (Digital Credentials API) では Appendix A で `origin:` 接頭辞が定義される。これは Wallet から見て Verifier の audience を表すために Browser / OS が内部的に付与する識別子であり、Verifier 側が Wallet に対してこの接頭辞付き `client_id` を直接送るためのものではない (Wallet は `origin:` 接頭辞付きの `client_id` を含むリクエストを受理してはならない)。
 
 ### 5.3 DCQL (Digital Credentials Query Language)
 
@@ -196,7 +197,7 @@ DCQL は Credential Set による「AかつB」「AまたはB」の表現や、�
 
 ### 5.6 Transaction Data
 
-`transaction_data` (Section 5) は、Presentation に「承認」を結びつけるための仕組みである。Wallet は End-User に取引内容を表示したうえで同意を取得し、`transaction_data` のハッシュを Presentation の署名対象に含める。
+`transaction_data` (Section 5.1) は、Presentation に「承認」を結びつけるための仕組みである。Wallet は End-User に取引内容を表示したうえで同意を取得し、`transaction_data` のハッシュを Presentation の署名対象に含める。
 
 ```json
 {
