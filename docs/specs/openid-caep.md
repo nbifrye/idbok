@@ -1,5 +1,6 @@
 ---
 title: "OpenID Continuous Access Evaluation Profile (CAEP) 1.0"
+reviewed: true
 ---
 
 # OpenID Continuous Access Evaluation Profile (CAEP) 1.0
@@ -32,7 +33,7 @@ OAuth 2.0 / OpenID Connect が発行するアクセストークンや ID トー�
 - **Event Type**: CAEP が定義する 8 種のイベント。すべて `https://schemas.openid.net/secevent/caep/event-type/<name>` の URI で識別される
 - **Subject Identifier (`sub_id`)**: RFC 9493 で定義される複合的なサブジェクト識別子。単一の `iss_sub`/`email`/`opaque` から、`session` + `user` + `device` + `tenant` を組み合わせた **Complex Subject** まで表現できる
 - **Initiating Entity (`initiating_entity`)**: イベント発火の主体。`admin` / `user` / `policy` / `system` のいずれか
-- **Event Timestamp (`event_timestamp`)**: イベントが実際に発生した時刻 (Unix 時刻、ミリ秒)。SET の `iat` (発行時刻) とは別概念で、生成と発信の時間差を表現できる
+- **Event Timestamp (`event_timestamp`)**: イベントが実際に発生した時刻 (Unix 時刻、秒)。SET の `iat` (発行時刻) とは別概念で、生成と発信の時間差を表現できる
 - **Reason (`reason_admin` / `reason_user`)**: BCP 47 言語タグをキーとした多言語メッセージ。前者は管理者向けログ用、後者はエンドユーザー向け表示用
 
 ## 4. アーキテクチャと位置づけ
@@ -111,7 +112,7 @@ CAEP の全イベントは SSF 経由で配送されるため、SET レベルで
 
 | クレーム            | 型     | 説明                                                    |
 | ------------------- | ------ | ------------------------------------------------------- |
-| `event_timestamp`   | number | イベントが発生した時刻 (Unix 時刻、ミリ秒)              |
+| `event_timestamp`   | number | イベントが発生した時刻 (Unix 時刻、秒)                  |
 | `initiating_entity` | string | `admin` / `user` / `policy` / `system`                  |
 | `reason_admin`      | object | BCP 47 言語タグをキーとする管理者向けメッセージ         |
 | `reason_user`       | object | BCP 47 言語タグをキーとするエンドユーザー向けメッセージ |
@@ -144,10 +145,10 @@ CAEP 1.0 が定義するイベント型を、すべて `https://schemas.openid.n
 
 認証保証レベル (AAL) の変化を通知する。
 
-- `namespace`: `nist-800-63-3` (NIST AAL1/2/3) や `https://refeds.org/assurance` 等、保証レベル体系を識別する URI
-- `current_level`: 現在のレベル文字列 (`nist-aal1` 等)
+- `namespace`: 保証レベル体系を識別する文字列 (`RFC8176`, `RFC6711`, `ISO-IEC-29115`, `NIST-IAL`, `NIST-AAL`, `NIST-FAL`, またはカスタム)
+- `current_level`: 現在のレベルを示す文字列
 - `previous_level`: 直前のレベル (任意)
-- `change_direction`: `increase` / `decrease` / `unchanged` (任意)
+- `change_direction`: `increase` / `decrease` (任意)
 
 RFC 8176 (Authentication Method Reference) や RFC 9470 (OAuth Step-up Authentication Challenge) と組み合わせると、Receiver 側でステップアップ認証や減衰判断のトリガーになる。
 
@@ -156,23 +157,25 @@ RFC 8176 (Authentication Method Reference) や RFC 9470 (OAuth Step-up Authentic
 デバイスのコンプライアンス状態の変化を通知する。
 
 - `current_status`: `compliant` / `not-compliant`
-- `previous_status`: 直前の状態 (任意)
+- `previous_status`: 直前の状態 (`compliant` / `not-compliant`)
+
+`current_status` と `previous_status` の両方が必須である点に注意。
 
 MDM / EDR / UEM が Transmitter となり、root 化検知、暗号化解除、必要なエージェント停止等を契機に発火することが想定される。Receiver はデバイス単位でアクセス制御を強化できる。
 
 ### 7.6 session-established
 
-新規セッションが確立されたことを通知する。同一ユーザーが別デバイスや別場所からログインした事実を他サービスへ通知し、相関分析や異常検知に用いられる。`fp_ua`, `acr`, `amr`, `ips` 等の文脈情報を付加できる。
+新規セッションが確立されたことを通知する。同一ユーザーが別デバイスや別場所からログインした事実を他サービスへ通知し、相関分析や異常検知に用いられる。任意プロパティとして `fp_ua` (User-Agent フィンガープリント), `acr`, `amr`, `ext_id` (外部セッション識別子) を付加できる。
 
 ### 7.7 session-presented
 
-既存セッションが現在もアクティブに利用されていることを通知する (heartbeat 的な用途)。長寿命セッションを許容しつつ、利用実態をベースに失効判断を行うパターンで使われる。
+既存セッションが現在もアクティブに利用されていることを通知する (heartbeat 的な用途)。長寿命セッションを許容しつつ、利用実態をベースに失効判断を行うパターンで使われる。任意プロパティとして `fp_ua`, `ext_id` を付加できる。
 
 ### 7.8 risk-level-change
 
 ユーザー / デバイス / セッションのリスク評価が変化したことを通知する。
 
-- `principal`: `USER` / `DEVICE` / `SESSION` / `TENANT` 等、リスクの対象種別
+- `principal`: `USER` / `DEVICE` / `SESSION` / `TENANT` / `ORG_UNIT` / `GROUP` 等、リスクの対象種別
 - `current_level`: `LOW` / `MEDIUM` / `HIGH`
 - `previous_level`: 直前のリスクレベル (任意)
 - `risk_reason`: リスク評価の根拠 (推奨)
@@ -208,7 +211,7 @@ ITDR / UEBA / 不正検知基盤が Transmitter となり、計算したリス�
   },
   "events": {
     "https://schemas.openid.net/secevent/caep/event-type/session-revoked": {
-      "event_timestamp": 1715000000123,
+      "event_timestamp": 1715000000,
       "initiating_entity": "admin",
       "reason_admin": {
         "en": "Administrator revoked session after termination",
