@@ -1,5 +1,6 @@
 ---
 title: "W3C Digital Credentials API - ブラウザ仲介によるクレデンシャル提示・発行 API"
+reviewed: true
 ---
 
 # W3C Digital Credentials API - ブラウザ仲介によるクレデンシャル提示・発行 API
@@ -39,10 +40,13 @@ DC API は Credential Management Level 1 を拡張し、`navigator.credentials.g
 ### WebIDL
 
 ```webidl
+typedef (DigitalCredentialPresentationProtocol
+         or DigitalCredentialIssuanceProtocol) DigitalCredentialProtocol;
+
 [Exposed=Window, SecureContext]
 interface DigitalCredential : Credential {
   object toJSON();
-  readonly attribute DOMString protocol;
+  readonly attribute DigitalCredentialProtocol protocol;
   readonly attribute object data;
   static boolean userAgentAllowsProtocol(DOMString protocol);
 };
