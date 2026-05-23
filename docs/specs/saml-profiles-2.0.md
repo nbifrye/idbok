@@ -1,5 +1,6 @@
 ---
 title: "SAML 2.0 Profiles - Profiles for the OASIS Security Assertion Markup Language"
+reviewed: true
 ---
 
 # SAML 2.0 Profiles - Profiles for the OASIS Security Assertion Markup Language
