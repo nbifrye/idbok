@@ -1,5 +1,6 @@
 ---
 title: "FAPI 2.0 Attacker Model - FAPI 2.0 の脅威モデルとセキュリティ目標"
+reviewed: true
 ---
 
 # FAPI 2.0 Attacker Model
