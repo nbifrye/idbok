@@ -1,5 +1,6 @@
 ---
 title: "SAML 2.0 Bindings - Bindings for the OASIS Security Assertion Markup Language"
+reviewed: true
 ---
 
 # SAML 2.0 Bindings - Bindings for the OASIS Security Assertion Markup Language
@@ -174,7 +175,7 @@ sequenceDiagram
     Note over SP: Assertion を検証してセッション確立
 ```
 
-アーティファクトは **一度しか解決できない** ことが推奨される。`MessageHandle` の乱数性とともに、リプレイ攻撃に対する基本的な防御を構成する。
+Bindings 仕様 (Section 3.6.5.2) は、すべてのアーティファクトに対して発行者がシングルユース (一度しか解決できない) のセマンティクスを **強制しなければならない (MUST)** と規定する。さらに受信側も同様にシングルユースを強制することが推奨される (RECOMMENDED)。`MessageHandle` の十分な乱数性とともに、リプレイ攻撃に対する基本的な防御を構成する。
 
 ## SAML SOAP Binding
 
@@ -194,7 +195,7 @@ sequenceDiagram
 </SOAP-ENV:Envelope>
 ```
 
-- HTTP POST で運ばれる場合、`Content-Type: text/xml` と `SOAPAction` ヘッダが付く (`SOAPAction` の値は空文字でよい)
+- HTTP POST で運ばれる場合、`Content-Type: text/xml` と `SOAPAction` ヘッダが付く。Bindings 仕様では、SAML リクエスタが `SOAPAction` の値として `http://www.oasis-open.org/committees/security` を設定してよいとされ、SAML レスポンダはこの値に依存してはならない
 - SAML プロトコルメッセージは SOAP ヘッダではなく Body の直下に置く
 - メッセージレベルの認証・機密性・完全性は XML Signature / XML Encryption もしくは TLS (相互認証含む) で担保する
 
@@ -271,7 +272,7 @@ Bindings 仕様の付録 (Security and Privacy Considerations) は、すべて�
 ### リプレイ攻撃と一意性
 
 - `<samlp:Response>` の `ID` 属性、`<Assertion>` の `IssueInstant`、`Conditions/NotOnOrAfter`、`SubjectConfirmationData/NotOnOrAfter` を組み合わせて、応答のリプレイを防ぐ
-- アーティファクトは MessageHandle の十分なエントロピーと「一度しか解決できない」運用で再利用を阻止する
+- アーティファクトは MessageHandle の十分なエントロピーと、発行者側でのシングルユース強制 (MUST) によって再利用を阻止する
 
 ### RelayState の取り扱い
 
