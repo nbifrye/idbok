@@ -1,5 +1,6 @@
 ---
 title: "OpenID Shared Signals Framework 1.0"
+reviewed: true
 ---
 
 # OpenID Shared Signals Framework 1.0
@@ -81,7 +82,7 @@ sequenceDiagram
     R->>T: POST {add_subject_endpoint} (subject, stream_id)
     T-->>R: 200 OK
     R->>T: POST {verification_endpoint} (state)
-    T-->>R: 200 Accepted
+    T-->>R: 204 No Content
     T->>R: Deliver Verification SET (Push or Poll)
     Note over T,R: 以降、サブジェクトに関連するイベントが配送される
     R->>T: POST {status_endpoint} (status="paused")
@@ -154,11 +155,11 @@ Remove Subject エンドポイントは購読解除に用いる。なお Transmi
 
 ストリームの状態は Status エンドポイント経由で参照・変更できる。
 
-| 状態       | 意味                                                                         |
-| ---------- | ---------------------------------------------------------------------------- |
-| `enabled`  | 通常の送信状態。発生したイベントが Receiver に配送される                     |
-| `paused`   | 一時停止。Transmitter は本来送るはずだったイベントを **保持** する義務を負う |
-| `disabled` | 停止。Transmitter は **保持義務を負わず** イベントは失われる                 |
+| 状態       | 意味                                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------------------- |
+| `enabled`  | 通常の送信状態。発生したイベントが Receiver に配送される                                              |
+| `paused`   | 一時停止。Transmitter は本来送るはずだったイベントを保持し、再開時に送信することが推奨される (SHOULD) |
+| `disabled` | 停止。Transmitter は保持を行わず、イベントは失われる                                                  |
 
 ```mermaid
 stateDiagram-v2
