@@ -1,5 +1,6 @@
 ---
 title: "OpenID RISC Profile 1.0 - Risk Incident Sharing and Coordination"
+reviewed: true
 ---
 
 # OpenID RISC Profile 1.0 - Risk Incident Sharing and Coordination
