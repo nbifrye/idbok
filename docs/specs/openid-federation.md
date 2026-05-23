@@ -1,5 +1,6 @@
 ---
 title: "OpenID Federation 1.0 - 多者間フェデレーションの基盤仕様"
+reviewed: true
 ---
 
 # OpenID Federation 1.0 - 多者間フェデレーションの基盤仕様
@@ -127,15 +128,15 @@ flowchart TB
 
 上位機関が下位エンティティについて発行する Statement で、`iss != sub` となる。`metadata_policy` や `constraints` をここに記載することで、Trust Chain 全体に対するポリシーを伝播させる。
 
-### 5.3 well-known エンドポイント
+### 5.3 well-known エンドポイント (§9)
 
-Entity Configuration は固定パスで公開される。
+Entity Configuration は、Entity Identifier に `/.well-known/openid-federation` を **連結** したパスで公開される。Entity Identifier は HTTPS スキームで、ホスト部に加えてポートやパスを含んでもよい。
 
 ```
-https://{entity-identifier}/.well-known/openid-federation
+<entity-identifier>/.well-known/openid-federation
 ```
 
-`{entity-identifier}` 自体が HTTPS URL なので、パス部を含む URL の場合は `.well-known/openid-federation` を **その末尾に付加する** 形になる (例: `https://example.com/tenant1/.well-known/openid-federation` ではなく `https://example.com/.well-known/openid-federation/tenant1` のような置き方も §1.2 / §9 で議論されている)。
+例えば `https://entity.example` の Entity Configuration は `https://entity.example/.well-known/openid-federation` となる。Entity Identifier がパス部を含む場合 (例: `https://example.com/tenant1`) は、その末尾に連結して `https://example.com/tenant1/.well-known/openid-federation` となる。Entity Identifier の末尾に `/` がある場合は、連結前にそれを取り除く。
 
 ## 6. Trust Chain の構築と検証
 
@@ -179,7 +180,7 @@ Trust Chain `ES[0], ES[1], ..., ES[N]` について以下を検証する。
 
 ## 7. Metadata Policy
 
-### 7.1 標準オペレータ (§6.1)
+### 7.1 標準オペレータ (§6.1.3)
 
 | オペレータ    | 意味                             |
 | ------------- | -------------------------------- |
@@ -220,14 +221,15 @@ Trust Chain `ES[0], ES[1], ..., ES[N]` について以下を検証する。
 
 ## 8. Federation Endpoint (§8)
 
-| エンドポイント             | 役割                                                                                        |
-| -------------------------- | ------------------------------------------------------------------------------------------- |
-| Fetch (§8.1)               | 上位機関が自身が発行した直下エンティティの Subordinate Statement を返す                     |
-| Subordinate Listing (§8.2) | 配下のエンティティ識別子一覧を返す                                                          |
-| Resolve (§8.3)             | 任意の leaf について Trust Chain を構築し、Resolved Metadata と Trust Mark の検証結果を返す |
-| Trust Mark Status (§8.4)   | Trust Mark の有効性を問い合わせる                                                           |
-| Trust Mark List (§8.5)     | 指定タイプの Trust Mark を保有する subject の一覧                                           |
-| Historical Keys (§8.7)     | 失効・ローテート済みの Federation Entity Key を提供                                         |
+| エンドポイント                       | 役割                                                                                        |
+| ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| Fetch (§8.1)                         | 上位機関が自身が発行した直下エンティティの Subordinate Statement を返す                     |
+| Subordinate Listing (§8.2)           | 配下のエンティティ識別子一覧を返す                                                          |
+| Resolve (§8.3)                       | 任意の leaf について Trust Chain を構築し、Resolved Metadata と Trust Mark の検証結果を返す |
+| Trust Mark Status (§8.4)             | Trust Mark の有効性を問い合わせる                                                           |
+| Trust Marked Entities Listing (§8.5) | 指定タイプの Trust Mark を保有する subject の一覧                                           |
+| Trust Mark Endpoint (§8.6)           | Trust Mark Issuer が対象エンティティに Trust Mark JWT を発行する                            |
+| Federation Historical Keys (§8.7)    | 失効・ローテート済みの Federation Entity Key を提供                                         |
 
 Resolve エンドポイントは、クライアントが自前で Trust Chain を辿る代わりに、信頼できる第三者 (典型的には TA や中間機関) に解決を委譲できる仕組みとして重要。
 
