@@ -1,5 +1,6 @@
 ---
 title: "FAPI 2.0 Security Profile - 金融グレード API セキュリティプロファイル"
+reviewed: true
 ---
 
 # FAPI 2.0 Security Profile
