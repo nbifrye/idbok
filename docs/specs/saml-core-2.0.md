@@ -1,5 +1,6 @@
 ---
 title: "SAML 2.0 Core - Assertions and Protocols for the OASIS Security Assertion Markup Language"
+reviewed: true
 ---
 
 # SAML 2.0 Core - Assertions and Protocols for the OASIS Security Assertion Markup Language
@@ -172,6 +173,7 @@ Core 仕様は以下のリクエスト／レスポンス対を定義する。す
 | ---------------------- | ----------------------- | ----------------------------------------------------- |
 | `AuthnRequest`         | `Response`              | 認証要求 → 認証 Assertion の発行                      |
 | `AssertionIDRequest`   | `Response`              | アサーション ID を指定して取得                        |
+| `AuthnQuery`           | `Response`              | 既存の認証アサーションを問い合わせる                  |
 | `AttributeQuery`       | `Response`              | Subject の属性を問い合わせる                          |
 | `AuthzDecisionQuery`   | `Response`              | 認可判断を問い合わせる                                |
 | `ArtifactResolve`      | `ArtifactResponse`      | アーティファクトを実アサーション/メッセージに解決する |
