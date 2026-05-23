@@ -1,5 +1,6 @@
 ---
 title: "OpenID for Verifiable Credential Issuance 1.0 (OID4VCI)"
+reviewed: true
 ---
 
 # OpenID for Verifiable Credential Issuance 1.0 (OID4VCI)
@@ -31,7 +32,7 @@ OID4VCI は OAuth 2.0 の認可フローを再利用しつつ、これらの要�
 - **Verifier**: クレデンシャルの提示を受けて検証する主体（OID4VP を用いる）。
 - **Credential Offer**: Issuer から Wallet に対して「これこれのクレデンシャルを発行できる」と提示するオブジェクト。
 - **Credential Configuration**: Issuer が発行可能なクレデンシャルの定義（フォーマット、対応 Proof Type、スコープ等）。`credential_configuration_id` で識別される。
-- **Credential Format**: クレデンシャルのシリアライズ形式。`vc+sd-jwt`、`mso_mdoc`、`jwt_vc_json`、`ldp_vc` などのプロファイルが定義されている。
+- **Credential Format**: クレデンシャルのシリアライズ形式。`dc+sd-jwt`、`mso_mdoc`、`jwt_vc_json`、`ldp_vc` などのプロファイルが Appendix A で定義されている。
 - **Proof of Possession (PoP)**: Wallet が、発行されるクレデンシャルにバインドする鍵を保有していることを示す証明。
 
 ## 4. プロトコルフロー
@@ -57,8 +58,8 @@ sequenceDiagram
     U-->>AS: 認証情報・同意
     AS-->>W: Authorization Code (redirect_uri へ)
     W->>AS: Token Request<br/>(code, code_verifier)
-    AS-->>W: Access Token<br/>(+ authorization_details, c_nonce 等)
-    opt c_nonce が未取得の場合
+    AS-->>W: Access Token<br/>(+ authorization_details with<br/>credential_identifiers)
+    opt Issuer が c_nonce を要求する場合
         W->>CI: POST /nonce
         CI-->>W: c_nonce
     end
@@ -87,7 +88,11 @@ sequenceDiagram
         U->>W: トランザクションコード入力
     end
     W->>AS: Token Request<br/>(grant_type=urn:ietf:params:oauth:<br/>grant-type:pre-authorized_code,<br/>pre-authorized_code, tx_code)
-    AS-->>W: Access Token (+ c_nonce 等)
+    AS-->>W: Access Token (+ authorization_details<br/>with credential_identifiers)
+    opt Issuer が c_nonce を要求する場合
+        W->>CI: POST /nonce
+        CI-->>W: c_nonce
+    end
     W->>CI: Credential Request (Bearer, proofs)
     CI-->>W: Credential Response
 ```
@@ -148,14 +153,15 @@ Authorization Code Flow では、要求するクレデンシャルを RFC 9396�
 ]
 ```
 
-PKCE（RFC 7636）は必須相当であり、Pushed Authorization Requests（RFC 9126）の利用が強く推奨される。Wallet を信頼できないインストールから保護するため、Wallet Attestation（Appendix E）や OAuth 2.0 Attestation-Based Client Authentication と組み合わせる構成も定義されている。
+Authorization Code Flow では、PKCE（RFC 7636）と Pushed Authorization Requests（RFC 9126）の利用が推奨される（Section 5）。Wallet を信頼できないインストールから保護するため、Wallet Attestation（Appendix E）や OAuth 2.0 Attestation-Based Client Authentication と組み合わせる構成も定義されている。
 
-### 5.4 Token Response
+### 5.4 Token Response（Section 6.2）
 
-Token Response は通常の OAuth 2.0 応答に加え、以下の拡張パラメータを含み得る。
+Token Response は通常の OAuth 2.0 応答に加え、以下の拡張パラメータを返し得る。
 
-- `authorization_details`: 認可された各エントリに、Issuer 側で生成された `credential_identifiers` が付与される場合がある。これにより同じ Configuration から複数の個別クレデンシャルを発行可能。
-- `c_nonce`: Proof of Possession で使用するナンス。応答に含まれない場合は Nonce Endpoint から取得する。
+- `authorization_details`: Authorization Request または Token Request で `authorization_details` を用いた場合は必須。`type=openid_credential` のエントリには、Issuer 側で生成された `credential_identifiers`（文字列配列）が付与され、これにより同じ Credential Configuration から複数の個別 Credential Dataset を識別して発行できる。
+
+なお OID4VCI Final（2025-09-16）では、Proof of Possession に用いる `c_nonce` は Token Response では返却されず、必要に応じて後述の Nonce Endpoint から個別に取得する設計となっている。
 
 ### 5.5 Nonce Endpoint（Section 7）
 
@@ -183,15 +189,17 @@ Content-Type: application/json
 
 `credential_configuration_id` の代わりに、Token Response で得た `credential_identifier` を指定することもできる（後者はより精密な発行制御を可能にする）。
 
-Proof Type は次のように定義される（Section 8.2）。
+Proof Type は Appendix F で次のように定義される。
 
-- `jwt`: `typ` ヘッダが `openid4vci-proof+jwt` の JWT。`iss`（Wallet クライアント ID、または省略）、`aud`（Credential Issuer 識別子）、`iat`、`nonce`（`c_nonce`）を含み、ヘッダに `jwk` / `kid` / `x5c` のいずれかで公開鍵を示す。
-- `attestation`: Wallet が信頼された Attester から取得した鍵アテステーションを利用する形式。
-- `di_vp` 等: VC Data Integrity の Verifiable Presentation を用いる形式。
+- `jwt`（F.1）: `typ` ヘッダが `openid4vci-proof+jwt` の JWT。`iss`（Wallet クライアント ID、Pre-Authorized Code Flow など Client 認証がない場合は省略）、`aud`（Credential Issuer 識別子）、`iat`、`nonce`（`c_nonce`）を含み、ヘッダに `jwk` / `kid` / `x5c` のいずれかで公開鍵を示す。
+- `di_vp`（F.2）: VC Data Model の Verifiable Presentation を Data Integrity で保護したものを Key Proof として用いる形式。
+- `attestation`（F.3）: Appendix D で定義される JWT 形式の Key Attestation を Key Proof として用いる形式。
 
 複数の PoP を一度に提示することで、一度の Credential Request で同一フォーマットの複数クレデンシャル（バッチ発行）を取得できる。
 
 ### 5.7 Credential Response（Section 8.3）
+
+即時発行できる場合は HTTP 200 で `credentials` 配列を返す。各要素は `credential` メンバを持つオブジェクトで、文字列またはオブジェクトとして 1 件の Credential を含む（バイナリ形式は base64url エンコード）。`notification_id` は Notification Endpoint で参照するための識別子として返される。
 
 ```json
 {
@@ -200,7 +208,7 @@ Proof Type は次のように定義される（Section 8.2）。
 }
 ```
 
-即時発行ができない場合、Issuer は `transaction_id` を返し、Wallet は後述の Deferred Credential Endpoint で取得する。
+即時発行ができない場合、Issuer は HTTP 202 で `transaction_id` と `interval`（次回ポーリングまでの最小秒数）を返し、Wallet は後述の Deferred Credential Endpoint で取得する。`credentials` と `transaction_id` は相互排他である。
 
 ### 5.8 Deferred Credential Endpoint（Section 9）
 
@@ -212,22 +220,24 @@ KYC や審査などで発行に時間を要するケース向け。Wallet は `t
 
 ### 5.10 Notification Endpoint（Section 11）
 
-Wallet は受領後、Issuer に対して以下のような状態通知を送信できる。
+Wallet は Credential Response で受け取った `notification_id` を用い、Access Token を Bearer として付与した上で Issuer に状態を通知する。`event` パラメータの値は次の 3 種に限定されている（Section 11.1）。
 
-- `credential_accepted`: 正常に保管した
-- `credential_failure`: 何らかの理由で受理に失敗
-- `credential_deleted`: ホルダーが削除した
+- `credential_accepted`: Credential が Wallet に正常に保管された場合（ユーザー操作の有無を問わない）
+- `credential_deleted`: ユーザーの操作が原因で Credential の発行が成立しなかった場合
+- `credential_failure`: 上記以外の理由で発行が成立しなかった場合（バッチ発行時に一部でも失敗すれば全体を失敗として扱う）
 
-Issuer 側のクレデンシャル・ライフサイクル管理（失効、再発行など）に活用される。
+任意で `event_description` を付与してエラー詳細を伝えられる。Issuer 側のクレデンシャル・ライフサイクル管理（失効、再発行など）に活用される。
 
 ### 5.11 サポートされる Credential Format（Appendix A）
 
-OID4VCI 本体はフォーマット非依存だが、Appendix で代表的なフォーマット・プロファイルを定義している。
+OID4VCI 本体はフォーマット非依存だが、Appendix A で次のプロファイルを定義している。
 
-- `vc+sd-jwt` / `dc+sd-jwt`: IETF SD-JWT VC
-- `mso_mdoc`: ISO/IEC 18013-5 モバイル運転免許など
-- `jwt_vc_json`: W3C VCDM の JWT 表現
-- `ldp_vc`: W3C VCDM の Data Integrity 表現
+- W3C Verifiable Credentials Data Model（A.1）
+  - `jwt_vc_json`: JSON-LD を用いず JWT として署名された VC
+  - `jwt_vc_json-ld`: JSON-LD を用い JWT として署名された VC
+  - `ldp_vc`: JSON-LD と Data Integrity（Linked Data Canonicalization を伴う Proof Suite）で保護された VC
+- `mso_mdoc`（A.2）: ISO/IEC 18013-5 の Mobile Security Object で保護された mdoc（モバイル運転免許など）
+- `dc+sd-jwt`（A.3）: IETF SD-JWT VC
 
 各プロファイルで `credential_configurations_supported` および Credential Request の追加パラメータが規定されている。
 
@@ -236,7 +246,7 @@ OID4VCI 本体はフォーマット非依存だが、Appendix で代表的なフ
 仕様書 Section 13 / 14 / 15 で詳細に議論されている主要な論点を以下にまとめる。
 
 - **TLS 必須**: 全エンドポイントは TLS で保護する。
-- **PKCE と PAR**: Authorization Code Flow では PKCE が必須相当、Pushed Authorization Requests の利用が強く推奨される。
+- **PKCE と PAR**: Authorization Code Flow では PKCE（RFC 7636）と Pushed Authorization Requests（RFC 9126）の利用が推奨される。
 - **Pre-Authorized Code の保護**: 短命かつ単一使用とし、対面・別チャネルで配布する `tx_code` を組み合わせて、偶発的・悪意ある第三者の利用を防ぐ。
 - **Proof リプレイ防止**: `c_nonce` を発行毎に更新し、Proof JWT の `aud` を Issuer 識別子にバインドする。
 - **Wallet 真正性**: Wallet Attestation や Client Attestation を組み合わせ、改ざんされたウォレットからの発行要求を防ぐ。
