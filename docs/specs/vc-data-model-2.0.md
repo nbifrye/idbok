@@ -1,5 +1,6 @@
 ---
 title: "W3C Verifiable Credentials Data Model v2.0"
+reviewed: true
 ---
 
 # W3C Verifiable Credentials Data Model v2.0
@@ -128,15 +129,14 @@ VP は Holder が 1 つ以上の VC を内包して構成する文書であり�
 
 ## Securing Mechanism
 
-VCDM 2.0 は、データモデル本体から「暗号的保護の方式」を切り離し、Securing Mechanism として外部仕様で規定する設計を採用している。これにより、用途や運用環境に応じて方式を選択できる。
+VCDM 2.0 は、データモデル本体から「暗号的保護の方式」を切り離し、Securing Mechanism として外部仕様で規定する設計を採用している。仕様は Securing Mechanism を「embedded proof」と「enveloping proof」の 2 クラスに分類し、それぞれにつき 1 つを RECOMMENDED として参照する (Section 4.12)。
 
-主要な Securing Mechanism は次の通り。
+| Securing Mechanism                              | 種別           | 概要                                                                                                        |
+| ----------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------- |
+| Data Integrity (VC Data Integrity 1.0)          | Embedded Proof | VC 本体に `proof` プロパティを埋め込み、JSON-LD 文書に対する署名を行う (RECOMMENDED な embedded proof 方式) |
+| VC-JOSE-COSE (Securing VCs using JOSE and COSE) | Enveloping     | VC 全体を JWT / SD-JWT / COSE_Sign1 などのコンテナで包んで保護する (RECOMMENDED な enveloping proof 方式)   |
 
-| Securing Mechanism                              | 種別           | 概要                                                                     |
-| ----------------------------------------------- | -------------- | ------------------------------------------------------------------------ |
-| Data Integrity (VC Data Integrity 1.0)          | Embedded Proof | VC 本体に `proof` プロパティを埋め込み、JSON-LD 文書に対する署名を行う   |
-| VC-JOSE-COSE (Securing VCs using JOSE and COSE) | Enveloping     | VC 全体を JWT / SD-JWT / COSE_Sign1 などで包み、JOSE/COSE 標準で署名する |
-| SD-JWT VC (IETF)                                | Enveloping     | SD-JWT による選択的開示と互換な形式で VC を表現                          |
+仕様の例示には IETF の SD-JWT VC 形式 (`application/vc+sd-jwt`) を用いた enveloping proof のサンプルも掲載されており、SD-JWT 形式は VC-JOSE-COSE 系の enveloping proof の一バリアントとして位置付けられる。両クラスは排他ではなく、Section 5.13 のルールに従えば追加の Securing Mechanism 仕様も定義できる。
 
 ### Embedded Proof (Data Integrity)
 
@@ -159,9 +159,9 @@ VCDM 2.0 は、データモデル本体から「暗号的保護の方式」を�
 }
 ```
 
-### Enveloping Proof (VC-JWT / SD-JWT VC)
+### Enveloping Proof (VC-JOSE-COSE / SD-JWT VC)
 
-VC 全体を JWT (または COSE) のペイロードに格納し、JOSE/COSE のヘッダ・署名で保護する。`typ` ヘッダで `vc+jwt` や `vc+sd-jwt` などを示し、Verifier はまず JWT を検証してからクレデンシャルとして処理する。SD-JWT 形式を採用すると、Disclosure 単位で Holder が開示するクレームを選択できる。
+VC 全体を JWT (または COSE) のペイロードに格納し、JOSE/COSE のヘッダ・署名で保護する。VCDM 2.0 では IANA 登録メディア型として `application/vc+jwt`、`application/vc+cose`、`application/vc+sd-jwt` などが想定されており、Verifier はまずエンベロープを検証してからクレデンシャルとして処理する。SD-JWT 形式を採用すると、Disclosure 単位で Holder が開示するクレームを選択できる。
 
 ### 検証フロー
 
@@ -225,7 +225,7 @@ VCDM 2.0 は、デザイン全体を通じてプライバシ保護を重視し�
 - **W3C DID Core 1.0**: VC の Issuer / Subject / Holder の識別子として広く用いられる
 - **W3C VC Data Integrity 1.0**: Embedded Proof の Securing Mechanism
 - **Securing Verifiable Credentials using JOSE and COSE (VC-JOSE-COSE)**: Enveloping Proof の Securing Mechanism
-- **IETF SD-JWT / SD-JWT VC**: 選択的開示に対応する Enveloping 形式
+- **IETF SD-JWT / SD-JWT VC**: 選択的開示に対応する Enveloping proof のバリアント (`application/vc+sd-jwt`)
 - **W3C Bitstring Status List**: プライバシ配慮型の失効ステータス
 - **OpenID for Verifiable Credential Issuance (OID4VCI)**: OAuth ベースの VC 発行プロトコル
 - **OpenID for Verifiable Presentations (OID4VP)**: OAuth/OIDC ベースの VP 提示プロトコル
