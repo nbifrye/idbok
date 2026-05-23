@@ -1,5 +1,6 @@
 ---
 title: "OpenID Connect for Identity Assurance 1.0 - 検証済みアイデンティティの伝達仕様"
+reviewed: true
 ---
 
 # OpenID Connect for Identity Assurance 1.0 - 検証済みアイデンティティの伝達仕様
@@ -18,7 +19,7 @@ OpenID Connect Core の標準クレームは、OP が値を保持しているか
 
 ### 2.2 規制・準拠フレームワークの多様性
 
-EU の eIDAS、米国の NIST SP 800-63A、ドイツの AML 関連枠組み、日本の犯収法等、本人確認の根拠となる枠組みは地域・業界ごとに異なる。OIDC IDA は単一の枠組みを押し付けるのではなく、`trust_framework` という拡張可能な識別子で多様な枠組みを並立させ、`assurance_level` で枠組み内の保証ランク (例: eIDAS の `substantial`/`high`、NIST の `ial2`) を表現できる構造を採る。
+EU の eIDAS、米国の NIST SP 800-63A、ドイツの AML 関連枠組み、日本の犯収法等、本人確認の根拠となる枠組みは地域・業界ごとに異なる。OIDC IDA は単一の枠組みを押し付けるのではなく、`trust_framework` という拡張可能な識別子で多様な枠組みを並立させ、`assurance_level` で枠組み内の保証ランク (本仕様のサンプルに登場する値としては `substantial`、`high`、`ial2` など) を表現できる構造を採る。なお仕様本体は具体的な識別子の正規一覧を定義せず、登録は採用者と Wiki に委ねている。
 
 ### 2.3 検証根拠の機械可読化
 
@@ -26,15 +27,15 @@ EU の eIDAS、米国の NIST SP 800-63A、ドイツの AML 関連枠組み、�
 
 ## 3. 主要概念・用語
 
-| 用語                          | 説明                                                                                   |
-| ----------------------------- | -------------------------------------------------------------------------------------- |
-| Verified Claims               | `verification` メタデータと `claims` 値をひとまとめにしたコンテナ                      |
-| Verification                  | 検証行為そのもののメタデータ (枠組み、時刻、保証レベル、証拠、プロセス)                |
-| Trust Framework               | 検証を支配する規制・運用枠組みを識別する文字列 (例: `eidas`, `de_aml`, `nist_800_63A`) |
-| Assurance Level               | Trust Framework が定義する保証ランク                                                   |
-| Assurance Process             | 適用したポリシー・手続き・チェック内訳の詳細                                           |
-| Evidence                      | 検証に用いた具体的な証拠 (書類・電子記録・第三者保証・電子署名・公共料金請求書)        |
-| Aggregated/Distributed Claims | 検証済みクレームを別主体が署名した JWT で間接的に提供する仕組み                        |
+| 用語                          | 説明                                                                                                                                       |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Verified Claims               | `verification` メタデータと `claims` 値をひとまとめにしたコンテナ                                                                          |
+| Verification                  | 検証行為そのもののメタデータ (枠組み、時刻、保証レベル、証拠、プロセス)                                                                    |
+| Trust Framework               | 検証を支配する規制・運用枠組みを識別する文字列 (本仕様での例示: `eidas`, `de_aml`, `nist_800_63A`, `jp_aml`, `uk_diatf`, `se_bankid` など) |
+| Assurance Level               | Trust Framework が定義する保証ランク                                                                                                       |
+| Assurance Process             | 適用したポリシー・手続き・チェック内訳の詳細                                                                                               |
+| Evidence                      | 検証に用いた具体的な証拠 (書類・電子記録・第三者保証・電子署名)                                                                            |
+| Aggregated/Distributed Claims | 検証済みクレームを別主体が署名した JWT で間接的に提供する仕組み                                                                            |
 
 ## 4. プロトコルフロー
 
@@ -127,7 +128,7 @@ sequenceDiagram
 
 ### 5.3 Evidence の種類
 
-`evidence` 配列に入るオブジェクトは `type` で種類を区別する。
+`evidence` 配列に入るオブジェクトは `type` で種類を区別する。本仕様の説明・例示に登場する種別は次の 4 つである (具体的な識別子の網羅的なレジストリは仕様外で管理される)。
 
 ```mermaid
 flowchart LR
@@ -135,24 +136,25 @@ flowchart LR
     E --> ER[electronic_record<br/>電子記録による検証]
     E --> V[vouch<br/>第三者保証]
     E --> ES[electronic_signature<br/>電子署名]
-    E --> UB[utility_bill<br/>公共料金請求書]
 ```
 
 #### document
 
-旅券・身分証・運転免許等の物理/電子書類による検証。`method` は確認方法 (例: `pipp` = Physical In-Person Proofing、`vri` = Video Remote Inspection、`vpip` = Verified Physical In-Person)、`document_details` は書類種別・発行者・番号・発行/失効日、`check_details` は実施した個別検査 (例: `vpiruv` = Visual Passport Inspection、`pvp` = Physical Verification of Presence)、`verifier` は検証主体の情報を保持する。
+旅券・身分証・運転免許等の物理/電子書類による検証。`method` は確認方法を示す識別子で、Discovery メタデータの例として `pipp`、`sripp`、`eid` が挙げられている。`document_details` は書類種別・発行者・番号・発行/失効日、`check_details` は実施した個別検査 (例: `vcrypt`、`pvp` などが付録の例示に登場)、`verifier` は検証主体の情報を保持する。これらの識別子の意味は仕様本体では定義されず、採用者間の合意に委ねられている。
 
 #### electronic_record
 
-住民登録、銀行口座、住宅ローン口座など、信頼できる電子記録への参照による検証。`record` フィールドで `population_register` 等のレコード種別を示し、`source` で記録の発行元組織を、`check_details` で検査内容を表す。
+住民登録、銀行口座、住宅ローン口座など、信頼できる電子記録への参照による検証。`record` フィールドでレコード種別と発行元組織 (`source`) を示し、`check_details` で検査内容を表す。
 
 #### vouch
 
 組織や個人による「この人物である」という第三者保証。`attestation` に保証の詳細を、`attester` に保証主体を持つ。
 
-#### electronic_signature と utility_bill
+#### electronic_signature
 
-電子署名による検証 (`electronic_signature`)、および公共料金請求書のような補助証拠 (`utility_bill`) も列挙されている。
+電子署名そのものを証拠として扱う種別。`issuer`、`serial_number`、`created_at` などのフィールドを保持する。
+
+なおバイオメトリクス (`biometric`) 等の追加証拠種別は付随する OpenID Identity Assurance Schema Definition 1.0 などで議論されているが、本仕様 (OIDC IDA 1.0) 本体の説明・例示には登場しない。
 
 ### 5.4 verified_claims の要求方法
 
@@ -197,16 +199,17 @@ Aggregated/Distributed Claims では、検証情報を保持する別主体 (Cla
 
 OP は自身が扱える検証範囲を Discovery で広告する。代表的なメタデータは以下のとおり。
 
-| メタデータ                            | 用途                                                     |
-| ------------------------------------- | -------------------------------------------------------- |
-| `verified_claims_supported`           | 検証済みクレームの提供可否                               |
-| `trust_frameworks_supported`          | 対応 Trust Framework の配列 (必須)                       |
-| `claims_in_verified_claims_supported` | `verified_claims.claims` で要求可能なクレーム一覧 (必須) |
-| `evidence_supported`                  | 提供できる Evidence の種類                               |
-| `documents_supported`                 | `document` evidence で扱える書類種別                     |
-| `documents_methods_supported`         | `document` evidence の検証方法                           |
-| `electronic_records_supported`        | `electronic_record` evidence で扱える記録種別            |
-| `claims_parameter_supported`          | `claims` パラメータ全般のサポート (Core 仕様由来)        |
+| メタデータ                            | 用途                                                                             |
+| ------------------------------------- | -------------------------------------------------------------------------------- |
+| `verified_claims_supported`           | 検証済みクレームの提供可否                                                       |
+| `trust_frameworks_supported`          | 対応 Trust Framework の配列 (必須)                                               |
+| `claims_in_verified_claims_supported` | `verified_claims.claims` で要求可能なクレーム一覧 (必須)                         |
+| `evidence_supported`                  | 提供できる Evidence の種類 (いずれかの evidence を提供する場合は必須)            |
+| `documents_supported`                 | `document` evidence で扱える書類種別 (`document` を提供する場合は必須)           |
+| `documents_methods_supported`         | `document` evidence の `method` (検証方法) 識別子                                |
+| `documents_check_methods_supported`   | `document` evidence の `check_details.check_method` 識別子                       |
+| `electronic_records_supported`        | `electronic_record` evidence で扱える記録種別 (`electronic_record` 提供時に必須) |
+| `claims_parameter_supported`          | `claims` パラメータ全般のサポート (Core 仕様由来)                                |
 
 RP はこれらを参照して、必要な枠組みを提供できる OP を選択する。
 
