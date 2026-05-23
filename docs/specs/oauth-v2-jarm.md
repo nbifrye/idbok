@@ -1,5 +1,6 @@
 ---
 title: "JARM - JWT Secured Authorization Response Mode for OAuth 2.0"
+reviewed: true
 ---
 
 # JARM - JWT Secured Authorization Response Mode for OAuth 2.0
@@ -74,7 +75,7 @@ sequenceDiagram
     AS->>AS: response JWT を生成<br/>iss, aud, exp, code, state を含める<br/>JWS で署名 (必要なら JWE で暗号化)
     AS->>U: 302 Location: redirect_uri?response=<JWT>
     U->>C: GET redirect_uri?response=<JWT>
-    C->>C: JWT 署名検証<br/>iss / aud / exp / state を検証
+    C->>C: (必要なら) JWE 復号<br/>iss / aud / exp を検証<br/>JWS 署名検証 (alg=none は不可)<br/>state を CSRF 検証 (仕様範囲外)
     C->>AS: POST /token<br/>grant_type=authorization_code&code=...
     AS->>C: access_token, id_token, ...
 ```
@@ -172,18 +173,19 @@ Location: https://client.example.org/cb?
 
 ## クライアントの処理ルール
 
-JARM 仕様はクライアントに対し、以下の順序で検証することを要求する。
+JARM 仕様 (Section 2.4) はクライアントに対し、以下の順序で `response` JWT を検証することを要求する。
 
 1. `response` JWT の取得 (リダイレクトのクエリ・フラグメント・POST から該当 response mode に応じて抽出)
-2. JWE で暗号化されている場合は復号
-3. JWS 署名の検証 (AS の登録された署名鍵を使用)
-4. `iss` クレームが対象 AS の issuer と一致することの検証
-5. `aud` クレームが自身の `client_id` と一致することの検証
-6. `exp` クレームが現在時刻より未来であることの検証
-7. `state` クレームが事前に送信した値と一致することの検証 (CSRF 対策)
-8. 上記すべてが成功した後にのみ、`code` 等のレスポンス固有パラメータを処理する
+2. JWE で暗号化されている場合は復号 (任意ステップ)
+3. `iss` クレームを取り出し、想定する認可サーバ (AS) の issuer と一致することを検証
+4. `aud` クレームが自身の `client_id` と一致することを検証
+5. `exp` クレームが現在時刻より未来であることを検証
+6. JWS 署名を RFC 7515 に従って検証する。`alg=none` は受理してはならない
+7. 上記すべてが成功した後にのみ、`code` 等のレスポンス固有パラメータを処理する
 
-`state` は使い捨ての CSRF トークンとして扱い、検証後は無効化する。
+いずれかのチェックが失敗した場合、クライアントは処理を中断しレスポンスを拒否しなければならない (MUST)。
+
+なお `state` を用いた CSRF 検証や RFC 9700 (OAuth 2.0 Security Best Current Practice) で求められる追加チェックは JARM 仕様の対象範囲外として明示されており、別途実施することが想定されている。実装上は `state` を使い捨てのトークンとして扱い、検証後は無効化することが推奨される。
 
 ## セキュリティに関する考慮事項
 
