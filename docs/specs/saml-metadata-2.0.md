@@ -1,5 +1,6 @@
 ---
 title: "SAML 2.0 Metadata - Metadata for the OASIS Security Assertion Markup Language"
+reviewed: true
 ---
 
 # SAML 2.0 Metadata - Metadata for the OASIS Security Assertion Markup Language
@@ -137,10 +138,12 @@ SAML プロトコルメッセージを送受信する全エンドポイントは
 - `Location` (必須): エンドポイントの URI
 - `ResponseLocation`: 応答だけを別の URL で受ける場合に指定
 
-さらに `IndexedEndpointType` を継承するエンドポイント (`AssertionConsumerService`、`ArtifactResolutionService`、`AttributeConsumingService`) は以下を持つ。
+さらに `IndexedEndpointType` を継承するエンドポイント (`AssertionConsumerService`、`ArtifactResolutionService`) は以下を持つ。
 
 - `index` (必須): エンドポイントの番号 (`<AuthnRequest>` の `AssertionConsumerServiceIndex` 等から参照される)
 - `isDefault`: 既定のエンドポイントかどうか
+
+なお `AttributeConsumingService` は `EndpointType` を継承しない独自型であり、`Binding` / `Location` は持たないが `index` (必須) と `isDefault` を備え、`AssertionConsumerService` と同様に `<AuthnRequest>` の `AttributeConsumingServiceIndex` から参照される。
 
 主なエンドポイント要素を以下に示す。
 
