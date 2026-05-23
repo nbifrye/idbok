@@ -1,5 +1,6 @@
 ---
 title: "WebAuthn - Web Authentication API Level 3"
+reviewed: true
 ---
 
 # WebAuthn - Web Authentication API Level 3
@@ -41,10 +42,10 @@ Level 3 はこれらの実運用課題を解決するため、API・拡張・Aut
 | API                       | `signalUnknownCredential()`, `signalAllAcceptedCredentials()`, `signalCurrentUserDetails()`  |
 | Mediation                 | Conditional Mediation を `navigator.credentials.get({mediation: "conditional"})` で正式化    |
 | マルチオリジン            | Related Origin Requests (§5.11) を導入し `/.well-known/webauthn` で検証                      |
-| 拡張                      | PRF 拡張 (§10.1.4)、largeBlob 拡張 (§10.1.5)、remoteClientDataJSON 拡張 (§10.1.6) を追加     |
-| Attestation Format        | Apple Anonymous Attestation (§8.8)、Compound Attestation (§8.9) を追加                       |
-| アルゴリズム              | Ed25519 / Ed448 などの推奨アルゴリズム拡張                                                   |
-| ユーザ情報                | `signalCurrentUserDetails` による displayName 等の更新フロー                                 |
+| 拡張                      | PRF 拡張 (§10.1.4)、largeBlob 拡張 (§10.1.5) を追加                                          |
+| Attestation Format        | Compound Attestation Statement Format (§8.9) を追加                                          |
+| アルゴリズム              | EdDSA (Ed25519) など推奨アルゴリズムを引き続き整理                                           |
+| ユーザ情報                | `signalCurrentUserDetails` による name / displayName 等の更新フロー                          |
 
 ## 用語: Passkey とマルチデバイス Credential
 
@@ -83,9 +84,12 @@ RP はこれらを Authenticator Data から取り出して保存し、次回以
 
 ### `getClientCapabilities()`
 
-§5.1.7。クライアント (ブラウザ + プラットフォーム Authenticator) が提供する機能を事前に問い合わせる API。返り値は `PublicKeyCredentialClientCapabilities` の Promise であり、以下のような能力フラグが含まれる。
+§5.1.7。クライアント (ブラウザ + プラットフォーム Authenticator) が提供する機能を事前に問い合わせる静的メソッド。返り値は `record<DOMString, boolean>` の Promise で、§5.8.7 で定義される `ClientCapability` 列挙型の値をキーに、サポート可否を真偽値で返す。Level 3 で標準化された主な能力名は次のとおり。
 
-- `conditionalCreate`、`conditionalGet`、`hybridTransport`、`passkeyPlatformAuthenticator`、`userVerifyingPlatformAuthenticator`、`relatedOrigins`、`signalAllAcceptedCredentials` など
+- `conditionalCreate`、`conditionalGet`
+- `hybridTransport`、`passkeyPlatformAuthenticator`、`userVerifyingPlatformAuthenticator`
+- `relatedOrigins`
+- `signalAllAcceptedCredentials`、`signalCurrentUserDetails`、`signalUnknownCredential`
 
 これにより、RP は事前に「Conditional Mediation が使えるか」「Related Origins をサポートするか」を判定し、ログインフォームの UI を出し分けられる。
 
@@ -95,7 +99,7 @@ RP はこれらを Authenticator Data から取り出して保存し、次回以
 
 - `PublicKeyCredential.parseCreationOptionsFromJSON(json)` → `PublicKeyCredentialCreationOptions`
 - `PublicKeyCredential.parseRequestOptionsFromJSON(json)` → `PublicKeyCredentialRequestOptions`
-- 既存の `PublicKeyCredential.prototype.toJSON()` と合わせ、`challenge` や `user.id` 等の `Uint8Array` フィールドを Base64URL 文字列として一貫的に扱える
+- 既存の `PublicKeyCredential.prototype.toJSON()` と合わせ、`challenge` や `user.id` 等の `BufferSource` フィールドを Base64URL 文字列として一貫的に扱える
 
 Level 2 では各 RP が独自に Base64URL ↔ ArrayBuffer 変換コードを書く必要があったが、Level 3 ではブラウザ標準化されたため誤実装のリスクが下がる。
 
@@ -163,15 +167,15 @@ sequenceDiagram
 ### 重要なポイント
 
 - 呼び出し元 origin と `rpId` の登録可能ドメインが一致しない場合、ブラウザは `https://<rpId>/.well-known/webauthn` を取得する
-- レスポンスは JSON 形式で `origins` 配列を含み、呼び出し元 origin がリストにあれば認証セレモニーを継続する
-- 一覧のサイズや異なる eTLD+1 の数には**ラベル制約**が課される (実装依存だが、例えば異なる eTLD+1 は 5 つまで等)
+- レスポンスは `application/json` で配信され、トップレベル JSON オブジェクトには `origins` キーが必要。値は web origin 文字列の配列で、呼び出し元 origin がリストにあれば認証セレモニーを継続する
+- 仕様は **登録可能オリジンラベル (registrable origin label) を少なくとも 5 つまでサポート**することを WebAuthn Client に要求している。クライアントは濫用防止のため上限を設けることが推奨される
 - これによりブランド統合 (買収・国別ドメイン展開等) 後もユーザは同じパスキーを使い続けられる
 
 ## 新規 / 注目される拡張
 
 ### PRF 拡張 (§10.1.4)
 
-CTAP2 の `hmac-secret` 拡張を WebAuthn 層に橋渡しする拡張で、Authenticator 上の Credential に紐づく秘密鍵から HMAC-SHA-256 で擬似ランダム値を派生する。
+Credential に紐づく擬似ランダム関数 (PRF) の出力を RP が取得できる登録・認証両用の拡張。仕様上 PRF は任意長の `BufferSource` を 32 バイトの `BufferSource` に写像すると定義されており、CTAP2 の `hmac-secret` 拡張の上に実装することも、それ以外の手段で実装することも認められている。`hmac-secret` を用いる場合は User Verification ありの PRF が必ず選択され、入力にはコンテキスト文字列とのハッシュが施されたうえで認証器に渡される。
 
 ```js
 // 認証時
@@ -194,9 +198,9 @@ navigator.credentials.get({
 credential.getClientExtensionResults().prf.results.first; // 32 バイトの PRF 出力
 ```
 
-- 登録時に `extensions.prf.eval` または `extensions.prf.evalByCredential` で評価可能
-- E2E 暗号鍵の派生、デバイス間で安定した暗号鍵共有が必要なアプリ (パスキーで保護されたノートアプリの本文暗号化等) で利用される
-- Authenticator が CTAP2.1 の `hmac-secret-mc` をサポートする場合、registration ceremony 中にも評価できる
+- 認証セレモニーでは `extensions.prf.eval` (任意の credential 共通の入力) または `extensions.prf.evalByCredential` (credential ID ごとの入力) で評価値を指定可能
+- 各 `eval` は `first` (必須) と `second` (任意) の 2 つの入力からなり、結果も `results.first` / `results.second` として 32 バイトずつ返る
+- 用途としては E2E 暗号鍵の派生、デバイス間で安定した暗号鍵共有が必要なアプリ (パスキーで保護されたノートアプリの本文暗号化等) が想定される
 
 ### largeBlob 拡張 (§10.1.5)
 
@@ -211,22 +215,17 @@ extensions: {
 }
 ```
 
-### remoteClientDataJSON 拡張 (§10.1.6)
+### credProps と Backup 状態の関係 (§10.1.3 / §6.1.3)
 
-ハイブリッド (Cross-Device) フローでクライアント間にまたがる `clientDataJSON` を保証するための新規拡張。スマートフォン側で構築された `clientDataJSON` をデスクトップ側 RP が正しく検証できるよう、フォーマットを明示化したもの。
-
-### credProps の拡張
-
-§10.1.3 の `credProps` 出力に `backupEligible`、`backupState` などのフィールドが追加され、RP は登録直後に Credential が Multi-Device か Single-Device か把握できる。
+`credProps` 拡張 (§10.1.3) の出力ディクショナリ `CredentialPropertiesOutput` 自体は Level 2 同様 `rk` (Discoverable Credential かどうか) のみを公開する。一方、Level 3 では Credential が Multi-Device か Single-Device かを判別するための情報が Authenticator Data の **BE / BS フラグ**として標準化された。RP は登録セレモニーで取得した `authData` から BE / BS を読み取り、Credential レコードの `backupEligible` / `backupState` 抽象プロパティとして保存し、以降の認証セレモニーで参照する (§7.1 ステップ 16〜18)。
 
 ## Attestation Statement Format の追加
 
-§8 では Level 2 の Packed / TPM / Android Key / Android SafetyNet / FIDO U2F / None / Apple Anonymous に加え、Level 3 で以下が明示された。
+§8 では Level 2 で既に定義されていた Packed / TPM / Android Key / Android SafetyNet / FIDO U2F / None / Apple Anonymous の各形式に加え、Level 3 で次の形式が新規に定義された。
 
-- **§8.8 Apple Anonymous Attestation**: Apple プラットフォームの匿名 Attestation の手順を完全に規定
-- **§8.9 Compound Attestation**: 複数の Attestation Statement を 1 つの Credential に紐づける形式。ハイブリッドフローのように複数の信頼ドメインが関与するケースで使用
+- **§8.9 Compound Attestation Statement Format**: 複数の Attestation Statement を 1 つの Credential に紐づける形式。複数の信頼ドメインが関与するケースで使用される
 
-加えて、`pubKeyCredParams` で推奨される署名アルゴリズムに Ed25519 (COSE alg = -8) などモダンな曲線が引き続き取り入れられている。
+`pubKeyCredParams` で推奨される署名アルゴリズムには引き続き EdDSA (COSE alg = -8、`crv` = 6 で Ed25519) を含む現代的な曲線が利用できる。仕様サンプル (§5.1.3) では EdDSA / ES256 / RS256 を許容する `pubKeyCredParams` の記述が例示されている。
 
 ## 登録フロー (Level 3 の追加機能込み)
 
