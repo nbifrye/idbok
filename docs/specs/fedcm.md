@@ -1,5 +1,6 @@
 ---
 title: "W3C FedCM - Federated Credential Management API"
+reviewed: true
 ---
 
 # W3C FedCM - Federated Credential Management API
