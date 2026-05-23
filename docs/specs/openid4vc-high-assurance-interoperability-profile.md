@@ -1,5 +1,6 @@
 ---
 title: "HAIP 1.0 - OpenID4VC High Assurance Interoperability Profile"
+reviewed: true
 ---
 
 # HAIP 1.0 - OpenID4VC High Assurance Interoperability Profile
