@@ -1,5 +1,6 @@
 ---
 title: "FAPI 1.0 Part 2: Advanced - 金融グレード API セキュリティプロファイル"
+reviewed: true
 ---
 
 # FAPI 1.0 Part 2: Advanced
@@ -64,7 +65,7 @@ sequenceDiagram
     C->>AS: Authorization Request<br/>(request=<JWS>, response_type=code id_token, scope=openid ...)
     AS->>U: ユーザー認証・同意
     U->>AS: 同意
-    AS->>C: Authorization Response<br/>(code, id_token, state)<br/>ID Token に c_hash, s_hash, at_hash を含む
+    AS->>C: Authorization Response<br/>(code, id_token, state)<br/>ID Token に c_hash, s_hash を含む
     C->>C: ID Token 署名検証<br/>c_hash / s_hash / iss を検証
     C->>AS: Token Request (MTLS / private_key_jwt)<br/>code, PKCE verifier 等
     AS->>C: Access Token (cnf.x5t#S256 でクライアント証明書にバインド)
@@ -108,7 +109,7 @@ JARM ではレスポンス全体が JWT として返るため、`openid` スコ�
 - **`aud` クレーム**: 認可サーバの Issuer Identifier URL を設定
 - **PAR 利用時の PKCE**: Pushed Authorization Requests を使用する場合は PKCE (`S256`) が必須
 - **MTLS サポート**: クライアント認証および sender-constrained access token のために必須
-- **ID Token 検証**: Hybrid Flow 時は `c_hash`、`s_hash`、`iss`、`at_hash` を必ず検証
+- **ID Token 検証**: Hybrid Flow 時は `s_hash` を必ず検証し、OpenID Connect Core 3.3.2.12 が要求する `c_hash` 検証も行うこと。IdP mix-up 攻撃対策として `iss` も検証する
 
 ### 5.2 Authorization Server への要件
 
@@ -179,7 +180,7 @@ FAPI 1.0 Advanced が新規に定義した ID Token クレーム。`state` パ�
 - JWKS URI は TLS 経由でのみ配信されること
 - 同一 `kid` で複数の鍵を持つことは非推奨
 - 複数クライアント間での鍵共有は避けるべき
-- `exp` の最長 60 分制限は鍵漏洩時の被害範囲を限定する目的
+- Request Object の `exp` クレームは最長 60 分に制限され、署名済みリクエストの再利用可能な時間窓を縮小する
 
 ### 既知の限界
 
